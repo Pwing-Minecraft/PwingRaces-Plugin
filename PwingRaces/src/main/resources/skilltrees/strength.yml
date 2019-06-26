@@ -1,0 +1,208 @@
+name: Strength
+icon:
+    type: diamond_chestplate
+    display-name: "&c&lStrength"
+    lore: ["&7Click to view this skilltree."]
+menu-slot: 22
+menu-icon:
+    type: player_head
+    owner: Kili_the_Dwarf
+    display-name: "&c&lStrength Skilltree"
+    lore:
+    - "&7Right-click to return"
+    - "&7to the main menu."
+elements:
+    agility1:
+        slot: 13
+        parent: dwarf
+        title: Agility Rank I
+        description:
+        - "&fStats:"
+        - "&a-1 &bSlowness"
+        point-cost: 1
+    agility2:
+        slot: 4
+        parent: agility1
+        title: Agility Rank II
+        description:
+        - "&fStats:"
+        - "&b-1 Slowness"
+        - "&a+1 &bDamage Resistance"
+        point-cost: 1
+    agility3:
+        slot: 3
+        parent: agility2
+        title: Agility Rank III - Speed
+        description:
+        - "&fStats:"
+        - "&c-1 &f-> &a-2 &bSlowness"
+        - "&b+1 Damage Resistance"
+        point-cost: 1
+    agility4:
+        slot: 5
+        parent: agility2
+        title: Agility Rank III - Resistance
+        description:
+        - "&fStats:"
+        - "&b-1 Slowness"
+        - "&c+1 &f-> &a+2 &bDamage Resistance"
+        point-cost: 1
+    armor1:
+        slot: 31
+        parent: dwarf
+        title: Armor Toughness Rank I
+        description:
+        - "&fStats:"
+        - "&a+1 &bArmor Toughness"
+        point-cost: 1
+    armor2:
+        slot: 40
+        parent: armor1
+        title: Armor Toughness Rank II
+        description:
+        - "&fStats:"
+        - "&b+2 Armor"
+        - "&a+2 &bArmor Toughness"
+        point-cost: 1
+    armor3:
+        slot: 49
+        parent: armor2
+        title: Armor Toughness Rank III
+        description:
+        - "&fStats:"
+        - "&c+2 &f-> &a+4 &bArmor"
+        - "&b+2 Armor Toughness"
+        point-cost: 1
+    armor4:
+        slot: 50
+        parent: armor3
+        title: Armor Toughness Rank IV - Armor
+        description:
+        - "&fStats:"
+        - "&c+4 &f-> &a+6 &bArmor"
+        - "&b+2 Armor Toughness"
+        point-cost: 1
+    armor5:
+        slot: 48
+        parent: armor3
+        title: Armor Toughness Rank IV - Toughness
+        description:
+        - "&fStats:"
+        - "&b+4 Armor"
+        - "&c+2 &f-> &a+4 &bArmor Toughness"
+        point-cost: 1
+    strength1:
+        slot: 23
+        parent: dwarf
+        title: Strength Rank I
+        description:
+        - "&fStats:"
+        - "&a+1 &bDamage"
+        point-cost: 1
+    strength2:
+        slot: 24
+        parent: strength1
+        title: Strength Rank II
+        description:
+        - "&fStats:"
+        - "&b+1 Damage"
+        - "&b+1 &bAttack Speed"
+        point-cost: 1
+    strength3:
+        slot: 25
+        parent: strength2
+        title: Strength Rank III
+        description:
+        - "&fStats:"
+        - "&c+1 &f-> &a+2 &bDamage"
+        - "&b+1 Attack Speed"
+        point-cost: 1
+    strength4:
+        slot: 26
+        parent: strength3
+        title: Strength Rank IV
+        description:
+        - "&fStats:"
+        - "&b+2 Damage"
+        - "&c+1 &f-> &a+2 &bAttack Speed"
+        point-cost: 1
+    strength5:
+        slot: 17
+        parent: strength4
+        title: Strength Rank V - Damage
+        description:
+        - "&fStats:"
+        - "&c+2 &f-> &a+4 &bDamage"
+        - "&b+2 Attack Speed"
+        point-cost: 1
+    strength6:
+        slot: 35
+        parent: strength4
+        title: Strength Rank V - Attack Speed
+        description:
+        - "&fStats:"
+        - "&b+2 Damage"
+        - "&c+2 &f-> &a+4 &bAttack Speed"
+        point-cost: 1
+    immunity1:
+        slot: 21
+        parent: dwarf
+        title: Immunity Rank I
+        description:
+        - "&fStats:"
+        - "&aSlowness Immunity"
+        point-cost: 1
+    immunity2:
+        slot: 20
+        parent: immunity1
+        title: Immunity Rank II
+        description:
+        - "&fStats:"
+        - "&bSlowness Immunity"
+        - "&aWeakness Immunity"
+        point-cost: 1
+    immunity3:
+        slot: 19
+        title: Immunity Rank III
+        parent: immunity2
+        description:
+        - "&fStats:"
+        - "&bSlowness Immunity"
+        - "&bWeakness Immunity"
+        - "&aBlindness Immunity"
+        point-cost: 1
+    immunity4:
+        slot: 18
+        title: Immunity Rank IV
+        parent: immunity3
+        description:
+        - "&fStats:"
+        - "&bSlowness Immunity"
+        - "&bWeakness Immunity"
+        - "&bBlindness Immunity"
+        - "&aPoison Immunity"
+        point-cost: 1
+    immunity5:
+        slot: 9
+        title: Immunity Rank V - Wither
+        parent: immunity4
+        description:
+        - "&fStats:"
+        - "&bSlowness Immunity"
+        - "&bWeakness Immunity"
+        - "&bBlindness Immunity"
+        - "&bPoison Immunity"
+        - "&aWither Immunity"
+        point-cost: 1
+    immunity6:
+        slot: 27
+        title: Immunity Rank V - Instant Damage
+        parent: immunity4
+        description:
+        - "&fStats:"
+        - "&bSlowness Immunity"
+        - "&bWeakness Immunity"
+        - "&bBlindness Immunity"
+        - "&bPoison Immunity"
+        - "&aInstant Damage Immunity"
+        point-cost: 1

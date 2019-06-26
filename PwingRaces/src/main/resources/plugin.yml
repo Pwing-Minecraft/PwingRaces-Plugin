@@ -1,0 +1,12 @@
+main: net.pwing.races.PwingRaces
+name: ${project.name}
+description: ${project.description}
+version: ${revision}
+api-version: 1.13
+author: Redned
+website: http://pwing.net
+softdepend: [WorldEdit, WorldGuard, MagicSpells, PlaceholderAPI, Quests, LibsDisguises, LoreAttributesRecoded, Vault]
+commands:
+    race:
+        description: PwingRaces main command.
+        usage: /race <help>

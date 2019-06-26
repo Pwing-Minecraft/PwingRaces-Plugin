@@ -1,0 +1,143 @@
+# Pwing Races
+
+# ---------------------- #
+# Human Race
+# Race Theme: Balanced
+# A simple race to demonstrate a more basic usage of PwingRaces.
+# Author(s): Redned
+# ---------------------- #
+
+# This may seem complicated at first glance, refer to the wiki for more information.
+# Wiki Link: https://pwing-races.fandom.com/wiki/
+race:
+    name: Human
+    max-level: 10
+    require-unlock: false
+    gui:
+        slot: 20
+        icon:
+            type: player_head
+            owner: Steve
+            display-name: "&fHuman &7| &aUnlocked"
+            lore:
+            - "&7A race of intelligence,"
+            - "&7and balance."
+        icon-selected:
+            type: player_head
+            owner: Steve
+            display-name: "&fHuman &7| &eSelected"
+            lore:
+            - "&7A race of intelligence,"
+            - "&7and balance."
+            enchants:
+            - unbreaking 1
+            item-flags:
+            - hide_enchants
+    levels:
+        1:
+            xp: 100
+            triggers:
+                takedamage:
+                    trigger: take-damage
+                    delay: 15
+                    chance: 10
+                    run-passives:
+                    - add-potion-effect speed 5 1
+            attributes:
+                generic-attack-speed: 6
+                generic-max-health: 21
+        2:
+            xp: 150
+            attributes:
+                generic-attack-speed: 6
+                generic-max-health: 22
+        3:
+            xp: 225
+            triggers:
+                takedamage: # This overrides the trigger in level 1 since it shares the same name
+                    trigger: take-damage
+                    delay: 15
+                    chance: 20
+                    run-passives:
+                    - add-potion-effect speed 5 2
+            attributes:
+                generic-attack-speed: 6
+                generic-max-health: 23
+        4:
+            xp: 300
+            attributes:
+                generic-attack-speed: 7
+                generic-max-health: 24
+        5:
+            xp: 400
+            triggers:
+                takedamage:
+                    trigger: take-damage
+                    delay: 15
+                    chance: 40
+                    run-passives:
+                    - add-potion-effect increase_damage 5 1
+            attributes:
+                generic-attack-speed: 7
+                generic-max-health: 25
+        6:
+            xp: 525
+            attributes:
+                generic-attack-speed: 7
+                generic-max-health: 26
+                generic-armor-toughness: 2
+        7:
+            xp: 675
+            attributes:
+                generic-attack-speed: 8
+                generic-max-health: 27
+                generic-armor-toughness: 3
+        8:
+            xp: 825
+            attributes:
+                generic-attack-speed: 8
+                generic-max-health: 28
+                generic-armor-toughness: 4
+        9:
+            xp: 1000
+            attributes:
+                generic-attack-speed: 8
+                generic-max-health: 29
+                generic-armor-toughness: 5
+        10:
+            x: 1250
+            attributes:
+                generic-attack-speed: 8
+                generic-max-health: 30
+                generic-armor-toughness: 5
+            triggers:
+                takedamage:
+                    trigger: take-damage
+                    delay: 15
+                    chance: 50
+                    run-passives:
+                    - add-potion-effect increase_damage 5 2
+    attributes:
+        generic-attack-speed: 5
+        max-mana: 200 # MagicSpells addon
+    items:
+        iron_axe:
+            type: iron_axe
+        diamond_sword:
+            type: diamond_sword
+        sticks:
+            type: stick
+            amount: 10
+        planks:
+            type: oak_planks
+            amount: 16
+        cobblestone:
+            type: cobblestone
+            amount: 64
+    triggers:
+        raceexpgain:
+            trigger: damage-entity
+            delay: 10
+            chance: 100
+            run-passives:
+            - give-race-exp 1

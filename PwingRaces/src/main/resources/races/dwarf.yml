@@ -1,0 +1,515 @@
+# Pwing Races
+
+# ---------------------- #
+# Dwarf Race
+# Race Theme: Tank / Strength
+# Skills: Axe Throwing Ability
+# Permanent Slowness
+# A race to demonstrate more complex features of PwingRaces.
+# Author(s): Redned
+# ---------------------- #
+
+# This may seem complicated at first glance, refer to the wiki for more information.
+# Wiki Link: https://pwing-races.fandom.com/wiki/
+race:
+    name: Dwarf
+    max-level: 15
+    require-unlock: true
+    skilltrees:
+    - strength 32
+    - weaponry 30
+    gui:
+        slot: 24
+        icon:
+            type: player_head
+            owner: Kili_the_Dwarf
+            display-name: "&6Dwarf &7| &aUnlocked"
+            lore:
+            - "&7A race of strength! Tanky,"
+            - "&7but is strong in battle."
+        icon-selected:
+            type: player_head
+            owner: Kili_the_Dwarf
+            display-name: "&6Dwarf &7| &eSelected"
+            lore:
+            - "&7A race of strength! Tanky,"
+            - "&7but is strong in battle."
+            enchants:
+            - unbreaking 1
+            item-flags:
+            - hide_enchants
+        icon-locked:
+            type: skeleton_skull
+            display-name: "&c??? &7| &4Locked"
+            lore:
+            - "&cDefeat the &bDwarf Leader"
+            - "&cto unlock this race."
+    levels:
+        1:
+            xp: 200
+            skillpoints: 1
+        2:
+            xp: 250
+            skillpoints: 1
+        3:
+            xp: 300
+            skillpoints: 1
+        4:
+            xp: 350
+            skillpoints: 1
+        5:
+            xp: 450
+            skillpoints: 2
+        6:
+            xp: 525
+            skillpoints: 1
+        7:
+            xp: 600
+            skillpoints: 1
+        8:
+            xp: 700
+            skillpoints: 1
+        9:
+            xp: 825
+            skillpoints: 1
+        10:
+            xp: 1000
+            skillpoints: 2
+        11:
+            xp: 1350
+            skillpoints: 2
+        12:
+            xp: 1750
+            skillpoints: 2
+        13:
+            xp: 2225
+            skillpoints: 3
+        14:
+            xp: 3025
+            skillpoints: 3
+        15:
+            xp: 4000
+            skillpoints: 3
+    attributes:
+        generic-max-health: 25
+        generic-armor: 5
+        generic-attack-speed: 3
+        max-mana: 125 # MagicSpells addon
+    items:
+        dwarvenhammer:
+            type: stone_axe
+            display-name: "&4Dwarven Hammer"
+            lore:
+            - "&7A strong axe, dealing immense damage!"
+            - "&a"
+            - "&8------------------------"
+            - "&aWeapon Attributes:"
+            - "&c+10 Damage"
+            - "&c+5 Critical Damage"
+            - "&3+2% Dodge"
+            - "&a"
+            - "&bAbilities Bound:"
+            - "&7- &aAxe Throw &8[&3Lvl. 5&8]"
+            - "&8------------------------"
+    abilities:
+        throwaxe:
+            ability: ThrowWeaponAbility
+            ability-item: wooden_axe,stone_axe,iron_axe,golden_axe,diamond_axe
+            hit-velocity: 1
+            cooldown: 60
+            speed: 1
+            damage: 1
+            max-duration: 100
+            take-item-on-throw: true
+            damage-players: false
+            required-permission: throwsword
+            check-plugins: true
+            run-passives:
+            - give-race-exp 5
+    triggers:
+        slowness:
+            trigger: move
+            delay: 5
+            chance: 100
+            run-passives:
+            - add-potion-effect slow 5 3
+        raceexpgain:
+            trigger: damage-entity
+            delay: 10
+            chance: 100
+            run-passives:
+            - give-race-exp 1
+    elements:
+        agility1:
+            triggers:
+                slowness:
+                     trigger: move
+                     delay: 5
+                     chance: 100
+                     run-passives:
+                     - add-potion-effect slow 5 2
+        agility2:
+            triggers:
+                slowness:
+                     trigger: move
+                     delay: 5
+                     chance: 100
+                     run-passives:
+                     - add-potion-effect slow 5 1
+                dmgresistance:
+                     trigger: move
+                     delay: 5
+                     chance: 100
+                     run-passives:
+                     - add-potion-effect damage_resistance 5 1
+        agility3:
+            triggers:
+                slowness:
+                    trigger: move
+                    delay: 5
+                    chance: 100
+                    run-passives:
+                    - add-potion-effect slow 5 1
+        agility4:
+            triggers:
+                dmgresistance:
+                    trigger: move
+                    delay: 5
+                    chance: 100
+                    run-passives:
+                    - add-potion-effect damage_resistance 5 2
+        armor1:
+              attributes:
+                  generic-armor-toughness: 1
+        armor2:
+              attributes:
+                  generic-armor: 2
+        armor3:
+              attributes:
+                  generic-armor: 4
+                  generic-armor-toughness: 2
+        armor4:
+              attributes:
+                  generic-armor: 6
+                  generic-armor-toughness: 2
+        strength1:
+              attributes:
+                  generic-damage: 1
+        strength2:
+              attributes:
+                  generic-attack-speed: 1
+        strength3:
+              attributes:
+                  generic-damage: 2
+        strength4:
+              attributes:
+                  generic-attack-speed: 2
+        strength5:
+              attributes:
+                  generic-damage: 4
+        strength6:
+              attributes:
+                  generic-attack-speed: 4
+        immunity1:
+            triggers:
+                potimmunity:
+                    trigger: take-damage
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - remove-potion-effect slow
+        immunity2:
+            triggers:
+                potimmunity:
+                    trigger: take-damage
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - remove-potion-effect slow
+                    - remove-potion-effect weakness
+        immunity3:
+            triggers:
+                potimmunity:
+                    trigger: take-damage
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - remove-potion-effect slow
+                    - remove-potion-effect weakness
+                    - remove-potion-effect blindness
+        immunity4:
+            triggers:
+                potimmunity:
+                    trigger: take-damage
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - remove-potion-effect slow
+                    - remove-potion-effect weakness
+                    - remove-potion-effect blindness
+                    - remove-potion-effect poison
+        immunity5:
+            triggers:
+                potimmunity:
+                    trigger: take-damage
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - remove-potion-effect slow
+                    - remove-potion-effect weakness
+                    - remove-potion-effect blindness
+                    - remove-potion-effect poison
+                    - remove-potion-effect wither
+        immunity6:
+            triggers:
+                potimmunity:
+                    trigger: take-damage
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - remove-potion-effect slow
+                    - remove-potion-effect weakness
+                    - remove-potion-effect blindness
+                    - remove-potion-effect poison
+                    - remove-potion-effect wither
+                    - remove-potion-effect harm
+        axes1:
+            attributes:
+                axes-damage: 1
+        axes2:
+            triggers:
+                speedattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect speed 5 1
+        axes3:
+            triggers:
+                dmgresisattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect damage_resistance 5 1
+        axes4:
+            attributes:
+                axes-damage: 2
+        axes5:
+            triggers:
+                speedattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect speed 5 2
+        axes6:
+            triggers:
+                dmgresisattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect damage_resistance 5 2
+        axes7:
+            attributes:
+                axes-damage: 3
+        axes8:
+            triggers:
+                speedattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect speed 5 3
+        axes9:
+            triggers:
+                dmgresisattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect damage_resistance 5 3
+        axes10:
+            attributes:
+                axes-damage: 4
+        axes11:
+            triggers:
+                speedattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect speed 5 4
+        axes12:
+            triggers:
+                dmgresisattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect damage_resistance 5 4
+        swords1:
+            attributes:
+                swords-damage: 1
+        swords2:
+            triggers:
+                nvattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect increase_damage 5 1
+        swords3:
+            triggers:
+                poisontarget:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    # Note: This command only works properly in versions 1.13+
+                    - "run-command console: execute at %player_name% run effect give @e[type=!player,distance=..5] minecraft:poison 5 1"
+        swords4:
+            attributes:
+                swords-damage: 2
+        swords5:
+            triggers:
+                nvattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect increase_damage 5 2
+        swords6:
+            triggers:
+                poisontarget:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    # Note: This command only works properly in versions 1.13+
+                    - "run-command console: execute at %player_name% run effect give @e[type=!player,distance=..5] minecraft:poison 5 2"
+        swords7:
+            triggers:
+                attributes:
+                    swords-damage: 3
+        swords8:
+            triggers:
+                nvattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect increase_damage 5 3
+        swords9:
+            triggers:
+                poisontarget:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    # Note: This command only works properly in versions 1.13+
+                    - "run-command console: execute at %player_name% run effect give @e[type=!player,distance=..5] minecraft:poison 5 3"
+        swords10:
+            triggers:
+                attributes:
+                    swords-damage: 4
+        swords11:
+            triggers:
+                nvattack:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    - add-potion-effect increase_damage 5 4
+        swords12:
+            triggers:
+                poisontarget:
+                    trigger: damage-entity
+                    chance: 100
+                    delay: 0
+                    run-passives:
+                    # Note: This command only works properly in versions 1.13+
+                    - "run-command console: execute at %player_name% run effect give @e[type=!player,distance=..5] minecraft:poison 5 4"
+        throwweapon1:
+            abilities:
+                throwaxe:
+                    ability: ThrowWeaponAbility
+                    ability-item: wooden_axe,stone_axe,iron_axe,golden_axe,diamond_axe
+                    hit-velocity: 1
+                    cooldown: 55
+                    speed: 1
+                    damage: 2
+                    max-duration: 100
+                    take-item-on-throw: true
+                    damage-players: false
+                    required-permission: throwsword
+                    check-plugins: true
+                    run-passives:
+                    - give-race-exp 5
+        throwweapon2:
+            abilities:
+                throwaxe:
+                    ability: ThrowWeaponAbility
+                    ability-item: wooden_axe,stone_axe,iron_axe,golden_axe,diamond_axe
+                    hit-velocity: 1
+                    cooldown: 50
+                    speed: 2
+                    damage: 3
+                    max-duration: 100
+                    take-item-on-throw: true
+                    damage-players: false
+                    required-permission: throwsword
+                    check-plugins: true
+                    run-passives:
+                    - give-race-exp 5
+        throwweapon3:
+            abilities:
+                throwaxe:
+                    ability: ThrowWeaponAbility
+                    ability-item: wooden_axe,stone_axe,iron_axe,golden_axe,diamond_axe
+                    hit-velocity: 1
+                    cooldown: 45
+                    speed: 1
+                    damage: 4
+                    max-duration: 100
+                    take-item-on-throw: true
+                    damage-players: false
+                    required-permission: throwsword
+                    check-plugins: true
+                    run-passives:
+                    - give-race-exp 5
+        throwweapon4:
+            abilities:
+                throwaxe:
+                    ability: ThrowWeaponAbility
+                    ability-item: wooden_axe,stone_axe,iron_axe,golden_axe,diamond_axe
+                    hit-velocity: 1
+                    cooldown: 40
+                    speed: 2
+                    damage: 5
+                    max-duration: 100
+                    take-item-on-throw: true
+                    damage-players: false
+                    required-permission: throwsword
+                    check-plugins: true
+                    run-passives:
+                    - give-race-exp 5
+        throwweapon5:
+            abilities:
+                throwaxe:
+                    ability: ThrowWeaponAbility
+                    ability-item: wooden_axe,stone_axe,iron_axe,golden_axe,diamond_axe,wooden_sword,stone_sword,iron_sword,golden_sword,diamond_sword
+                    hit-velocity: 1
+                    cooldown: 40
+                    speed: 2
+                    damage: 5
+                    max-duration: 100
+                    take-item-on-throw: true
+                    damage-players: false
+                    required-permission: throwsword
+                    check-plugins: true
+                    run-passives:
+                    - give-race-exp 5
+                    - add-potion-effect increase_damage 5 2
+                    - add-potion-effect damage_resistance 5 2

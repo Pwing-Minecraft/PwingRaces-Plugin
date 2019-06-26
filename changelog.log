@@ -1,0 +1,63 @@
+v1.0.10
+- Second attempt at fixing first-join bug
+- Added feature that allows you to not assign a slot for a race to keep it hidden
+
+v1.0.9
+- Added option for spawns to be set for each race
+- Added command to set skillpoints for races
+- Added command to set race exp for races
+- Added command to set level for races
+
+v1.0.8
+- Fixed permission node for /race
+
+v1.0.7
+- Added 'menu-size' option for skilltree menus
+- Fixed bug where when the plugin autosaved, it'd remove players from the cache
+- Fixed error when a player left if they didn't have a race set
+- Fixed attributes not being reset to default value when the player leaves
+
+v1.0.6
+- Fixed NPE with ability items if one was not found
+- Updated default Human race
+
+v1.0.5
+- Added support for players to be raceless (check the config)
+- Added support for 'block-break' and 'block-place' triggers to work on any block if nothing is specified
+- Fixed 'arrow-damage' attribute in 1.14
+- Fixed startup error when running the server on a fresh install
+- Fixed a few uncaught NPE's
+- Trigger optimizations
+
+v1.0.4
+- Added option in ShadowstepAbility to do more damage on first impact after shadowstepping
+- Added option in ShadowstepAbility to damage entities in the path of your target
+- Added 'burn' trigger passive that burns the player
+- Fixed ignored-entities in ShadowstepAbility
+- Fixed unvanish-message for ShadowmeldAbility
+- Fixed minor typo that caused a minor issue with race leveling
+- Fixed minor issue where 'delay' in race triggers wouldn't work in every instance
+
+v1.0.3
+- Added outside trigger
+- Added day trigger
+- Added in-sunlight trigger
+- Added in-moonlight trigger
+- Minor bug fixes
+
+v1.0.2
+- Unregister listeners that were left "in limbo"
+- Fixed issue where clicking anywhere in the confirmation menu would just close the menu alltogether
+- Fixed NPE that threw if a skilltree could not be found
+- Custom attributes now properly register
+- Attributes now allow decimal values
+- Fixed listeners not being registered for race abilities
+- Fixed NoSuchMethodError in 1.14 with arrows
+
+v1.0.1
+- Left-clicking the race icon in a race menu will now select the race if allowed
+- Right-clicking the race icon in a race menu will now bring you back to the main menu
+- Fixed NPE if skilltree element doesn't have a title
+- Fixed asynchronous use of time trigger effects
+- Fixed console spam if YML is invalid
+- Fixed NPE when trying to open skilltrees of a race not currently selected

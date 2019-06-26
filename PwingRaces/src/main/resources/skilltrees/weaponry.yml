@@ -1,0 +1,289 @@
+name: Weaponry
+icon:
+    type: iron_axe
+    display-name: "&6&lWeaponry"
+    lore: ["&7Click to view this skilltree."]
+menu-slot: 49
+menu-icon:
+    type: player_head
+    owner: Kili_the_Dwarf
+    display-name: "&6&lWeaponry Skilltree"
+    lore:
+    - "&7Right-click to return"
+    - "&7to the main menu."
+elements:
+    axes1:
+        slot: 48
+        parent: dwarf
+        title: Axes Rank I
+        description:
+        - "&fStats:"
+        - "&a+1 &bAxes Damage"
+    axes2:
+        slot: 47
+        parent: axes1
+        title: Axes Rank II
+        description:
+        - "&fStats:"
+        - "&b+1 Axes Damage"
+        - "&a+1 &bSpeed on Impact"
+    axes3:
+        slot: 46
+        parent: axes2
+        title: Axes Rank III
+        description:
+        - "&fStats:"
+        - "&b+1 Axes Damage"
+        - "&a+1 &bSpeed on Impact"
+        - "&a+1 &bDamage Resistance on Impact"
+    axes4:
+        slot: 45
+        parent: axes3
+        title: Axes Rank IV
+        description:
+        - "&fStats:"
+        - "&c+1 &f-> &a+2 &bAxes Damage"
+        - "&b+1 Speed on Impact"
+        - "&b+1 Damage Resistance on Impact"
+    axes5:
+        slot: 36
+        parent: axes4
+        title: Axes Rank V
+        description:
+        - "&fStats:"
+        - "&b+2 Axes Damage"
+        - "&c+1 &f-> &a+2 &bSpeed on Impact"
+        - "&b+1 Damage Resistance on Impact"
+    axes6:
+        slot: 27
+        parent: axes5
+        title: Axes Rank VI
+        description:
+        - "&fStats:"
+        - "&b+2 Axes Damage"
+        - "&b+2 Speed on Impact"
+        - "&c+1 &f-> &a+2 &bDamage Resistance on Impact"
+    axes7:
+        slot: 18
+        parent: axes6
+        title: Axes Rank VII
+        description:
+        - "&fStats:"
+        - "&c+2 &f-> &a+3 &bAxes Damage"
+        - "&b+2 Speed on Impact"
+        - "&b+2 Damage Resistance on Impact"
+    axes8:
+        slot: 9
+        parent: axes7
+        title: Axes Rank VIII
+        description:
+        - "&fStats:"
+        - "&b+3 Axes Damage"
+        - "&c+2 &f-> &a+3 &bSpeed on Impact"
+        - "&b+2 Damage Resistance on Impact"
+    axes9:
+        slot: 0
+        parent: axes8
+        title: Axes Rank IX
+        description:
+        - "&fStats:"
+        - "&b+3 Axes Damage"
+        - "&b+3 Speed on Impact"
+        - "&c+2 &f-> &a+3 &bDamage Resistance on Impact"
+    axes10:
+        slot: 1
+        parent: axes9
+        title: Axes Rank X
+        description:
+        - "&fStats:"
+        - "&c+3 &f-> &a+4 &bAxes Damage"
+        - "&b+3 Speed on Impact"
+        - "&b+3 Damage Resistance on Impact"
+    axes11:
+        slot: 2
+        parent: axes10
+        title: Axes Rank XI
+        description:
+        - "&fStats:"
+        - "&b+4 Axes Damage"
+        - "&c+3 &f-> &a+4 &bSpeed on Impact"
+        - "&b+3 Damage Resistance on Impact"
+    axes12:
+        slot: 3
+        parent: axes11
+        title: Axes Rank XII
+        description:
+        - "&fStats:"
+        - "&b+4 Axes Damage"
+        - "&b+4 Speed on Impact"
+        - "&c+3 &f-> &a+4 &bDamage Resistance on Impact"
+    swords1:
+        slot: 50
+        parent: dwarf
+        title: Swords Rank I
+        description:
+        - "&fStats:"
+        - "&a+1 &bSwords Damage"
+    swords2:
+        slot: 51
+        parent: swords1
+        title: Swords Rank II
+        description:
+        - "&fStats:"
+        - "&b+1 Swords Damage"
+        - "&a+1 &bStrength on Impact"
+    swords3:
+        slot: 52
+        parent: swords2
+        title: Swords Rank III
+        description:
+        - "&fStats:"
+        - "&b+1 Swords Damage"
+        - "&b+1 Strength on Impact"
+        - "&a+1 &bPoison Target AoE"
+    swords4:
+        slot: 53
+        parent: swords3
+        title: Swords Rank IV
+        description:
+        - "&fStats:"
+        - "&c+1 &f-> &a+2 &bSwords Damage"
+        - "&b+1 Strength on Impact"
+        - "&b+1 Poison Target AoE"
+    swords5:
+        slot: 44
+        parent: swords4
+        title: Swords Rank V
+        description:
+        - "&fStats:"
+        - "&b+2 Swords Damage"
+        - "&c+1 &f-> &a+2 &bStrength on Impact"
+        - "&b+1 Poison Target AoE"
+    swords6:
+        slot: 35
+        parent: swords5
+        title: Swords Rank VI
+        description:
+        - "&fStats:"
+        - "&b+2 Swords Damage"
+        - "&b+2 Strength on Impact"
+        - "&c+1 &f-> &a+2 &bPoison Target AoE"
+    swords7:
+        slot: 26
+        parent: swords6
+        title: Swords Rank VII
+        description:
+        - "&fStats:"
+        - "&c+2 &f-> &a+3 &bSwords Damage"
+        - "&b+2 Strength on Impact"
+        - "&b+2 Poison Target AoE"
+    swords8:
+        slot: 17
+        parent: swords7
+        title: Swords Rank VIII
+        description:
+        - "&fStats:"
+        - "&b+3 Swords Damage"
+        - "&c+2 &f-> &a+3 &bStrength on Impact"
+        - "&b+2 Poison Target AoE"
+    swords9:
+        slot: 8
+        parent: swords8
+        title: Swords Rank IX
+        description:
+        - "&fStats:"
+        - "&b+3 Swords Damage"
+        - "&b+3 Strength on Impact"
+        - "&b+2 Poison Target AoE"
+        - "&a+1 &8Wither &bTarget AoE"
+    swords10:
+        slot: 7
+        parent: swords9
+        title: Swords Rank X
+        description:
+        - "&fStats:"
+        - "&c+3 &f-> &a+4 &bSwords Damage"
+        - "&b+3 Strength on Impact"
+        - "&b+2 Poison Target AoE"
+        - "&b+1 &8Wither &bTarget AoE"
+    swords11:
+        slot: 6
+        parent: swords10
+        title: Swords Rank XI
+        description:
+        - "&fStats:"
+        - "&b+4 Swords Damage"
+        - "&c+3 &f-> &a+4 &bStrength on Impact"
+        - "&b+2 Poison Target AoE"
+        - "&b+1 &8Wither &bTarget AoE"
+    swords12:
+        slot: 5
+        parent: swords11
+        title: Swords Rank XII
+        description:
+        - "&fStats:"
+        - "&b+4 Swords Damage"
+        - "&b+3 Strength on Impact"
+        - "&b+2 Poison Target AoE"
+        - "&c+1 &f-> &a+2 &8Wither &bTarget AoE"
+    throwweapon1:
+        slot: 40
+        parent: dwarf
+        title: Axe Throwing Rank I
+        description:
+        - "&fStats:"
+        - "&a+1 &bDamage"
+        - "&a-5 &bCooldown"
+    throwweapon2:
+        slot: 31
+        parent: throwweapon1
+        title: Axe Throwing Rank II
+        description:
+        - "&fStats:"
+        - "&c+1 &f-> &a+2 &bDamage"
+        - "&c-5 &f-> &a-10 &bCooldown"
+        - "&a+1 &bSpeed"
+    throwweapon3:
+        slot: 22
+        parent: throwweapon2
+        title: Axe Throwing Rank III
+        description:
+        - "&fStats:"
+        - "&c+2 &f-> &a+3 &bDamage"
+        - "&c-10 &f-> &a-15 &bCooldown"
+        - "&b+1 Speed"
+    throwweapon4:
+        slot: 13
+        parent: throwweapon3
+        title: Axe Throwing Rank IV
+        description:
+        - "&fStats:"
+        - "&c+3 &f-> &a+4 &bDamage"
+        - "&c-15 &f-> &a-20 &bCooldown"
+        - "&c+1 &f-> &a+2 &bSpeed"
+    throwweapon5:
+        slot: 4
+        parents: [throwweapon4, swords12, axes12]
+        required-parent-amount: 3
+        title: Weapon Throwing
+        description: []
+        icon:
+            type: diamond_sword
+            name: "&fWeapon Throwing &7| &eUnlocked"
+            lore:
+            - "&fStats:"
+            - "&c+4 &f-> &a+5 &bDamage"
+            - "&a+2 &bStrength on Throw"
+            - "&a+2 &bDamage Resistance on Throw"
+        icon-purchased:
+            type: diamond_sword
+            name: "&fWeapon Throwing &7| &aPurchased"
+            lore:
+            - "&fStats:"
+            - "&b+5 Damage"
+            - "&b+2 Strength on Throw"
+            - "&b+2 Damage Resistance on Throw"
+            enchants:
+            - unbreaking 1
+            item-flags:
+            - hide-enchants
