@@ -50,6 +50,14 @@ public class RaceMenu {
 		if (racePlayer == null)
 			return;
 
+		if (glassFilled) {
+			for (int i = 0; i < builder.getInventorySize(); i++) {
+				if (builder.toInventory().getItem(i) == null || builder.toInventory().getItem(i).getType() == Material.AIR)
+					builder.setItem(new ItemBuilder(RaceMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("&a"), i);
+
+			}
+		}
+
 		for (Race race : raceManager.getRaces()) {
 			RaceData data = racePlayer.getRaceData(race);
 			if (data == null)
@@ -62,23 +70,17 @@ public class RaceMenu {
 			else if (racePlayer.getActiveRace() != null && racePlayer.getActiveRace().equals(race))
 				raceItem = race.getSelectedIcon();
 
-			builder.setItem(raceItem, race.getIconSlot()).addClickEvent(race.getIconSlot(), new IMenuClickHandler() {
+			if (race.getIconSlot() >= 0) {
+				builder.setItem(raceItem, race.getIconSlot()).addClickEvent(race.getIconSlot(), new IMenuClickHandler() {
 
-				@Override
-				public void onClick(Player player, ClickType action, ItemStack item) {
-					if (data.isUnlocked())
-						openRaceMenu(player, race);
-					else
-						MessageUtil.sendMessage(player, "locked-race", "%prefix% &cYou have not unlocked this race yet!");
-				}
-			});
-		}
-
-		if (glassFilled) {
-			for (int i = 0; i < builder.getInventorySize(); i++) {
-				if (builder.toInventory().getItem(i) == null || builder.toInventory().getItem(i).getType() == Material.AIR)
-					builder.setItem(new ItemBuilder(RaceMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("&a"), i);
-
+					@Override
+					public void onClick(Player player, ClickType action, ItemStack item) {
+						if (data.isUnlocked())
+							openRaceMenu(player, race);
+						else
+							MessageUtil.sendMessage(player, "locked-race", "%prefix% &cYou have not unlocked this race yet!");
+					}
+				});
 			}
 		}
 
