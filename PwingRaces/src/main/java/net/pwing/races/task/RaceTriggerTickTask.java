@@ -1,7 +1,6 @@
 package net.pwing.races.task;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.RaceManager;
 import net.pwing.races.race.trigger.RaceTriggerManager;
 
 import org.bukkit.Bukkit;

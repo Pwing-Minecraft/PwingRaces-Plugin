@@ -1,11 +1,12 @@
 package net.pwing.races.events;
 
+import net.pwing.races.api.race.Race;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import net.pwing.races.race.Race;
+import net.pwing.races.race.PwingRace;
 import net.pwing.races.race.skilltree.RaceSkilltreeElement;
 
 public class RaceElementPurchaseEvent extends PlayerEvent implements Cancellable {

@@ -1,10 +1,10 @@
 package net.pwing.races.race.trigger.passives;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.RaceManager;
+import net.pwing.races.race.PwingRaceManager;
 import org.bukkit.entity.Player;
 
-import net.pwing.races.race.Race;
+import net.pwing.races.race.PwingRace;
 import net.pwing.races.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.NumberUtil;
 
@@ -24,8 +24,8 @@ public class GiveRaceExpTrigger extends RaceTriggerPassive {
 		else if (NumberUtil.isRangedInteger(split[1]))
 			exp = NumberUtil.getRangedInteger(split[1]);
 
-		RaceManager raceManager = plugin.getRaceManager();
-		Race race = raceManager.getRacePlayer(player).getActiveRace();
+		PwingRaceManager raceManager = plugin.getRaceManager();
+		PwingRace race = raceManager.getRacePlayer(player).getActiveRace();
 		raceManager.getLevelManager().setExperience(player, race, raceManager.getPlayerData(player, race).getExperience() + exp);
 	}
 }

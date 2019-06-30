@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.pwing.races.api.race.RaceData;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pwing.races.config.RaceConfiguration;
 
-public class RaceData {
+public class PwingRaceData implements RaceData {
 
 	private String raceName;
 
@@ -23,7 +24,7 @@ public class RaceData {
 	private Map<String, List<String>> purchasedElementsMap;
 	private RaceConfiguration playerConfig;
 
-	public RaceData(String raceName, String configPath, RaceConfiguration playerConfig) {
+	public PwingRaceData(String raceName, String configPath, RaceConfiguration playerConfig) {
 		this.raceName = raceName;
 		this.playerConfig = playerConfig;
 
@@ -88,6 +89,16 @@ public class RaceData {
 		this.usedSkillpoints = usedSkillpoints;
 	}
 
+	public boolean hasPurchasedElement(String skillTree, String name) {
+		if (name.equals(raceName.toLowerCase()))
+			return true;
+
+		if (getPurchasedElements(skillTree) == null)
+			return false;
+
+		return getPurchasedElements(skillTree).contains(name);
+	}
+
 	public void addPurchasedElement(String skillTree, String name) {
 		List<String> purchased = purchasedElementsMap.get(skillTree);
 		if (!purchased.contains(name))
@@ -102,16 +113,6 @@ public class RaceData {
 			purchased.remove(name);
 
 		purchasedElementsMap.put(skillTree, purchased);
-	}
-
-	public boolean hasPurchasedElement(String skillTree, String name) {
-		if (name.equals(raceName.toLowerCase()))
-			return true;
-
-		if (getPurchasedElements(skillTree) == null)
-			return false;
-
-		return getPurchasedElements(skillTree).contains(name);
 	}
 
 	public List<String> getPurchasedElements(String skillTree) {

@@ -5,20 +5,20 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import net.pwing.races.race.Race;
+import net.pwing.races.race.PwingRace;
 
 public class RaceExpChangeEvent extends PlayerEvent implements Cancellable {
 
 	protected static final HandlerList handlers = new HandlerList();
 
-	private Race race;
+	private PwingRace race;
 
 	private int oldExp;
 	private int newExp;
 
 	private boolean cancelled;
 
-	public RaceExpChangeEvent(Player player, Race race, int oldExp, int newExp) {
+	public RaceExpChangeEvent(Player player, PwingRace race, int oldExp, int newExp) {
 		super(player);
 
 		this.race = race;
@@ -36,7 +36,7 @@ public class RaceExpChangeEvent extends PlayerEvent implements Cancellable {
 		this.cancelled = cancelled;
 	}
 
-	public Race getRace() {
+	public PwingRace getRace() {
 		return race;
 	}
 

@@ -1,6 +1,7 @@
 package net.pwing.races.race;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.race.Race;
 import net.pwing.races.events.RaceRespawnEvent;
 import net.pwing.races.utilities.MessageUtil;
 import org.bukkit.Bukkit;
@@ -26,7 +27,7 @@ public class RaceListener implements Listener {
     @EventHandler (priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        RaceManager raceManager = plugin.getRaceManager();
+        PwingRaceManager raceManager = plugin.getRaceManager();
         raceManager.registerPlayer(player);
         if (!raceManager.setupPlayer(player)) {
             plugin.getLogger().severe("Could not setup data for player " + player.getName() + "... Retrying in 5 seconds");
@@ -58,7 +59,7 @@ public class RaceListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             plugin.getLogger().warning(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
             return;

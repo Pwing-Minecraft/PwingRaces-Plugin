@@ -1,6 +1,6 @@
 package net.pwing.races.events;
 
-import net.pwing.races.race.Race;
+import net.pwing.races.api.race.Race;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

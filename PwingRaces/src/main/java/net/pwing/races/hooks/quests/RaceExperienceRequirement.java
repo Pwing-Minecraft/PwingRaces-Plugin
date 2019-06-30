@@ -5,14 +5,14 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 
 import me.blackvein.quests.CustomRequirement;
-import net.pwing.races.race.RaceManager;
-import net.pwing.races.race.RacePlayer;
+import net.pwing.races.race.PwingRaceManager;
+import net.pwing.races.race.PwingRacePlayer;
 
 public class RaceExperienceRequirement extends CustomRequirement {
 
-	private RaceManager raceManager;
+	private PwingRaceManager raceManager;
 
-	public RaceExperienceRequirement(RaceManager raceManager) {
+	public RaceExperienceRequirement(PwingRaceManager raceManager) {
 		this.raceManager = raceManager;
 
 		setName("Race Experience Requirement");
@@ -24,7 +24,7 @@ public class RaceExperienceRequirement extends CustomRequirement {
 	public boolean testRequirement(Player player, Map<String, Object> data) {
 		int amount = (int) data.get("Amount");
 
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer.getRaceData(racePlayer.getActiveRace()).getExperience() >= amount)
 			return true;
 

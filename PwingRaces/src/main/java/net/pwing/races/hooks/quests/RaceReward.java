@@ -5,15 +5,15 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 
 import me.blackvein.quests.CustomReward;
-import net.pwing.races.race.Race;
-import net.pwing.races.race.RaceManager;
-import net.pwing.races.race.RacePlayer;
+import net.pwing.races.race.PwingRace;
+import net.pwing.races.race.PwingRaceManager;
+import net.pwing.races.race.PwingRacePlayer;
 
 public class RaceReward extends CustomReward {
 
-	private RaceManager raceManager;
+	private PwingRaceManager raceManager;
 
-	public RaceReward(RaceManager raceManager) {
+	public RaceReward(PwingRaceManager raceManager) {
 		this.raceManager = raceManager;
 
 		setName("Race Reward");
@@ -28,11 +28,11 @@ public class RaceReward extends CustomReward {
 		if (raceStr == null)
 			return;
 
-		Race race = raceManager.getRaceFromName(raceStr);
+		PwingRace race = raceManager.getRaceFromName(raceStr);
 		if (race == null)
 			return;
 
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		racePlayer.getRaceData(race).setUnlocked(true);
 	}
 }

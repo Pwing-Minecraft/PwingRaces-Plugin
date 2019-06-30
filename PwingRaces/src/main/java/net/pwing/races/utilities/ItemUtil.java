@@ -12,11 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.builder.ItemBuilder;
-import net.pwing.races.race.Race;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Supplier;
+import net.pwing.races.race.PwingRace;
 
 public class ItemUtil {
 
@@ -49,7 +45,7 @@ public class ItemUtil {
 	}
 	*/
 
-	public static ItemStack getItemFromRace(Race race, String str) {
+	public static ItemStack getItemFromRace(PwingRace race, String str) {
 		return race.getRaceItems().get(str);
 	}
 

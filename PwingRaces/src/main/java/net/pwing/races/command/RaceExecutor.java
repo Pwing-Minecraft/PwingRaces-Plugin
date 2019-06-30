@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.events.RaceChangeEvent;
-import net.pwing.races.race.Race;
+import net.pwing.races.race.PwingRace;
 import net.pwing.races.race.RaceMenu;
-import net.pwing.races.race.RacePlayer;
-import net.pwing.races.race.RaceData;
+import net.pwing.races.race.PwingRacePlayer;
+import net.pwing.races.race.PwingRaceData;
 import net.pwing.races.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.skilltree.RaceSkilltreeElement;
 
@@ -34,8 +34,8 @@ public class RaceExecutor extends RaceCommandExecutor {
     }
 
     @RaceCommand(commands = "info", description = "View your race info.", permissionNode = "info")
-    public boolean raceInfo(Player player, Race race) {
-        RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
+    public boolean raceInfo(Player player, PwingRace race) {
+        PwingRaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
 
         player.sendMessage(MessageUtil.getHeader());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
@@ -60,14 +60,14 @@ public class RaceExecutor extends RaceCommandExecutor {
     }
 
     @RaceCommand(commands = "info", description = "View a player's race info.", permissionNode = "info.others")
-    public boolean raceInfoOthers(CommandSender sender, OfflinePlayer player, Race race) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+    public boolean raceInfoOthers(CommandSender sender, OfflinePlayer player, PwingRace race) {
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
             return true;
         }
 
-        RaceData raceData = racePlayer.getRaceData(race);
+        PwingRaceData raceData = racePlayer.getRaceData(race);
 
         sender.sendMessage(MessageUtil.getHeader());
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
@@ -92,8 +92,8 @@ public class RaceExecutor extends RaceCommandExecutor {
     }
 
     @RaceCommand(commands = "set", description = "Set a player's race.", permissionNode = "set")
-    public boolean setRace(CommandSender sender, Player player, Race race) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+    public boolean setRace(CommandSender sender, Player player, PwingRace race) {
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPrefix() + ChatColor.RED + " An error occurred when trying to set " + player.getName() + "'s race. Failed to retrieve data.");
             return true;
@@ -112,8 +112,8 @@ public class RaceExecutor extends RaceCommandExecutor {
     }
 
     @RaceCommand(commands= "unlock", description = "Unlock a race for a player.", permissionNode = "unlock")
-    public boolean unlockRace(CommandSender sender, OfflinePlayer player, Race race) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+    public boolean unlockRace(CommandSender sender, OfflinePlayer player, PwingRace race) {
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
             return true;
@@ -136,7 +136,7 @@ public class RaceExecutor extends RaceCommandExecutor {
 
     @RaceCommand(commands = "reset", description = "Reset all of a player's race data.", permissionNode = "reset")
     public boolean resetRace(CommandSender sender, Player player) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPrefix() + ChatColor.RED + " An error occurred when trying to set " + player.getName() + "'s race. Failed to retrieve data.");
             return true;
@@ -163,42 +163,42 @@ public class RaceExecutor extends RaceCommandExecutor {
     }
 
     @RaceCommand(commands = "skillpoint", subCommands = "set", description = "Set a player's skillpoints", permissionNode = "skillpoint.set")
-    public boolean setSkillpoints(CommandSender sender, OfflinePlayer player, Race race, int skillpoints) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+    public boolean setSkillpoints(CommandSender sender, OfflinePlayer player, PwingRace race, int skillpoints) {
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
             return true;
         }
 
-        RaceData raceData = racePlayer.getRaceData(race);
+        PwingRaceData raceData = racePlayer.getRaceData(race);
         raceData.setUnusedSkillpoints(skillpoints);
         sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(skillpoints)));
         return true;
     }
 
     @RaceCommand(commands = "level", subCommands = "set", description = "Set a player's level.", permissionNode = "level.set")
-    public boolean setLevel(CommandSender sender, OfflinePlayer player, Race race, int level) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+    public boolean setLevel(CommandSender sender, OfflinePlayer player, PwingRace race, int level) {
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
             return true;
         }
 
-        RaceData raceData = racePlayer.getRaceData(race);
+        PwingRaceData raceData = racePlayer.getRaceData(race);
         raceData.setLevel(level);
         sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.")).replace("%level%", String.valueOf(level)));
         return true;
     }
 
     @RaceCommand(commands = "exp", subCommands = "set", description = "Set a player's race exp.", permissionNode = "exp.set")
-    public boolean setExp(CommandSender sender, OfflinePlayer player, Race race, int exp) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+    public boolean setExp(CommandSender sender, OfflinePlayer player, PwingRace race, int exp) {
+        PwingRacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
             return true;
         }
 
-        RaceData raceData = racePlayer.getRaceData(race);
+        PwingRaceData raceData = racePlayer.getRaceData(race);
         raceData.setExperience(exp);
         sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.")).replace("%exp%", String.valueOf(exp)));
         return true;
@@ -207,7 +207,7 @@ public class RaceExecutor extends RaceCommandExecutor {
     @Override
     protected Object verifyArgument(CommandSender sender, String arg, Class<?> parameter) {
         if (parameter.getSimpleName().equalsIgnoreCase("race")) {
-            Race race = plugin.getRaceManager().getRaceFromName(arg);
+            PwingRace race = plugin.getRaceManager().getRaceFromName(arg);
             if (race == null)
                 throw new RaceCommandException("invalid-race");
 

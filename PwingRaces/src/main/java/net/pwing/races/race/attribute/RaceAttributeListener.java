@@ -2,8 +2,8 @@ package net.pwing.races.race.attribute;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.events.RaceChangeEvent;
-import net.pwing.races.race.RaceManager;
-import net.pwing.races.race.RacePlayer;
+import net.pwing.races.race.PwingRaceManager;
+import net.pwing.races.race.PwingRacePlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -66,12 +66,12 @@ public class RaceAttributeListener implements Listener {
 			return;
 		}
 
-		RaceManager raceManager = plugin.getRaceManager();
+		PwingRaceManager raceManager = plugin.getRaceManager();
 		Player player = (Player) arrow.getShooter();
 		if (!raceManager.isRacesEnabledInWorld(player.getWorld()))
 			return;
 
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer == null)
 			return;
 
@@ -87,12 +87,12 @@ public class RaceAttributeListener implements Listener {
 		if (!(event.getDamager() instanceof Player))
 			return;
 
-		RaceManager raceManager = plugin.getRaceManager();
+		PwingRaceManager raceManager = plugin.getRaceManager();
 		Player player = (Player) event.getDamager();
 		if (!raceManager.isRacesEnabledInWorld(player.getWorld()))
 			return;
 
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer == null)
 			return;
 

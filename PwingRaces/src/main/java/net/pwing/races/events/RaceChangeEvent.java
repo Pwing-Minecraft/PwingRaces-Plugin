@@ -5,18 +5,18 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import net.pwing.races.race.Race;
+import net.pwing.races.race.PwingRace;
 
 public class RaceChangeEvent extends PlayerEvent implements Cancellable {
 
 	protected static final HandlerList handlers = new HandlerList();
 
-	private Race oldRace;
-	private Race newRace;
+	private PwingRace oldRace;
+	private PwingRace newRace;
 
 	private boolean cancelled;
 
-	public RaceChangeEvent(Player player, Race oldRace, Race newRace) {
+	public RaceChangeEvent(Player player, PwingRace oldRace, PwingRace newRace) {
 		super(player);
 		this.oldRace = oldRace;
 		this.newRace = newRace;
@@ -32,15 +32,15 @@ public class RaceChangeEvent extends PlayerEvent implements Cancellable {
 		this.cancelled = cancelled;
 	}
 
-	public Race getOldRace() {
+	public PwingRace getOldRace() {
 		return oldRace;
 	}
 
-	public Race getNewRace() {
+	public PwingRace getNewRace() {
 		return newRace;
 	}
 
-	public void setNewRace(Race newRace) {
+	public void setNewRace(PwingRace newRace) {
 		this.newRace = newRace;
 	}
 

@@ -1,16 +1,12 @@
 package net.pwing.races;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLConnection;
 
+import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.hooks.WorldGuardHook;
+import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.utilities.MessageUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -29,7 +25,6 @@ import net.pwing.races.hooks.PlaceholderAPIHook;
 import net.pwing.races.hooks.QuestsHook;
 import net.pwing.races.hooks.VaultAPIHook;
 import net.pwing.races.hooks.WorldEditHook;
-import net.pwing.races.race.RaceManager;
 import net.pwing.races.task.RaceSaveTask;
 import net.pwing.races.task.RaceTriggerTickTask;
 import net.pwing.races.utilities.VersionUtil;
@@ -76,7 +71,7 @@ public class PwingRaces extends JavaPlugin {
         configManager = new RaceConfigurationManager(this);
         MessageUtil.initMessages("messages", configManager);
 
-        raceManager = new RaceManager(this);
+        raceManager = new PwingRaceManager(this);
 
         if (setupPlaceholderAPI()) {
             this.getLogger().info("PlaceholderAPI found, support for placeholders enabled.");

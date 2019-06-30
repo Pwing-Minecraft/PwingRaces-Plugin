@@ -1,15 +1,15 @@
 package net.pwing.races.race.leveling;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.utilities.MessageUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
+import net.pwing.races.api.race.RaceData;
 import net.pwing.races.events.RaceExpChangeEvent;
 import net.pwing.races.events.RaceLevelUpEvent;
-import net.pwing.races.race.Race;
-import net.pwing.races.race.RaceData;
+import net.pwing.races.race.PwingRace;
+import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.RaceSound;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class RaceLevelManager {
 
@@ -19,7 +19,7 @@ public class RaceLevelManager {
 		this.plugin = plugin;
 	}
 
-	public void setExperience(Player player, Race race, int amount) {
+	public void setExperience(Player player, PwingRace race, int amount) {
 		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
 		RaceExpChangeEvent event = new RaceExpChangeEvent(player, race, data.getExperience(), amount);
 		Bukkit.getPluginManager().callEvent(event);
@@ -30,7 +30,7 @@ public class RaceLevelManager {
 		checkLevelUp(player, race);
 	}
 
-	public boolean setLevel(Player player, Race race, int amount) {
+	public boolean setLevel(Player player, PwingRace race, int amount) {
 		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
 		RaceLevelUpEvent event = new RaceLevelUpEvent(player, race, data.getLevel(), data.getLevel() + amount);
 		Bukkit.getPluginManager().callEvent(event);
@@ -57,12 +57,12 @@ public class RaceLevelManager {
 		return true;
 	}
 
-	public boolean canLevelUp(Player player, Race race) {
+	public boolean canLevelUp(Player player, PwingRace race) {
 		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
 		return data.getExperience() >= race.getRequiredExperience(data.getLevel());
 	}
 
-	private void checkLevelUp(Player player, Race race) {
+	private void checkLevelUp(Player player, PwingRace race) {
 		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
 		int requiredExp = race.getRequiredExperience(data.getLevel());
 

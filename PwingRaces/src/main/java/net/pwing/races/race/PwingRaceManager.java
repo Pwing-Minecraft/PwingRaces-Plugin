@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceData;
+import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.utilities.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -27,7 +31,7 @@ import net.pwing.races.race.permission.RacePermissionManager;
 import net.pwing.races.race.skilltree.RaceSkilltreeManager;
 import net.pwing.races.race.trigger.RaceTriggerManager;
 
-public class RaceManager {
+public class PwingRaceManager implements RaceManager {
 
     private PwingRaces plugin;
 
@@ -43,7 +47,7 @@ public class RaceManager {
     private Set<Race> races;
     private Map<UUID, RacePlayer> racePlayers;
 
-    public RaceManager(PwingRaces plugin) {
+    public PwingRaceManager(PwingRaces plugin) {
         this.plugin = plugin;
 
         initRaces();
@@ -63,7 +67,7 @@ public class RaceManager {
         skilltreeManager = new RaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigurations())
-            races.add(new Race(this, config.getConfig()));
+            races.add(new PwingRace(this, config.getConfig()));
 
         FileConfiguration config = plugin.getConfig();
         raceMenu = new RaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
@@ -82,14 +86,14 @@ public class RaceManager {
 
         Map<String, RaceData> raceDataMap = new HashMap<String, RaceData>();
         for (Race race : races)
-            raceDataMap.put(race.getName(), new RaceData(race.getName(), "data", playerConfig));
+            raceDataMap.put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
 
         Race activeRace = getRaceFromName(raceName);
         if (activeRace == null && plugin.getConfigManager().doesRequireRace()) {
             plugin.getLogger().severe("Could not find race " + raceName + ", please check the data config for " + player.getName() + "!");
         }
 
-        racePlayers.put(player.getUniqueId(), new RacePlayer(player, activeRace, raceDataMap));
+        racePlayers.put(player.getUniqueId(), new PwingRacePlayer(player, activeRace, raceDataMap));
         return true;
     }
 
@@ -106,7 +110,6 @@ public class RaceManager {
                 return;
 
             RaceData raceData = getRacePlayer(player).getRaceData(race);
-
             if (plugin.getConfigManager().sendSkillpointMessageOnJoin()) {
                 player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("skillpoint-amount-message", "%prefix% &aYou have %skillpoints% unused skillpoints.").replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints()))));
             }

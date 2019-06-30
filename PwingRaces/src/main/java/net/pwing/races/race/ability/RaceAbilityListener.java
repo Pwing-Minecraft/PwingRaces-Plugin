@@ -4,10 +4,10 @@ import java.util.List;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.config.RaceConfigurationManager;
-import net.pwing.races.race.Race;
+import net.pwing.races.race.PwingRace;
 
-import net.pwing.races.race.RaceManager;
-import net.pwing.races.race.RacePlayer;
+import net.pwing.races.race.PwingRaceManager;
+import net.pwing.races.race.PwingRacePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,12 +32,12 @@ public class RaceAbilityListener implements Listener {
 		//	return;
 
 		Player player = event.getPlayer();
-		RaceManager raceManager = plugin.getRaceManager();
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRaceManager raceManager = plugin.getRaceManager();
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer == null)
 			return;
 
-		Race race = racePlayer.getActiveRace();
+		PwingRace race = racePlayer.getActiveRace();
 		if (race == null)
 			return;
 
@@ -72,12 +72,12 @@ public class RaceAbilityListener implements Listener {
 			return;
 
 		Player player = (Player) event.getEntity().getShooter();
-		RaceManager raceManager = plugin.getRaceManager();
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRaceManager raceManager = plugin.getRaceManager();
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer == null)
 			return;
 
-		Race race = racePlayer.getActiveRace();
+		PwingRace race = racePlayer.getActiveRace();
 		if (race == null)
 			return;
 
@@ -103,12 +103,12 @@ public class RaceAbilityListener implements Listener {
 	@EventHandler
 	public void onLeftClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		RaceManager raceManager = plugin.getRaceManager();
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRaceManager raceManager = plugin.getRaceManager();
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer == null)
 			return;
 
-		Race race = racePlayer.getActiveRace();
+		PwingRace race = racePlayer.getActiveRace();
 		if (race == null)
 			return;
 
@@ -136,12 +136,12 @@ public class RaceAbilityListener implements Listener {
 			return;
 
 		Player player = event.getPlayer();
-		RaceManager raceManager = plugin.getRaceManager();
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		PwingRaceManager raceManager = plugin.getRaceManager();
+		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
 		if (racePlayer == null)
 			return;
 
-		Race race = racePlayer.getActiveRace();
+		PwingRace race = racePlayer.getActiveRace();
 		if (race == null)
 			return;
 

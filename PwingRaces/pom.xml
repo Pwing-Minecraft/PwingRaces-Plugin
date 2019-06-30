@@ -82,6 +82,12 @@
             <version>1.4</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.Pwing-Minecraft</groupId>
+            <artifactId>PwingRaces-API</artifactId>
+            <version>0c6a5cf086</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <resources>

@@ -9,15 +9,12 @@ import java.util.Random;
 import java.util.UUID;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.RacePlayer;
-import net.pwing.races.race.trigger.passives.BurnTrigger;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import net.pwing.races.race.Race;
-import net.pwing.races.race.RaceManager;
-import net.pwing.races.race.RaceData;
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceData;
+import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.race.skilltree.RaceSkilltree;
+import net.pwing.races.race.trigger.passives.BurnTrigger;
 import net.pwing.races.race.trigger.passives.AddPotionEffectTrigger;
 import net.pwing.races.race.trigger.passives.DisguiseTrigger;
 import net.pwing.races.race.trigger.passives.DropItemTrigger;
@@ -31,6 +28,9 @@ import net.pwing.races.race.trigger.passives.SendMessageTrigger;
 import net.pwing.races.race.trigger.passives.ToggleFlyTrigger;
 import net.pwing.races.race.trigger.passives.UndisguiseTrigger;
 import net.pwing.races.utilities.NumberUtil;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class RaceTriggerManager {
 

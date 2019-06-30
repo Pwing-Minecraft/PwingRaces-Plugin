@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.Race;
-import net.pwing.races.race.RaceData;
+import net.pwing.races.race.PwingRace;
+import net.pwing.races.race.PwingRaceData;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
@@ -35,12 +35,12 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 		if (player == null)
 			return "";
 
-		Race race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
+		PwingRace race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
 		if (race == null) {
 			return "";
 		}
 
-		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
+		PwingRaceData data = plugin.getRaceManager().getPlayerData(player, race);
 
 		switch (params) {
 			case "race":

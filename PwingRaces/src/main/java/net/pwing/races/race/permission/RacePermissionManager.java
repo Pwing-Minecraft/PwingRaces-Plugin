@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.RacePlayer;
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceData;
+import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.hooks.VaultAPIHook;
+import net.pwing.races.race.skilltree.RaceSkilltree;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import net.pwing.races.hooks.VaultAPIHook;
-import net.pwing.races.race.Race;
-import net.pwing.races.race.RaceData;
-import net.pwing.races.race.skilltree.RaceSkilltree;
 
 public class RacePermissionManager {
 

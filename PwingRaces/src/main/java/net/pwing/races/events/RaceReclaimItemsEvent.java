@@ -2,13 +2,12 @@ package net.pwing.races.events;
 
 import java.util.Collection;
 
+import net.pwing.races.api.race.Race;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
-
-import net.pwing.races.race.Race;
 
 public class RaceReclaimItemsEvent extends PlayerEvent implements Cancellable {
 

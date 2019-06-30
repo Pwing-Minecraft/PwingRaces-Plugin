@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.pwing.races.api.race.Race;
 import net.pwing.races.utilities.AttributeUtil;
 import net.pwing.races.utilities.LocationUtil;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ import net.pwing.races.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.trigger.RaceTrigger;
 import net.pwing.races.utilities.ItemUtil;
 
-public class Race {
+public class PwingRace implements Race {
 
 	private String name;
 	private int maxLevel;
@@ -49,13 +50,13 @@ public class Race {
 
 	// private RaceCommandExecutor executor;
 
-	public Race(RaceManager raceManager, YamlConfiguration raceConfig) {
+	public PwingRace(PwingRaceManager raceManager, YamlConfiguration raceConfig) {
 		loadDataFromConfig(raceManager, raceConfig);
 
 		// this.executor = new IndividualRaceExecutor(raceManager.getPlugin(), this, name.toLowerCase());
 	}
 
-	public void loadDataFromConfig(RaceManager raceManager, YamlConfiguration raceConfig) {
+	public void loadDataFromConfig(PwingRaceManager raceManager, YamlConfiguration raceConfig) {
 		this.raceConfig = raceConfig;
 
 		this.name = raceConfig.getString("race.name");

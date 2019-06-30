@@ -3,7 +3,7 @@ package net.pwing.races.utilities;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.config.RaceConfigurationManager;
-import net.pwing.races.race.RacePlayer;
+import net.pwing.races.race.PwingRacePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -62,7 +62,7 @@ public class MessageUtil {
         if (player != null && player.isOnline()) {
             message = message.replace("%player_name%", player.getName());
 
-            RacePlayer racePlayer = PwingRaces.getInstance().getRaceManager().getRacePlayer(player);
+            PwingRacePlayer racePlayer = PwingRaces.getInstance().getRaceManager().getRacePlayer(player);
             if (racePlayer != null && racePlayer.getActiveRace() != null)
                 message = message.replace("%race%", racePlayer.getActiveRace().getName());
         }
