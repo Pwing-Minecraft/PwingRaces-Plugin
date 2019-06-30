@@ -2,18 +2,18 @@ package net.pwing.races.hooks.quests;
 
 import java.util.Map;
 
+import net.pwing.races.api.race.RaceData;
+import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.api.race.RacePlayer;
 import org.bukkit.entity.Player;
 
 import me.blackvein.quests.CustomReward;
-import net.pwing.races.race.PwingRaceManager;
-import net.pwing.races.race.PwingRacePlayer;
-import net.pwing.races.race.PwingRaceData;
 
 public class RaceExperienceReward extends CustomReward {
 
-	private PwingRaceManager raceManager;
+	private RaceManager raceManager;
 
-	public RaceExperienceReward(PwingRaceManager raceManager) {
+    public RaceExperienceReward(RaceManager raceManager) {
 		this.raceManager = raceManager;
 
 		setName("Race Experience Reward");
@@ -26,8 +26,8 @@ public class RaceExperienceReward extends CustomReward {
 	public void giveReward(Player player, Map<String, Object> data) {
 		int amount = (int) data.get("Amount");
 
-		PwingRacePlayer racePlayer = raceManager.getRacePlayer(player);
-		PwingRaceData raceData = racePlayer.getRaceData(racePlayer.getActiveRace());
+		RacePlayer racePlayer = raceManager.getRacePlayer(player);
+		RaceData raceData = racePlayer.getRaceData(racePlayer.getActiveRace());
 		raceManager.getLevelManager().setExperience(player, racePlayer.getActiveRace(), raceData.getExperience() + amount);
 	}
 }

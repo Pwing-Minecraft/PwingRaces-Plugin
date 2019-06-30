@@ -1,6 +1,7 @@
 package net.pwing.races.events;
 
-import net.pwing.races.race.PwingRace;
+import net.pwing.races.api.race.Race;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -11,11 +12,11 @@ public class RaceUnlockEvent extends Event implements Cancellable {
     protected static final HandlerList handlers = new HandlerList();
 
     private OfflinePlayer player;
-    private PwingRace race;
+    private Race race;
 
     private boolean cancelled;
 
-    public RaceUnlockEvent(OfflinePlayer player, PwingRace race) {
+    public RaceUnlockEvent(OfflinePlayer player, Race race) {
         this.player = player;
         this.race = race;
     }
@@ -34,11 +35,11 @@ public class RaceUnlockEvent extends Event implements Cancellable {
         return player;
     }
 
-    public PwingRace getRace() {
+    public Race getRace() {
         return race;
     }
 
-    public void setRace(PwingRace race) {
+    public void setRace(Race race) {
         this.race = race;
     }
 

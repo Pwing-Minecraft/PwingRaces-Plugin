@@ -1,62 +1,62 @@
 package net.pwing.races.events;
 
+import net.pwing.races.api.race.Race;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import net.pwing.races.race.PwingRace;
-
 public class RaceExpChangeEvent extends PlayerEvent implements Cancellable {
 
-	protected static final HandlerList handlers = new HandlerList();
+    protected static final HandlerList handlers = new HandlerList();
 
-	private PwingRace race;
+    private Race race;
 
-	private int oldExp;
-	private int newExp;
+    private int oldExp;
+    private int newExp;
 
-	private boolean cancelled;
+    private boolean cancelled;
 
-	public RaceExpChangeEvent(Player player, PwingRace race, int oldExp, int newExp) {
-		super(player);
+    public RaceExpChangeEvent(Player player, Race race, int oldExp, int newExp) {
+        super(player);
 
-		this.race = race;
-		this.oldExp = oldExp;
-		this.newExp = newExp;
-	}
+        this.race = race;
+        this.oldExp = oldExp;
+        this.newExp = newExp;
+    }
 
-	@Override
-	public boolean isCancelled() {
-		return cancelled;
-	}
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
-	@Override
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
-	}
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
 
-	public PwingRace getRace() {
-		return race;
-	}
+    public Race getRace() {
+        return race;
+    }
 
-	public int getOldExp() {
-		return oldExp;
-	}
+    public int getOldExp() {
+        return oldExp;
+    }
 
-	public int getNewExp() {
-		return newExp;
-	}
+    public int getNewExp() {
+        return newExp;
+    }
 
-	public void setNewExp(int newExp) {
-		this.newExp = newExp;
-	}
+    public void setNewExp(int newExp) {
+        this.newExp = newExp;
+    }
 
-	public HandlerList getHandlers() {
-		return handlers;
-	}
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 
-	public static HandlerList getHandlerList() {
-		return handlers;
-	}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }
