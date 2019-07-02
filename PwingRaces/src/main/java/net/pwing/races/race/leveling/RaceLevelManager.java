@@ -2,8 +2,8 @@ package net.pwing.races.race.leveling;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.RaceData;
-import net.pwing.races.events.RaceExpChangeEvent;
-import net.pwing.races.events.RaceLevelUpEvent;
+import net.pwing.races.api.events.RaceExpChangeEvent;
+import net.pwing.races.api.events.RaceLevelUpEvent;
 import net.pwing.races.race.PwingRace;
 import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.RaceSound;

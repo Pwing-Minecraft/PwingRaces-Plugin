@@ -1,7 +1,7 @@
 package net.pwing.races.race.attribute;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.events.RaceChangeEvent;
+import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.race.PwingRacePlayer;
 import org.bukkit.entity.Arrow;
@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import net.pwing.races.events.RaceElementPurchaseEvent;
-import net.pwing.races.events.RaceExpChangeEvent;
+import net.pwing.races.api.events.RaceElementPurchaseEvent;
+import net.pwing.races.api.events.RaceExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class RaceAttributeListener implements Listener {

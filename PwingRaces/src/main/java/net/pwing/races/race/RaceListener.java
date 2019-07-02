@@ -2,7 +2,7 @@ package net.pwing.races.race;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
-import net.pwing.races.events.RaceRespawnEvent;
+import net.pwing.races.api.events.RaceRespawnEvent;
 import net.pwing.races.utilities.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import net.pwing.races.events.RaceChangeEvent;
+import net.pwing.races.api.events.RaceChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class RaceListener implements Listener {

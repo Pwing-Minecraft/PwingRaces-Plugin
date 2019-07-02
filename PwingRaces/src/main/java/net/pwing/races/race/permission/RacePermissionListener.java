@@ -1,13 +1,12 @@
 package net.pwing.races.race.permission;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import net.pwing.races.events.RaceElementPurchaseEvent;
-import net.pwing.races.events.RaceExpChangeEvent;
+import net.pwing.races.api.events.RaceElementPurchaseEvent;
+import net.pwing.races.api.events.RaceExpChangeEvent;
 
 public class RacePermissionListener implements Listener {
 

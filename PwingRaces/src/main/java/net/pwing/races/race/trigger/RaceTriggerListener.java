@@ -16,9 +16,9 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import net.pwing.races.events.RaceElementPurchaseEvent;
-import net.pwing.races.events.RaceExpChangeEvent;
-import net.pwing.races.events.RaceLevelUpEvent;
+import net.pwing.races.api.events.RaceElementPurchaseEvent;
+import net.pwing.races.api.events.RaceExpChangeEvent;
+import net.pwing.races.api.events.RaceLevelUpEvent;
 
 public class RaceTriggerListener implements Listener {
 

@@ -10,7 +10,7 @@ import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.builder.ItemBuilder;
 import net.pwing.races.builder.MenuBuilder;
-import net.pwing.races.events.RaceElementPurchaseEvent;
+import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.menu.ConfirmationMenu;
 import net.pwing.races.menu.IConfirmationHandler;
 import net.pwing.races.menu.IMenuClickHandler;
