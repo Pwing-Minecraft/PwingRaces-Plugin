@@ -11,11 +11,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 
-public class ShadowmeldAbility extends RaceAbility {
+public class ShadowmeldAbility extends PwingRaceAbility {
 
 	private int duration;
 

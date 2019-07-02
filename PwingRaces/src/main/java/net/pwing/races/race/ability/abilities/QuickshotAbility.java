@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 import net.pwing.races.utilities.RaceSound;
 
-public class QuickshotAbility extends RaceAbility {
+public class QuickshotAbility extends PwingRaceAbility {
 
 	private boolean spendArrows;
 

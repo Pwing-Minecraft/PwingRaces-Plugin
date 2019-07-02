@@ -1,8 +1,7 @@
 package net.pwing.races.race.ability.abilities;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.builder.ItemBuilder;
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 import net.pwing.races.utilities.RaceMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ThrowWeaponAbility extends RaceAbility {
+public class ThrowWeaponAbility extends PwingRaceAbility {
 
     private float hitVelocity;
     private float speed;

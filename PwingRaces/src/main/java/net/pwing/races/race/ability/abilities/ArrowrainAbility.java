@@ -3,7 +3,7 @@ package net.pwing.races.race.ability.abilities;
 import java.util.Set;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class ArrowrainAbility extends RaceAbility {
+public class ArrowrainAbility extends PwingRaceAbility {
 
 	private boolean spendArrows;
 

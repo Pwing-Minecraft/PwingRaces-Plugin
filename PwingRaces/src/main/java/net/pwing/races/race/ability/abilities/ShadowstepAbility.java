@@ -1,7 +1,7 @@
 package net.pwing.races.race.ability.abilities;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ShadowstepAbility extends RaceAbility {
+public class ShadowstepAbility extends PwingRaceAbility {
 
     private List<UUID> shadowstepping = new ArrayList<UUID>();
 

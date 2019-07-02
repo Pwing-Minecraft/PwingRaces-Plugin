@@ -14,9 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 
-public class ArrowstormAbility extends RaceAbility {
+public class ArrowstormAbility extends PwingRaceAbility {
 
 	private boolean spendArrows;
 

@@ -6,9 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 
-public class AllowFlightAbility extends RaceAbility {
+public class AllowFlightAbility extends PwingRaceAbility {
 
 	private int duration;
 

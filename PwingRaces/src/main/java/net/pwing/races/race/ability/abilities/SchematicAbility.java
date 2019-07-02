@@ -4,10 +4,10 @@ import net.pwing.races.PwingRaces;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 
 // TODO: Create paste effects and removing the schematic
-public class SchematicAbility extends RaceAbility {
+public class SchematicAbility extends PwingRaceAbility {
 
 	private String schematicName;
 	private boolean pasteAir;

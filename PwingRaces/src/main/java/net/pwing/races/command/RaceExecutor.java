@@ -1,21 +1,21 @@
 package net.pwing.races.command;
 
+import net.pwing.races.PwingRaces;
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceData;
+import net.pwing.races.api.race.RaceMenu;
+import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.events.RaceChangeEvent;
+import net.pwing.races.events.RaceUnlockEvent;
+import net.pwing.races.race.skilltree.RaceSkilltree;
+import net.pwing.races.race.skilltree.RaceSkilltreeElement;
+import net.pwing.races.utilities.MessageUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import net.pwing.races.PwingRaces;
-import net.pwing.races.api.race.Race;
-import net.pwing.races.api.race.RaceData;
-import net.pwing.races.api.race.RacePlayer;
-import net.pwing.races.events.RaceChangeEvent;
-import net.pwing.races.events.RaceUnlockEvent;
-import net.pwing.races.race.RaceMenu;
-import net.pwing.races.race.skilltree.RaceSkilltree;
-import net.pwing.races.race.skilltree.RaceSkilltreeElement;
-import net.pwing.races.utilities.MessageUtil;
 
 public class RaceExecutor extends RaceCommandExecutor {
 
@@ -236,7 +236,7 @@ public class RaceExecutor extends RaceCommandExecutor {
             return;
         }
 
-        RaceMenu menu = plugin.getRaceManager().getRacesMenu();
+        RaceMenu menu = plugin.getRaceManager().getRaceMenu();
         menu.openMenu(player);
     }
 }
