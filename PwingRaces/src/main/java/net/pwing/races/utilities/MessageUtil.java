@@ -1,9 +1,11 @@
 package net.pwing.races.utilities;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.config.RaceConfigurationManager;
-import net.pwing.races.race.RacePlayer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;

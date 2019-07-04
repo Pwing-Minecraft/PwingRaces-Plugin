@@ -1,11 +1,12 @@
 package net.pwing.races.hooks;
 
-import org.bukkit.entity.Player;
-
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceData;
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.Race;
-import net.pwing.races.race.RaceData;
+
+import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
@@ -41,7 +42,6 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 		}
 
 		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
-
 		switch (params) {
 			case "race":
 				return race.getName();

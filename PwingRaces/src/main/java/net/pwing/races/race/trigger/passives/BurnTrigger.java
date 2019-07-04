@@ -1,14 +1,19 @@
 package net.pwing.races.race.trigger.passives;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.trigger.RaceTriggerPassive;
+import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.NumberUtil;
+
 import org.bukkit.entity.Player;
 
 public class BurnTrigger extends RaceTriggerPassive {
 
+    private PwingRaces plugin;
+
     public BurnTrigger(PwingRaces plugin, String name) {
-        super(plugin, name);
+        super(name);
+
+        this.plugin = plugin;
     }
 
     @Override

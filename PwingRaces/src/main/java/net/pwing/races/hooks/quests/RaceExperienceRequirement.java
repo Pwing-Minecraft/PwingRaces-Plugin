@@ -2,32 +2,32 @@ package net.pwing.races.hooks.quests;
 
 import java.util.Map;
 
+import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.api.race.RacePlayer;
 import org.bukkit.entity.Player;
 
 import me.blackvein.quests.CustomRequirement;
-import net.pwing.races.race.RaceManager;
-import net.pwing.races.race.RacePlayer;
 
 public class RaceExperienceRequirement extends CustomRequirement {
 
-	private RaceManager raceManager;
+    private RaceManager raceManager;
 
-	public RaceExperienceRequirement(RaceManager raceManager) {
-		this.raceManager = raceManager;
+    public RaceExperienceRequirement(RaceManager raceManager) {
+        this.raceManager = raceManager;
 
-		setName("Race Experience Requirement");
-		setAuthor("Redned");
-		addStringPrompt("Amount", "Enter the race experience requirement amount.", 0);
-	}
+        setName("Race Experience Requirement");
+        setAuthor("Redned");
+        addStringPrompt("Amount", "Enter the race experience requirement amount.", 0);
+    }
 
-	@Override
-	public boolean testRequirement(Player player, Map<String, Object> data) {
-		int amount = (int) data.get("Amount");
+    @Override
+    public boolean testRequirement(Player player, Map<String, Object> data) {
+        int amount = (int) data.get("Amount");
 
-		RacePlayer racePlayer = raceManager.getRacePlayer(player);
-		if (racePlayer.getRaceData(racePlayer.getActiveRace()).getExperience() >= amount)
-			return true;
+        RacePlayer racePlayer = raceManager.getRacePlayer(player);
+        if (racePlayer.getRaceData(racePlayer.getActiveRace()).getExperience() >= amount)
+            return true;
 
-		return false;
-	}
+        return false;
+    }
 }

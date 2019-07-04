@@ -1,9 +1,8 @@
 package net.pwing.races.task;
 
+import net.pwing.races.api.race.RaceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import net.pwing.races.race.RaceManager;
 
 public class RaceSaveTask implements Runnable {
 

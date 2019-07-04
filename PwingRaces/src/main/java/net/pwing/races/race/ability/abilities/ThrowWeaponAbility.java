@@ -1,12 +1,16 @@
 package net.pwing.races.race.ability.abilities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.pwing.races.PwingRaces;
-import net.pwing.races.builder.ItemBuilder;
-import net.pwing.races.race.ability.RaceAbility;
+import net.pwing.races.race.ability.PwingRaceAbility;
 import net.pwing.races.utilities.RaceMaterial;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -19,11 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-public class ThrowWeaponAbility extends RaceAbility {
+public class ThrowWeaponAbility extends PwingRaceAbility {
 
     private float hitVelocity;
     private float speed;
@@ -39,7 +39,7 @@ public class ThrowWeaponAbility extends RaceAbility {
 
     private int yOffset;
 
-    public ThrowWeaponAbility(PwingRaces plugin, String internalName, String configPath, YamlConfiguration config, String requirement) {
+    public ThrowWeaponAbility(PwingRaces plugin, String internalName, String configPath, FileConfiguration config, String requirement) {
         super(plugin, internalName, configPath, config, requirement);
 
         hitVelocity = (float) config.getDouble(configPath + ".hit-velocity", 1.5);

@@ -1,15 +1,19 @@
 package net.pwing.races.race.trigger.passives;
 
-
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.trigger.RaceTriggerPassive;
+import net.pwing.races.api.race.trigger.RaceTriggerPassive;
+
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-public class RemovePotionEffectTrigger  extends RaceTriggerPassive {
+public class RemovePotionEffectTrigger extends RaceTriggerPassive {
+
+    private PwingRaces plugin;
 
     public RemovePotionEffectTrigger(PwingRaces plugin, String trigger) {
-        super(plugin, trigger);
+        super(trigger);
+
+        this.plugin = plugin;
     }
 
     @Override

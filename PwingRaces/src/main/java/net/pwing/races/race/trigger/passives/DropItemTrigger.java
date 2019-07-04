@@ -1,16 +1,21 @@
 package net.pwing.races.race.trigger.passives;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.race.Race;
-import net.pwing.races.race.trigger.RaceTriggerPassive;
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.ItemUtil;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class DropItemTrigger extends RaceTriggerPassive {
 
+    private PwingRaces plugin;
+
     public DropItemTrigger(PwingRaces plugin, String name) {
-        super(plugin, name);
+        super(name);
+
+        this.plugin = plugin;
     }
 
     @Override

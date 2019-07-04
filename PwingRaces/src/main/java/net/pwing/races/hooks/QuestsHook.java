@@ -10,7 +10,6 @@ import net.pwing.races.hooks.quests.RaceLevelRequirement;
 import net.pwing.races.hooks.quests.RaceLevelReward;
 import net.pwing.races.hooks.quests.RaceRequirement;
 import net.pwing.races.hooks.quests.RaceReward;
-import net.pwing.races.race.RaceManager;
 
 public class QuestsHook extends PluginHook {
 
