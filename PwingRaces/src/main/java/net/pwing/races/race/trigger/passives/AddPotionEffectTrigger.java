@@ -1,38 +1,43 @@
 package net.pwing.races.race.trigger.passives;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.race.trigger.RaceTriggerPassive;
+
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import net.pwing.races.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.NumberUtil;
 
 public class AddPotionEffectTrigger extends RaceTriggerPassive {
 
-	public AddPotionEffectTrigger(PwingRaces plugin, String trigger) {
-		super(plugin, trigger);
-	}
+    private PwingRaces plugin;
 
-	@Override
-	public void runTriggerPassive(Player player, String trigger) {
-		String[] split = trigger.split(" ");
+    public AddPotionEffectTrigger(PwingRaces plugin, String trigger) {
+        super(trigger);
 
-		PotionEffectType effectType = PotionEffectType.getByName(split[1]);
-		if (effectType == null) {
-			plugin.getLogger().warning("PotionEffectType " + effectType + " for trigger " + trigger + " is invalid.");
-			return;
-		}
+        this.plugin = plugin;
+    }
 
-		int duration = 0;
-		int amplifier = 0;
+    @Override
+    public void runTriggerPassive(Player player, String trigger) {
+        String[] split = trigger.split(" ");
 
-		if (NumberUtil.isInteger(split[2]))
-			duration = Integer.parseInt(split[2]) * 20;
+        PotionEffectType effectType = PotionEffectType.getByName(split[1]);
+        if (effectType == null) {
+            plugin.getLogger().warning("PotionEffectType " + effectType + " for trigger " + trigger + " is invalid.");
+            return;
+        }
 
-		if (NumberUtil.isInteger(split[3]))
-			amplifier = Integer.parseInt(split[3]) - 1;
+        int duration = 0;
+        int amplifier = 0;
 
-		player.addPotionEffect(new PotionEffect(effectType, duration, amplifier, false, false));
-	}
+        if (NumberUtil.isInteger(split[2]))
+            duration = Integer.parseInt(split[2]) * 20;
+
+        if (NumberUtil.isInteger(split[3]))
+            amplifier = Integer.parseInt(split[3]) - 1;
+
+        player.addPotionEffect(new PotionEffect(effectType, duration, amplifier, false, false));
+    }
 }

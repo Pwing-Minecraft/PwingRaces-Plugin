@@ -21,7 +21,7 @@ import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
-import net.pwing.races.race.trigger.RaceTriggerManager;
+import net.pwing.races.api.race.trigger.RaceTriggerManager;
 import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.TimeUtil;
 
