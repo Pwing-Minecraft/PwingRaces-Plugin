@@ -9,10 +9,11 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
+import net.pwing.races.api.race.attribute.RaceAttribute;
 import net.pwing.races.api.race.permission.RacePermission;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.trigger.RaceTrigger;
-import net.pwing.races.race.attribute.RaceAttribute;
+import net.pwing.races.race.attribute.PwingRaceAttribute;
 import net.pwing.races.race.permission.PwingRacePermission;
 import net.pwing.races.utilities.AttributeUtil;
 import net.pwing.races.utilities.ItemUtil;
@@ -146,7 +147,7 @@ public class PwingRace implements Race {
         if (raceConfig.contains("race.attributes")) {
             for (String str : raceConfig.getConfigurationSection("race.attributes").getKeys(false)) {
                 List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(str, new ArrayList<RaceAttribute>());
-                raceAttributes.add(new RaceAttribute(AttributeUtil.getAttributeName(str), raceConfig.getDouble("race.attributes." + str), "none"));
+                raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(str), raceConfig.getDouble("race.attributes." + str), "none"));
                 raceAttributesMap.put(str, raceAttributes);
             }
         }
@@ -159,7 +160,7 @@ public class PwingRace implements Race {
 
                 for (String attribute : raceConfig.getConfigurationSection("race.elements." + elem + ".attributes").getKeys(false)) {
                     List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
-                    raceAttributes.add(new RaceAttribute(AttributeUtil.getAttributeName(attribute), raceConfig.getDouble("race.elements." + elem + ".attributes." + attribute), elem));
+                    raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), raceConfig.getDouble("race.elements." + elem + ".attributes." + attribute), elem));
                     raceAttributesMap.put(attribute, raceAttributes);
                 }
             }
@@ -173,7 +174,7 @@ public class PwingRace implements Race {
 
                 for (String attribute : raceConfig.getConfigurationSection("race.levels." + level + ".attributes").getKeys(false)) {
                     List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
-                    raceAttributes.add(new RaceAttribute(AttributeUtil.getAttributeName(attribute), raceConfig.getDouble("race.levels." + level + ".attributes." + attribute), "level" + level));
+                    raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), raceConfig.getDouble("race.levels." + level + ".attributes." + attribute), "level" + level));
                     raceAttributesMap.put(attribute, raceAttributes);
                 }
             }

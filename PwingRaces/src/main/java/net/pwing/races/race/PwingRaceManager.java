@@ -16,6 +16,7 @@ import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RaceMenu;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
+import net.pwing.races.api.race.attribute.RaceAttributeManager;
 import net.pwing.races.api.race.level.RaceLevelManager;
 import net.pwing.races.api.race.permission.RacePermissionManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
@@ -23,12 +24,11 @@ import net.pwing.races.api.race.trigger.RaceTriggerManager;
 import net.pwing.races.config.RaceConfiguration;
 import net.pwing.races.config.RaceConfigurationManager;
 import net.pwing.races.race.ability.PwingRaceAbilityManager;
-import net.pwing.races.race.attribute.RaceAttributeManager;
+import net.pwing.races.race.attribute.PwingRaceAttributeManager;
 import net.pwing.races.race.leveling.PwingRaceLevelManager;
 import net.pwing.races.race.permission.PwingRacePermissionManager;
 import net.pwing.races.race.skilltree.PwingRaceSkilltreeManager;
 import net.pwing.races.race.trigger.PwingRaceTriggerManager;
-import net.pwing.races.utilities.MessageUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -66,7 +66,7 @@ public class PwingRaceManager implements RaceManager {
         racePlayers = new HashMap<UUID, RacePlayer>();
 
         triggerManager = new PwingRaceTriggerManager(plugin);
-        attributeManager = new RaceAttributeManager(plugin);
+        attributeManager = new PwingRaceAttributeManager(plugin);
         permissionManager = new PwingRacePermissionManager(plugin);
         levelManager = new PwingRaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);

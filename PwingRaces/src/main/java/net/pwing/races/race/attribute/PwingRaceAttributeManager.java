@@ -11,6 +11,9 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.api.race.attribute.RaceAttribute;
+import net.pwing.races.api.race.attribute.RaceAttributeEffect;
+import net.pwing.races.api.race.attribute.RaceAttributeManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.utilities.AttributeUtil;
@@ -18,13 +21,13 @@ import net.pwing.races.utilities.AttributeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class RaceAttributeManager {
+public class PwingRaceAttributeManager implements RaceAttributeManager {
 
     private PwingRaces plugin;
 
     private Map<String, RaceAttributeEffect> attributeEffects = new HashMap<String, RaceAttributeEffect>();
 
-    public RaceAttributeManager(PwingRaces plugin) {
+    public PwingRaceAttributeManager(PwingRaces plugin) {
         this.plugin = plugin;
 
         initAttributeEffects();
