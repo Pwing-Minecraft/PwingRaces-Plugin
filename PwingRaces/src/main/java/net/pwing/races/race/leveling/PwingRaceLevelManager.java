@@ -5,17 +5,18 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
+import net.pwing.races.api.race.level.RaceLevelManager;
 import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.RaceSound;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class RaceLevelManager {
+public class PwingRaceLevelManager implements RaceLevelManager {
 
     private PwingRaces plugin;
 
-    public RaceLevelManager(PwingRaces plugin) {
+    public PwingRaceLevelManager(PwingRaces plugin) {
         this.plugin = plugin;
     }
 
