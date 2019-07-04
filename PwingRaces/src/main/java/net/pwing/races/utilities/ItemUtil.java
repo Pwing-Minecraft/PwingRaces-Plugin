@@ -3,7 +3,7 @@ package net.pwing.races.utilities;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -77,7 +77,7 @@ public class ItemUtil {
 		return builder.toItemStack();
 	}
 
-	public static ItemStack readItemFromConfig(String configPath, YamlConfiguration config) {
+	public static ItemStack readItemFromConfig(String configPath, FileConfiguration config) {
 		ItemBuilder builder = new ItemBuilder(Material.STONE);
 
 		if (!config.contains(configPath))

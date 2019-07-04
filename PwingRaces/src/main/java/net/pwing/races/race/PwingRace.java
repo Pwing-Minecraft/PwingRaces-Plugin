@@ -8,9 +8,9 @@ import java.util.Map;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
+import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.RaceAttribute;
 import net.pwing.races.race.permission.RacePermission;
-import net.pwing.races.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.trigger.RaceTrigger;
 import net.pwing.races.utilities.AttributeUtil;
 import net.pwing.races.utilities.ItemUtil;
@@ -86,7 +86,7 @@ public class PwingRace implements Race {
                 continue;
             }
 
-            raceSkilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.getRegName());
+            raceSkilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.getInternalName());
         }
 
         this.raceLevelMap = new HashMap<Integer, Integer>();

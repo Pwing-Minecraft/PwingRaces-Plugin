@@ -11,9 +11,9 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.utilities.AttributeUtil;
-import net.pwing.races.race.skilltree.RaceSkilltree;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -115,7 +115,7 @@ public class RaceAttributeManager {
                     attributes.add(definedAttribute);
                 } else {
                     for (RaceSkilltree skillTree : raceManager.getSkilltreeManager().getSkilltrees()) {
-                        if (data.hasPurchasedElement(skillTree.getRegName(), req)) {
+                        if (data.hasPurchasedElement(skillTree.getInternalName(), req)) {
                             attributes.add(definedAttribute);
                         }
                     }

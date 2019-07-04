@@ -7,8 +7,8 @@ import net.pwing.races.api.race.RaceMenu;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceUnlockEvent;
-import net.pwing.races.race.skilltree.RaceSkilltree;
-import net.pwing.races.race.skilltree.RaceSkilltreeElement;
+import net.pwing.races.api.race.skilltree.RaceSkilltree;
+import net.pwing.races.api.race.skilltree.RaceSkilltreeElement;
 import net.pwing.races.utilities.MessageUtil;
 
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public class RaceExecutor extends RaceCommandExecutor {
 
             for (RaceSkilltreeElement elem : skilltree.getElements()) {
                 ChatColor color = ChatColor.RED;
-                if (raceData.hasPurchasedElement(skilltree.getRegName(), elem.getRegName()))
+                if (raceData.hasPurchasedElement(skilltree.getInternalName(), elem.getInternalName()))
                     color = ChatColor.GREEN;
 
                 player.sendMessage(ChatColor.WHITE + "- " + color  + elem.getTitle());
@@ -81,7 +81,7 @@ public class RaceExecutor extends RaceCommandExecutor {
 
             for (RaceSkilltreeElement elem : skilltree.getElements()) {
                 ChatColor color = ChatColor.RED;
-                if (raceData.hasPurchasedElement(skilltree.getRegName(), elem.getRegName()))
+                if (raceData.hasPurchasedElement(skilltree.getInternalName(), elem.getInternalName()))
                     color = ChatColor.GREEN;
 
                 sender.sendMessage(ChatColor.WHITE + "- " + color  + elem.getTitle());

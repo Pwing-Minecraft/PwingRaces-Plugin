@@ -20,14 +20,13 @@ import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
-import net.pwing.races.race.skilltree.RaceSkilltree;
+import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.trigger.RaceTriggerManager;
 import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.TimeUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class PwingRaceAbilityManager implements RaceAbilityManager {
@@ -110,7 +109,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
                 } else {
                     for (String str : race.getSkilltreeMap().values()) {
                         RaceSkilltree skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(str);
-                        if (data.hasPurchasedElement(skilltree.getRegName(), req)) {
+                        if (data.hasPurchasedElement(skilltree.getInternalName(), req)) {
                             abilities.put(definedAbility.getInternalName(), definedAbility);
                         }
                     }

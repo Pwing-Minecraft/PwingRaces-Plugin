@@ -16,13 +16,14 @@ import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RaceMenu;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
+import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
 import net.pwing.races.config.RaceConfiguration;
 import net.pwing.races.config.RaceConfigurationManager;
 import net.pwing.races.race.ability.PwingRaceAbilityManager;
 import net.pwing.races.race.attribute.RaceAttributeManager;
 import net.pwing.races.race.leveling.RaceLevelManager;
 import net.pwing.races.race.permission.RacePermissionManager;
-import net.pwing.races.race.skilltree.RaceSkilltreeManager;
+import net.pwing.races.race.skilltree.PwingRaceSkilltreeManager;
 import net.pwing.races.race.trigger.RaceTriggerManager;
 import net.pwing.races.utilities.MessageUtil;
 
@@ -66,7 +67,7 @@ public class PwingRaceManager implements RaceManager {
         permissionManager = new RacePermissionManager(plugin);
         levelManager = new RaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);
-        skilltreeManager = new RaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
+        skilltreeManager = new PwingRaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigurations())
             races.add(new PwingRace(this, config.getConfig()));

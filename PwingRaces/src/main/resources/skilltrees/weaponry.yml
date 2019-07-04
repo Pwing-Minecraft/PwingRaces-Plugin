@@ -263,7 +263,7 @@ elements:
         - "&c+1 &f-> &a+2 &bSpeed"
     throwweapon5:
         slot: 4
-        parents: [throwweapon4, swords12, axes12]
+        parentElements: [throwweapon4, swords12, axes12]
         required-parent-amount: 3
         title: Weapon Throwing
         description: []

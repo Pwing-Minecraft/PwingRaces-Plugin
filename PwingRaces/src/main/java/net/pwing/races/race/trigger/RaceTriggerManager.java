@@ -13,7 +13,7 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
-import net.pwing.races.race.skilltree.RaceSkilltree;
+import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.trigger.passives.BurnTrigger;
 import net.pwing.races.race.trigger.passives.AddPotionEffectTrigger;
 import net.pwing.races.race.trigger.passives.DisguiseTrigger;
@@ -146,7 +146,7 @@ public class RaceTriggerManager {
 					triggers.put(definedTrigger.getRegName(), definedTrigger);
 				} else {
 					for (RaceSkilltree skillTree : raceManager.getSkilltreeManager().getSkilltrees()) {
-						if (data.hasPurchasedElement(skillTree.getRegName(), req)) {
+						if (data.hasPurchasedElement(skillTree.getInternalName(), req)) {
 							triggers.put(definedTrigger.getRegName(), definedTrigger);
 						}
 					}
@@ -199,7 +199,7 @@ public class RaceTriggerManager {
 					triggers.put(definedTrigger.getRegName(), definedTrigger);
 				} else {
 					for (RaceSkilltree skillTree : raceManager.getSkilltreeManager().getSkilltrees()) {
-						if (data.hasPurchasedElement(skillTree.getRegName(), req)) {
+						if (data.hasPurchasedElement(skillTree.getInternalName(), req)) {
 							triggers.put(definedTrigger.getRegName(), definedTrigger);
 						}
 					}

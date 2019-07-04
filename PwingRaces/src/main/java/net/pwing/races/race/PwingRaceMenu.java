@@ -9,6 +9,7 @@ import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RaceMenu;
 import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.builder.ItemBuilder;
 import net.pwing.races.builder.MenuBuilder;
 import net.pwing.races.config.RaceConfigurationManager;
@@ -18,8 +19,7 @@ import net.pwing.races.hooks.VaultAPIHook;
 import net.pwing.races.menu.ConfirmationMenu;
 import net.pwing.races.menu.IConfirmationHandler;
 import net.pwing.races.menu.IMenuClickHandler;
-import net.pwing.races.race.skilltree.RaceSkilltree;
-import net.pwing.races.race.skilltree.RaceSkilltreeMenu;
+import net.pwing.races.race.skilltree.PwingRaceSkilltreeMenu;
 import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.RaceMaterial;
 import net.pwing.races.utilities.RaceSound;
@@ -136,7 +136,7 @@ public class PwingRaceMenu implements RaceMenu {
 
                 @Override
                 public void onClick(Player player, ClickType action, ItemStack item) {
-                    new RaceSkilltreeMenu(plugin, race, skilltree).openMenu(player);
+                    new PwingRaceSkilltreeMenu(plugin, race, skilltree).openMenu(player);
                 }
             });
         }
