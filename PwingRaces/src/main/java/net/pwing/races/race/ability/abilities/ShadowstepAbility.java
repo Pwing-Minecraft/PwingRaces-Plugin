@@ -1,11 +1,16 @@
 package net.pwing.races.race.ability.abilities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -14,10 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.BlockIterator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class ShadowstepAbility extends PwingRaceAbility {
 
@@ -33,7 +34,7 @@ public class ShadowstepAbility extends PwingRaceAbility {
 
     private List<EntityType> ignoredEntities;
 
-    public ShadowstepAbility(PwingRaces plugin, String internalName, String configPath, YamlConfiguration config, String requirement) {
+    public ShadowstepAbility(PwingRaces plugin, String internalName, String configPath, FileConfiguration config, String requirement) {
         super(plugin, internalName, configPath, config, requirement);
 
         range = config.getInt(configPath + ".range", 10);
