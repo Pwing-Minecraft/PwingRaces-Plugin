@@ -4,16 +4,8 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.race.RaceManager;
-import net.pwing.races.hooks.WorldGuardHook;
-import net.pwing.races.race.PwingRaceManager;
-import net.pwing.races.utilities.MessageUtil;
-import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import net.pwing.races.compat.CompatCodeHandlerDisabled;
 import net.pwing.races.compat.ICompatCodeHandler;
 import net.pwing.races.config.RaceConfigurationManager;
@@ -25,9 +17,18 @@ import net.pwing.races.hooks.PlaceholderAPIHook;
 import net.pwing.races.hooks.QuestsHook;
 import net.pwing.races.hooks.VaultAPIHook;
 import net.pwing.races.hooks.WorldEditHook;
+import net.pwing.races.hooks.WorldGuardHook;
+import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.task.RaceSaveTask;
 import net.pwing.races.task.RaceTriggerTickTask;
+import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.VersionUtil;
+
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class PwingRaces extends JavaPlugin {
 
@@ -72,6 +73,8 @@ public class PwingRaces extends JavaPlugin {
         MessageUtil.initMessages("messages", configManager);
 
         raceManager = new PwingRaceManager(this);
+
+        PwingRacesAPI.setRaceManager(raceManager);
 
         if (setupPlaceholderAPI()) {
             this.getLogger().info("PlaceholderAPI found, support for placeholders enabled.");
@@ -131,7 +134,8 @@ public class PwingRaces extends JavaPlugin {
             configManager = new RaceConfigurationManager(this);
             MessageUtil.initMessages("messages", configManager);
 
-            raceManager.initRaces();
+            // TODO: Refactor this ?
+            ((PwingRaceManager) raceManager).initRaces();
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 raceManager.registerPlayer(player);
