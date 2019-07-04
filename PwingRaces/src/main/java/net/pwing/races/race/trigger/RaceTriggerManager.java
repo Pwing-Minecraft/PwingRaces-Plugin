@@ -72,10 +72,10 @@ public class RaceTriggerManager {
 			return;
 
 		for (RaceTrigger raceTrigger : raceTriggers) {
-			if (hasDelay(player, raceTrigger.getRegName()))
+			if (hasDelay(player, raceTrigger.getInternalName()))
 				continue;
 
-			setDelay(player, raceTrigger.getRegName(), raceTrigger.getDelay());
+			setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
 
 			// Run chance afterward so it doesnt idle
 			if ((random.nextFloat() * 100) > raceTrigger.getChance())
@@ -91,7 +91,7 @@ public class RaceTriggerManager {
 
 		Random random = new Random();
 		for (RaceTrigger raceTrigger : getApplicableTaskTriggers(player)) {
-			if (hasDelay(player, raceTrigger.getRegName())) {
+			if (hasDelay(player, raceTrigger.getInternalName())) {
 				continue;
 			}
 
@@ -102,7 +102,7 @@ public class RaceTriggerManager {
 
 			int tickDelay = Integer.parseInt(raceTrigger.getTrigger().split(" ")[1]);
 			if (tick % tickDelay == 0) {
-				setDelay(player, raceTrigger.getRegName(), raceTrigger.getDelay());
+				setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
 
 				// Run chance afterward so it doesnt idle
 				if ((random.nextFloat() * 100) > raceTrigger.getChance())
@@ -135,7 +135,7 @@ public class RaceTriggerManager {
 				String req = definedTrigger.getRequirement();
 
 				if (req.equals("none")) {
-					triggers.put(definedTrigger.getRegName(), definedTrigger);
+					triggers.put(definedTrigger.getInternalName(), definedTrigger);
 
 				} else if (req.startsWith("level")) { // best to assume it's a level-based trigger
 					int level = Integer.parseInt(req.replace("level", ""));
@@ -143,11 +143,11 @@ public class RaceTriggerManager {
 					if (data.getLevel() < level)
 						continue;
 
-					triggers.put(definedTrigger.getRegName(), definedTrigger);
+					triggers.put(definedTrigger.getInternalName(), definedTrigger);
 				} else {
 					for (RaceSkilltree skillTree : raceManager.getSkilltreeManager().getSkilltrees()) {
 						if (data.hasPurchasedElement(skillTree.getInternalName(), req)) {
-							triggers.put(definedTrigger.getRegName(), definedTrigger);
+							triggers.put(definedTrigger.getInternalName(), definedTrigger);
 						}
 					}
 				}
@@ -188,7 +188,7 @@ public class RaceTriggerManager {
 				String req = definedTrigger.getRequirement();
 
 				if (req.equals("none")) {
-					triggers.put(definedTrigger.getRegName(), definedTrigger);
+					triggers.put(definedTrigger.getInternalName(), definedTrigger);
 
 				} else if (req.startsWith("level")) { // best to assume it's a level-based trigger
 					int level = Integer.parseInt(req.replace("level", ""));
@@ -196,11 +196,11 @@ public class RaceTriggerManager {
 					if (data.getLevel() < level)
 						continue;
 
-					triggers.put(definedTrigger.getRegName(), definedTrigger);
+					triggers.put(definedTrigger.getInternalName(), definedTrigger);
 				} else {
 					for (RaceSkilltree skillTree : raceManager.getSkilltreeManager().getSkilltrees()) {
 						if (data.hasPurchasedElement(skillTree.getInternalName(), req)) {
-							triggers.put(definedTrigger.getRegName(), definedTrigger);
+							triggers.put(definedTrigger.getInternalName(), definedTrigger);
 						}
 					}
 				}

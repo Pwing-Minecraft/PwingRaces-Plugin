@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
+import net.pwing.races.api.race.permission.RacePermission;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.RaceAttribute;
-import net.pwing.races.race.permission.RacePermission;
+import net.pwing.races.race.permission.PwingRacePermission;
 import net.pwing.races.race.trigger.RaceTrigger;
 import net.pwing.races.utilities.AttributeUtil;
 import net.pwing.races.utilities.ItemUtil;
@@ -50,13 +52,13 @@ public class PwingRace implements Race {
 
     // private RaceCommandExecutor executor;
 
-    public PwingRace(PwingRaceManager raceManager, YamlConfiguration raceConfig) {
+    public PwingRace(RaceManager raceManager, YamlConfiguration raceConfig) {
         loadDataFromConfig(raceManager, raceConfig);
 
         // this.executor = new IndividualRaceExecutor(raceManager.getPlugin(), this, name.toLowerCase());
     }
 
-    public void loadDataFromConfig(PwingRaceManager raceManager, YamlConfiguration raceConfig) {
+    public void loadDataFromConfig(RaceManager raceManager, YamlConfiguration raceConfig) {
         this.raceConfig = raceConfig;
 
         this.name = raceConfig.getString("race.name");
@@ -183,7 +185,7 @@ public class PwingRace implements Race {
         if (raceConfig.contains("race.permissions")) {
             for (String str : raceConfig.getStringList("race.permissions")) {
                 List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(str, new ArrayList<RacePermission>());
-                racePermissions.add(new RacePermission(str, "none"));
+                racePermissions.add(new PwingRacePermission(str, "none"));
                 racePermissionsMap.put(str, racePermissions);
             }
         }
@@ -196,7 +198,7 @@ public class PwingRace implements Race {
 
                 for (String permission : raceConfig.getStringList("race.elements." + elem + ".permissions")) {
                     List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
-                    racePermissions.add(new RacePermission(permission, elem));
+                    racePermissions.add(new PwingRacePermission(permission, elem));
                     racePermissionsMap.put(permission, racePermissions);
                 }
             }
@@ -210,7 +212,7 @@ public class PwingRace implements Race {
 
                 for (String permission : raceConfig.getStringList("race.levels." + level + ".permissions")) {
                     List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
-                    racePermissions.add(new RacePermission(permission, "level" + level));
+                    racePermissions.add(new PwingRacePermission(permission, "level" + level));
                     racePermissionsMap.put(permission, racePermissions);
                 }
             }
