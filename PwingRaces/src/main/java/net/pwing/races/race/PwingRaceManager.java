@@ -103,25 +103,6 @@ public class PwingRaceManager implements RaceManager {
         return true;
     }
 
-    protected void runSetupTask(Player player) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            RacePlayer racePlayer = getRacePlayer(player);
-            if (racePlayer == null) {
-                plugin.getLogger().severe("Could not find or create race player data for player " + player.getName() + "!");
-                return;
-            }
-
-            Race race = racePlayer.getActiveRace();
-            if (race == null)
-                return;
-
-            RaceData raceData = getRacePlayer(player).getRaceData(race);
-            if (plugin.getConfigManager().sendSkillpointMessageOnJoin()) {
-                player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("skillpoint-amount-message", "%prefix% &aYou have %skillpoints% unused skillpoints.").replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints()))));
-            }
-        }, 20);
-    }
-
     public void savePlayer(Player player) {
         RacePlayer racePlayer = getRacePlayer(player);
         if (racePlayer == null) {

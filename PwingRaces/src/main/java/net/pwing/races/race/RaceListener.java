@@ -3,6 +3,7 @@ package net.pwing.races.race;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.events.RaceRespawnEvent;
+import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.utilities.MessageUtil;
@@ -38,11 +39,11 @@ public class RaceListener implements Listener {
                 if (!raceManager.setupPlayer(player)) {
                     plugin.getLogger().severe("Could not setup data for player " + player.getName() + " after retry. Please contact " + plugin.getDescription().getAuthors().get(0));
                 } else {
-                    raceManager.runSetupTask(player);
+                    runSetupTask(player);
                 }
             }, 100);
         } else {
-            raceManager.runSetupTask(player);
+            runSetupTask(player);
         }
     }
 
@@ -95,5 +96,24 @@ public class RaceListener implements Listener {
 
         event.getNewRace().getRaceItems().values().forEach(item -> event.getPlayer().getInventory().addItem(item));
         plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
+    }
+
+    protected void runSetupTask(Player player) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+            if (racePlayer == null) {
+                plugin.getLogger().severe("Could not find or create race player data for player " + player.getName() + "!");
+                return;
+            }
+
+            Race race = racePlayer.getActiveRace();
+            if (race == null)
+                return;
+
+            RaceData raceData = plugin.getRaceManager().getRacePlayer(player).getRaceData(race);
+            if (plugin.getConfigManager().sendSkillpointMessageOnJoin()) {
+                player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("skillpoint-amount-message", "%prefix% &aYou have %skillpoints% unused skillpoints.").replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints()))));
+            }
+        }, 20);
     }
 }
