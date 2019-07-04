@@ -1,3 +1,7 @@
+v1.1.0
+- Add in new API
+- Code cleanups
+
 v1.0.10
 - Second attempt at fixing first-join bug
 - Added feature that allows you to not assign a slot for a race to keep it hidden
