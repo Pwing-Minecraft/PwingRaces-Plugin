@@ -243,7 +243,7 @@ public class PwingRaceMenu implements RaceMenu {
 
                             VaultAPIHook vaultHook = plugin.getVaultHook();
                             if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost)) {
-                                MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name_plural% for this transaction!");
+                                MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
                                 return;
                             }
 
