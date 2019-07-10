@@ -11,11 +11,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import net.pwing.races.utilities.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -54,6 +58,13 @@ public class RaceCommandExecutor implements TabExecutor {
         String description() default "";
     }
 
+    public enum CommandResult {
+        NO_PERMISSIONS,
+        COMMAND_ERROR,
+        METHOD_ERROR,
+        SUCCESS,
+    }
+
     protected class CommandWrapper {
         protected Method method;
         protected String usage;
@@ -80,6 +91,7 @@ public class RaceCommandExecutor implements TabExecutor {
 
         List<CommandWrapper> wrappers = getCommandWrappers(subCommand, args1);
 
+        int noPermsAllowed = 0;
         for (CommandWrapper wrapper : wrappers) {
             if (wrapper != null) {
                 int index = 1;
@@ -87,10 +99,22 @@ public class RaceCommandExecutor implements TabExecutor {
                 if (!Arrays.asList(wrapper.getCommand().subCommands()).isEmpty())
                     index++;
 
-                if (runCommand(sender, wrapper, Arrays.copyOfRange(args, index, args.length))) {
-                    return true;
+                CommandResult result = runCommand(sender, wrapper, Arrays.copyOfRange(args, index, args.length));
+                switch (result) {
+                    case NO_PERMISSIONS:
+                        noPermsAllowed += 1;
+                        continue;
+                    case METHOD_ERROR:
+                        continue;
+                    case SUCCESS:
+                        return true;
                 }
             }
+        }
+
+        if (noPermsAllowed > 0) {
+            sender.sendMessage(MessageUtil.getReplacementMessage(MessageUtil.getMessage("no-permission-command", "%prefix% &cYou do not have permission to execute this command!")));
+            return true;
         }
 
         if (wrappers.isEmpty())
@@ -117,7 +141,7 @@ public class RaceCommandExecutor implements TabExecutor {
         }
     }
 
-    public boolean runCommand(CommandSender sender, CommandWrapper wrapper, String[] args) {
+    public CommandResult runCommand(CommandSender sender, CommandWrapper wrapper, String[] args) {
         RaceCommand raceCommand = wrapper.getCommand();
 
         if (!plugin.isPluginEnabled() && !wrapper.getCommand().overrideDisabled()) {
@@ -126,18 +150,16 @@ public class RaceCommandExecutor implements TabExecutor {
             else
                 sender.sendMessage(MessageUtil.getPrefix() + ChatColor.RED + " An error occurred when running this command, please contact an administrator!");
 
-            return true;
+            return CommandResult.COMMAND_ERROR;
         }
 
         try {
             if (raceCommand.requiresOp() && !sender.isOp()) {
-                sender.sendMessage(MessageUtil.getReplacementMessage(MessageUtil.getMessage("no-permission-command", "%prefix% &cYou do not have permission to execute this command!")));
-                return true;
+                return CommandResult.NO_PERMISSIONS;
             }
 
             if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode())) {
-                sender.sendMessage(MessageUtil.getReplacementMessage(MessageUtil.getMessage("no-permission-command", "%prefix% &cYou do not have permission to execute this command!")));
-                return true;
+                return CommandResult.NO_PERMISSIONS;
             }
 
             Method method = wrapper.method;
@@ -146,7 +168,7 @@ public class RaceCommandExecutor implements TabExecutor {
             int argCount = args.length;
 
             if (!(sender instanceof Player) && requestedParams[0].equals(Player.class))
-                return false;
+                return CommandResult.METHOD_ERROR;
 
             params[0] = sender;
 
@@ -155,15 +177,15 @@ public class RaceCommandExecutor implements TabExecutor {
                 int varParamCount = args.length - argCount;
 
                 if (raceCommand.minArgs() > varParamCount)
-                    return false;
+                    return CommandResult.METHOD_ERROR;
 
                 if (raceCommand.maxArgs() != -1 && raceCommand.maxArgs() < varParamCount)
-                    return false;
+                    return CommandResult.METHOD_ERROR;
 
                 String[] varParams = varParamCount == 0 ? new String[0] : Arrays.copyOfRange(args, argCount, args.length);
                 params[params.length - 1] = varParams;
             } else if (requestedParams.length - 1 != argCount) {
-                return false;
+                return CommandResult.METHOD_ERROR;
             }
 
             boolean commandFound = true;
@@ -179,19 +201,23 @@ public class RaceCommandExecutor implements TabExecutor {
             }
 
             if (commandFound) {
-                return (boolean) method.invoke(this, params);
+                if ((boolean) method.invoke(this, params)) {
+                    return CommandResult.SUCCESS;
+                } else {
+                    return CommandResult.METHOD_ERROR;
+                }
             }
 
-            return true;
+            return CommandResult.SUCCESS;
         } catch (RaceCommandException ex) {
             sender.sendMessage(MessageUtil.getReplacementMessage(MessageUtil.getMessage(ex.getMessage())));
-            return true;
+            return CommandResult.SUCCESS;
         } catch (IllegalAccessException | InvocationTargetException ex) {
             ex.printStackTrace();
         }
 
         sendUsageMessage(sender, wrapper.method);
-        return false;
+        return CommandResult.COMMAND_ERROR;
     }
 
     public void sendNoArgumentMessage(CommandSender sender) {
@@ -225,7 +251,6 @@ public class RaceCommandExecutor implements TabExecutor {
 
                 if (Arrays.asList(raceCommand.subCommands()).isEmpty() || Arrays.asList(raceCommand.subCommands()).contains(subCommand)) {
                     wrappers.add(wrapper);
-
                 }
             }
         }
@@ -279,6 +304,37 @@ public class RaceCommandExecutor implements TabExecutor {
         }
     }
 
+    @SuppressWarnings("deprecation")
+    protected List<String> verifyTabComplete(String arg, Class<?> parameter) {
+        List<String> completions = new ArrayList<String>();
+        switch (parameter.getSimpleName().toLowerCase()) {
+            case "material":
+                completions = Stream.of(Material.values()).map(Material::name).collect(Collectors.toList());
+                break;
+            case "player":
+                Player[] players = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
+                completions = Stream.of(players).map(Player::getName).collect(Collectors.toList());
+                break;
+            case "offlineplayer":
+                completions = Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
+                break;
+            case "world":
+                World[] worlds = Bukkit.getWorlds().toArray(new World[Bukkit.getWorlds().size()]);
+                completions = Stream.of(worlds).map(World::getName).collect(Collectors.toList());
+                break;
+        }
+
+        for (int i = 0; i < completions.size(); i++) {
+            String completion = completions.get(i);
+            if (!completion.toLowerCase().startsWith(arg.toLowerCase())) {
+                completions.remove(completion);
+                i--;
+            }
+        }
+
+        return completions;
+    }
+
     public String getUsage(Method method) {
         RaceCommand raceCommand = method.getAnnotation(RaceCommand.class);
         StringBuilder builder = new StringBuilder(raceCommand.commands().length > 0 ? raceCommand.commands()[0] + " " : "");
@@ -286,7 +342,6 @@ public class RaceCommandExecutor implements TabExecutor {
 
         if (raceCommand.subCommands().length > 0) {
             builder.append(raceCommand.subCommands()[0]).append(" ");
-            index = 2;
         }
 
         Class<?>[] requestedParams = method.getParameterTypes();
@@ -343,8 +398,17 @@ public class RaceCommandExecutor implements TabExecutor {
 
                 completions.add(cmd);
             }
+
+            for (int i = 0; i < completions.size(); i++) {
+                String completion = completions.get(i);
+                if (!completion.toLowerCase().startsWith(args[0].toLowerCase())) {
+                    completions.remove(completion);
+                    i--;
+                }
+            }
         }
 
+        boolean hasSubCommand = false;
         if (args.length == 2) {
             if (!commandMethods.containsKey(args[0]))
                 return null;
@@ -363,6 +427,46 @@ public class RaceCommandExecutor implements TabExecutor {
 
                 for (String sub : raceCommand.subCommands())
                     completions.add(sub);
+
+                hasSubCommand = true;
+            }
+
+            for (int i = 0; i < completions.size(); i++) {
+                String completion = completions.get(i);
+                if (!completion.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    completions.remove(completion);
+                    i--;
+                }
+            }
+        }
+
+        if (args.length > 1) {
+            if (args.length == 2 && hasSubCommand)
+                return completions;
+
+            Set<CommandWrapper> wrappers = commandMethods.get(args[0]);
+            for (CommandWrapper wrapper : wrappers) {
+                RaceCommand raceCommand = wrapper.getCommand();
+                if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode())) {
+                    continue;
+                }
+                Class<?>[] requestedParams = wrapper.method.getParameterTypes();
+                if (requestedParams.length < args.length)
+                    continue;
+
+                Class<?> requestedParam = requestedParams[args.length - 1];
+                if (raceCommand.subCommands().length > 0 && Arrays.asList(raceCommand.subCommands()).contains(args[1]))
+                    requestedParam = requestedParams[args.length - 2];
+
+                completions.addAll(verifyTabComplete(args[args.length - 1], requestedParam));
+            }
+
+            for (int i = 0; i < completions.size(); i++) {
+                String completion = completions.get(i);
+                if (!completion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                    completions.remove(completion);
+                    i--;
+                }
             }
         }
 

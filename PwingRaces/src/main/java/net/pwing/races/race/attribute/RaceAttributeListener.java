@@ -7,6 +7,7 @@ import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,6 +41,13 @@ public class RaceAttributeListener implements Listener {
     @EventHandler
     public void onRaceChangeEvent(RaceChangeEvent event) {
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
+
+        if (event.isCancelled())
+            return;
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
+        }, 20);
     }
 
     @EventHandler

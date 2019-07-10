@@ -17,6 +17,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class RaceExecutor extends RaceCommandExecutor {
 
     private PwingRaces plugin;
@@ -33,13 +37,46 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
+    @RaceCommand(commands = "info", description = "View your active race info.", permissionNode = "info")
+    public boolean raceInfoActive(Player player) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        Race race = racePlayer.getActiveRace();
+        RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
+
+        player.sendMessage(MessageUtil.getHeader());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + " / " + race.getRequiredExperience(raceData.getLevel()));
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience Until Level Up: " + ChatColor.WHITE + (race.getRequiredExperience(raceData.getLevel()) - raceData.getExperience()));
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Used Skillpoints: " + ChatColor.WHITE + raceData.getUsedSkillpoints());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Unused Skillpoints: " + ChatColor.WHITE + raceData.getUnusedSkillpoints());
+        for (String str : race.getSkilltreeMap().values()) {
+            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str);
+            player.sendMessage(ChatColor.WHITE + skilltree.getName() + " Skilltree: ");
+
+            for (RaceSkilltreeElement elem : skilltree.getElements()) {
+                ChatColor color = ChatColor.RED;
+                if (raceData.hasPurchasedElement(skilltree.getInternalName(), elem.getInternalName()))
+                    color = ChatColor.GREEN;
+
+                player.sendMessage(ChatColor.WHITE + "- " + color  + elem.getTitle());
+            }
+        }
+
+        return true;
+    }
+
     @RaceCommand(commands = "info", description = "View your race info.", permissionNode = "info")
     public boolean raceInfo(Player player, Race race) {
         RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
 
         player.sendMessage(MessageUtil.getHeader());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + "/" + race.getRequiredExperience(raceData.getLevel()));
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + " / " + race.getRequiredExperience(raceData.getLevel()));
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience Until Level Up: " + ChatColor.WHITE + (race.getRequiredExperience(raceData.getLevel()) - raceData.getExperience()));
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Used Skillpoints: " + ChatColor.WHITE + raceData.getUsedSkillpoints());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Unused Skillpoints: " + ChatColor.WHITE + raceData.getUnusedSkillpoints());
@@ -162,7 +199,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
-    @RaceCommand(commands = "skillpoint", subCommands = "set", description = "Set a player's skillpoints", permissionNode = "skillpoint.set")
+    @RaceCommand(commands = "set", subCommands = "skillpoint", description = "Set a player's skillpoints", permissionNode = "set.skillpoint")
     public boolean setSkillpoints(CommandSender sender, OfflinePlayer player, Race race, int skillpoints) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
@@ -176,7 +213,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
-    @RaceCommand(commands = "level", subCommands = "set", description = "Set a player's level.", permissionNode = "level.set")
+    @RaceCommand(commands = "set", subCommands = "level", description = "Set a player's level.", permissionNode = "set.level")
     public boolean setLevel(CommandSender sender, OfflinePlayer player, Race race, int level) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
@@ -190,7 +227,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
-    @RaceCommand(commands = "exp", subCommands = "set", description = "Set a player's race exp.", permissionNode = "exp.set")
+    @RaceCommand(commands = "set", subCommands = "exp", description = "Set a player's race exp.", permissionNode = "set.exp")
     public boolean setExp(CommandSender sender, OfflinePlayer player, Race race, int exp) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
@@ -215,6 +252,16 @@ public class RaceExecutor extends RaceCommandExecutor {
         }
 
         return super.verifyArgument(sender, arg, parameter);
+    }
+
+    @Override
+    protected List<String> verifyTabComplete(String arg, Class<?> parameter) {
+        if (parameter.getSimpleName().equalsIgnoreCase("race")) {
+            Race[] races = plugin.getRaceManager().getRaces().toArray(new Race[plugin.getRaceManager().getRaces().size()]);
+            return Stream.of(races).map(Race::getName).collect(Collectors.toList());
+        }
+
+        return super.verifyTabComplete(arg, parameter);
     }
 
     // Instead of a help message, open the race GUI.

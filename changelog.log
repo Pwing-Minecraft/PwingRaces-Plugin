@@ -1,3 +1,9 @@
+v1.1.1
+- Added tab completion for commands
+- Fixed bug where race attributes wouldn't update immediately on race change
+- Fixed slight issue with currency placeholder not working properly
+- Fixed minor permission node errors
+
 v1.1.0
 - Add in new API
 - Code cleanups
