@@ -49,11 +49,9 @@ public class RaceListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            plugin.getRaceManager().savePlayer(event.getPlayer());
-            plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
-            plugin.getRaceManager().getRacePlayerMap().remove(event.getPlayer().getUniqueId());
-        }, 20);
+        plugin.getRaceManager().savePlayer(event.getPlayer());
+        plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
+        plugin.getRaceManager().getRacePlayerMap().remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
