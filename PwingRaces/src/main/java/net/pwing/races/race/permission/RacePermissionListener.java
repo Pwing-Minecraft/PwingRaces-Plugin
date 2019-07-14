@@ -5,6 +5,7 @@ import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -17,12 +18,12 @@ public class RacePermissionListener implements Listener {
         this.permissionManager = permissionManager;
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
         permissionManager.applyPermissions(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
         permissionManager.applyPermissions(event.getPlayer());
     }

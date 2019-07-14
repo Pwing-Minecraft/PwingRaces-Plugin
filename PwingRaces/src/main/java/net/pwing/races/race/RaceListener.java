@@ -47,7 +47,7 @@ public class RaceListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent event) {
         plugin.getRaceManager().savePlayer(event.getPlayer());
         plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());

@@ -35,7 +35,7 @@ public class RaceTriggerListener implements Listener {
         triggerManager.runTriggers(player, "join");
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         triggerManager.runTriggers(player, "quit");

@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -28,12 +29,12 @@ public class RaceAttributeListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
         plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
     }
