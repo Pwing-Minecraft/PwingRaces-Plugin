@@ -385,89 +385,93 @@ public class RaceCommandExecutor implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> completions = new ArrayList<String>();
 
-        if (args.length == 1) {
-            for (String cmd : commandMethods.keySet()) {
-                CommandWrapper wrapper = commandMethods.get(cmd).iterator().next();
-                RaceCommand raceCommand = wrapper.getCommand();
+        try {
+            if (args.length == 1) {
+                for (String cmd : commandMethods.keySet()) {
+                    CommandWrapper wrapper = commandMethods.get(cmd).iterator().next();
+                    RaceCommand raceCommand = wrapper.getCommand();
 
-                if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode()))
-                    continue;
+                    if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode()))
+                        continue;
 
-                if (raceCommand.requiresOp() && !sender.isOp())
-                    continue;
+                    if (raceCommand.requiresOp() && !sender.isOp())
+                        continue;
 
-                completions.add(cmd);
-            }
+                    completions.add(cmd);
+                }
 
-            for (int i = 0; i < completions.size(); i++) {
-                String completion = completions.get(i);
-                if (!completion.toLowerCase().startsWith(args[0].toLowerCase())) {
-                    completions.remove(completion);
-                    i--;
+                for (int i = 0; i < completions.size(); i++) {
+                    String completion = completions.get(i);
+                    if (!completion.toLowerCase().startsWith(args[0].toLowerCase())) {
+                        completions.remove(completion);
+                        i--;
+                    }
                 }
             }
-        }
 
-        boolean hasSubCommand = false;
-        if (args.length == 2) {
-            if (!commandMethods.containsKey(args[0]))
-                return null;
+            boolean hasSubCommand = false;
+            if (args.length == 2) {
+                if (!commandMethods.containsKey(args[0]))
+                    return null;
 
-            for (CommandWrapper wrapper : commandMethods.get(args[0])) {
-                RaceCommand raceCommand = wrapper.getCommand();
+                for (CommandWrapper wrapper : commandMethods.get(args[0])) {
+                    RaceCommand raceCommand = wrapper.getCommand();
 
-                if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode()))
-                    continue;
+                    if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode()))
+                        continue;
 
-                if (raceCommand.requiresOp() && !sender.isOp())
-                    continue;
+                    if (raceCommand.requiresOp() && !sender.isOp())
+                        continue;
 
-                if (raceCommand.subCommands().length == 0)
-                    continue;
+                    if (raceCommand.subCommands().length == 0)
+                        continue;
 
-                for (String sub : raceCommand.subCommands())
-                    completions.add(sub);
+                    for (String sub : raceCommand.subCommands())
+                        completions.add(sub);
 
-                hasSubCommand = true;
-            }
+                    hasSubCommand = true;
+                }
 
-            for (int i = 0; i < completions.size(); i++) {
-                String completion = completions.get(i);
-                if (!completion.toLowerCase().startsWith(args[1].toLowerCase())) {
-                    completions.remove(completion);
-                    i--;
+                for (int i = 0; i < completions.size(); i++) {
+                    String completion = completions.get(i);
+                    if (!completion.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        completions.remove(completion);
+                        i--;
+                    }
                 }
             }
-        }
 
-        if (args.length > 1) {
-            if (args.length == 2 && hasSubCommand)
-                return completions;
+            if (args.length > 1) {
+                if (args.length == 2 && hasSubCommand)
+                    return completions;
 
-            Set<CommandWrapper> wrappers = commandMethods.get(args[0]);
-            for (CommandWrapper wrapper : wrappers) {
-                RaceCommand raceCommand = wrapper.getCommand();
-                if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode())) {
-                    continue;
+                Set<CommandWrapper> wrappers = commandMethods.get(args[0]);
+                for (CommandWrapper wrapper : wrappers) {
+                    RaceCommand raceCommand = wrapper.getCommand();
+                    if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode())) {
+                        continue;
+                    }
+                    Class<?>[] requestedParams = wrapper.method.getParameterTypes();
+                    if (requestedParams.length < args.length)
+                        continue;
+
+                    Class<?> requestedParam = requestedParams[args.length - 1];
+                    if (raceCommand.subCommands().length > 0 && Arrays.asList(raceCommand.subCommands()).contains(args[1]))
+                        requestedParam = requestedParams[args.length - 2];
+
+                    completions.addAll(verifyTabComplete(args[args.length - 1], requestedParam));
                 }
-                Class<?>[] requestedParams = wrapper.method.getParameterTypes();
-                if (requestedParams.length < args.length)
-                    continue;
 
-                Class<?> requestedParam = requestedParams[args.length - 1];
-                if (raceCommand.subCommands().length > 0 && Arrays.asList(raceCommand.subCommands()).contains(args[1]))
-                    requestedParam = requestedParams[args.length - 2];
-
-                completions.addAll(verifyTabComplete(args[args.length - 1], requestedParam));
-            }
-
-            for (int i = 0; i < completions.size(); i++) {
-                String completion = completions.get(i);
-                if (!completion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                    completions.remove(completion);
-                    i--;
+                for (int i = 0; i < completions.size(); i++) {
+                    String completion = completions.get(i);
+                    if (!completion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                        completions.remove(completion);
+                        i--;
+                    }
                 }
             }
+        } catch (Exception ex) {
+            // TODO: Try and get this exception to not throw at all if possible?
         }
 
         return completions;
