@@ -10,54 +10,57 @@ import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
-	private PwingRaces plugin;
+    private PwingRaces plugin;
 
-	public PlaceholderAPIHook(PwingRaces plugin) {
-		this.plugin = plugin;
-	}
+    public PlaceholderAPIHook(PwingRaces plugin) {
+        this.plugin = plugin;
+    }
 
-	@Override
-	public String getAuthor() {
-		return "Redned";
-	}
+    @Override
+    public String getAuthor() {
+        return "Redned";
+    }
 
-	@Override
-	public String getIdentifier() {
-		return "PwingRaces";
-	}
+    @Override
+    public String getIdentifier() {
+        return "PwingRaces";
+    }
 
-	@Override
-	public String getVersion() {
-		return plugin.getDescription().getVersion();
-	}
+    @Override
+    public String getVersion() {
+        return plugin.getDescription().getVersion();
+    }
 
-	@Override
-	public String onPlaceholderRequest(Player player, String params) {
-		if (player == null)
-			return "";
+    @Override
+    public String onPlaceholderRequest(Player player, String params) {
+        if (player == null)
+            return "";
 
-		Race race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
-		if (race == null) {
-			return "";
-		}
+        Race race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
+        if (race == null)
+            return "";
 
-		RaceData data = plugin.getRaceManager().getPlayerData(player, race);
-		switch (params) {
-			case "race":
-				return race.getName();
-			case "level":
-				return String.valueOf(data.getLevel());
-			case "maxlevel":
-				return String.valueOf(race.getMaxLevel());
-			case "exp":
-				return String.valueOf(data.getExperience());
-			case "exp_until_levelup":
-				return String.valueOf(race.getRequiredExperience(data.getLevel()) - data.getExperience());
-			case "used_skillpoints":
-				return String.valueOf(data.getUsedSkillpoints());
-			case "unused_skillpoints":
-				return String.valueOf(data.getUnusedSkillpoints());
-		}
-		return null;
-	}
+        RaceData data = plugin.getRaceManager().getPlayerData(player, race);
+        if (data == null)
+            return "";
+
+        switch (params) {
+            case "race":
+                return race.getName();
+            case "level":
+                return String.valueOf(data.getLevel());
+            case "maxlevel":
+                return String.valueOf(race.getMaxLevel());
+            case "exp":
+                return String.valueOf(data.getExperience());
+            case "exp_until_levelup":
+                return String.valueOf(race.getRequiredExperience(data.getLevel()) - data.getExperience());
+            case "used_skillpoints":
+                return String.valueOf(data.getUsedSkillpoints());
+            case "unused_skillpoints":
+                return String.valueOf(data.getUnusedSkillpoints());
+        }
+
+        return "";
+    }
 }
