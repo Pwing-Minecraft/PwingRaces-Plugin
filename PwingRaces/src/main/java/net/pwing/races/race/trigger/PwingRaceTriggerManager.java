@@ -46,7 +46,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         this.plugin = plugin;
 
         initTriggerPassives();
-        Bukkit.getServer().getPluginManager().registerEvents(new RaceTriggerListener(this), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new RaceTriggerListener(plugin), plugin);
     }
 
     public void initTriggerPassives() {

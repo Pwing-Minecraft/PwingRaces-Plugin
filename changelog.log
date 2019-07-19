@@ -1,3 +1,11 @@
+v1.1.2
+- Added a 'damage-mythicmob' trigger
+- Added a 'kill-mythicmob' trigger
+- Added a 'kill-entity' trigger
+- Fixed NPE if a placeholder value was null
+- Fixed exception if a tab complete option was not found
+- Updated event priorities to save playerdata in a cleaner fashion
+
 v1.1.1
 - Added tab completion for commands
 - Fixed bug where race attributes wouldn't update immediately on race change

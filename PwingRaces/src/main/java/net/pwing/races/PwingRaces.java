@@ -13,6 +13,7 @@ import net.pwing.races.command.RaceExecutor;
 import net.pwing.races.hooks.LibsDisguisesHook;
 import net.pwing.races.hooks.LoreAttributesHook;
 import net.pwing.races.hooks.MagicSpellsHook;
+import net.pwing.races.hooks.MythicMobsHook;
 import net.pwing.races.hooks.PlaceholderAPIHook;
 import net.pwing.races.hooks.QuestsHook;
 import net.pwing.races.hooks.VaultAPIHook;
@@ -41,6 +42,7 @@ public class PwingRaces extends JavaPlugin {
 
     private VaultAPIHook vaultHook;
     private MagicSpellsHook magicSpellsHook;
+    private MythicMobsHook mythicMobsHook;
     private QuestsHook questsHook;
     private LoreAttributesHook loreAttributesHook;
     private LibsDisguisesHook libsDisguisesHook;
@@ -83,6 +85,7 @@ public class PwingRaces extends JavaPlugin {
 
         vaultHook = new VaultAPIHook(MessageUtil.getMessage("currency-name-sing", ""), MessageUtil.getMessage("currency-name-plural", ""), this, "Vault");
         magicSpellsHook = new MagicSpellsHook(this, "MagicSpells");
+        mythicMobsHook = new MythicMobsHook(this, "MythicMobs");
         loreAttributesHook = new LoreAttributesHook(this, "LoreAttributesRecoded");
         questsHook = new QuestsHook(this, "Quests");
         libsDisguisesHook = new LibsDisguisesHook(this, "LibsDisguises");
@@ -237,6 +240,10 @@ public class PwingRaces extends JavaPlugin {
 
     public MagicSpellsHook getMagicSpellsHook() {
         return magicSpellsHook;
+    }
+
+    public MythicMobsHook getMythicMobsHook() {
+        return mythicMobsHook;
     }
 
     public QuestsHook getQuestsHook() {

@@ -1,5 +1,7 @@
 package net.pwing.races.race.trigger;
 
+import io.lumine.xikage.mythicmobs.MythicMobs;
+import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
@@ -14,6 +16,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -23,33 +26,37 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class RaceTriggerListener implements Listener {
 
-    private RaceTriggerManager triggerManager;
+    private PwingRaces plugin;
 
-    public RaceTriggerListener(RaceTriggerManager triggerManager) {
-        this.triggerManager = triggerManager;
+    public RaceTriggerListener(PwingRaces plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "join");
     }
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "quit");
     }
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "teleport");
     }
 
     @EventHandler
     public void onToggleFly(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         if (event.isFlying())
             triggerManager.runTriggers(player, "fly");
         else
@@ -59,6 +66,7 @@ public class RaceTriggerListener implements Listener {
     @EventHandler
     public void onToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         if (event.isSneaking())
             triggerManager.runTriggers(player, "sneak");
         else
@@ -74,6 +82,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = (Player) event.getEntity();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "take-damage");
     }
 
@@ -86,6 +95,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = (Player) event.getEntity();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "take-damage " + event.getDamager().getType().name().toLowerCase());
     }
 
@@ -98,8 +108,41 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = (Player) event.getDamager();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "damage-entity");
-        triggerManager.runTriggers(player, "damage-entity " + event.getDamager().getType().name().toLowerCase());
+        triggerManager.runTriggers(player, "damage-entity " + event.getEntity().getType().name().toLowerCase());
+
+        if (!plugin.getMythicMobsHook().isHooked())
+            return;
+
+        if (MythicMobs.inst().getAPIHelper().isMythicMob(event.getEntity())) {
+            triggerManager.runTriggers(player, "damage-mythicmob");
+            triggerManager.runTriggers(player, "damage-mythicmob " + event.getEntity().getType().name().toLowerCase());
+
+        }
+    }
+
+    @EventHandler
+    public void onKillEntity(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null)
+            return;
+
+        if (!(event.getEntity().getKiller() instanceof Player))
+            return;
+
+        Player player = event.getEntity().getKiller();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "kill-entity");
+        triggerManager.runTriggers(player, "kill-entity " + event.getEntity().getType().name().toLowerCase());
+
+        if (!plugin.getMythicMobsHook().isHooked())
+            return;
+
+        if (MythicMobs.inst().getAPIHelper().isMythicMob(event.getEntity())) {
+            triggerManager.runTriggers(player, "kill-mythicmob");
+            triggerManager.runTriggers(player, "kill-mythicmob " + event.getEntity().getType().name().toLowerCase());
+
+        }
     }
 
     @EventHandler
@@ -108,6 +151,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "move");
 
         for (BlockFace face : BlockFace.values())
@@ -120,6 +164,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "block-break");
         triggerManager.runTriggers(player, "block-break " + event.getBlock().getType().name().toLowerCase());
     }
@@ -130,6 +175,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "block-place");
         triggerManager.runTriggers(player, "block-place " + event.getBlock().getType().name().toLowerCase());
     }
@@ -137,6 +183,7 @@ public class RaceTriggerListener implements Listener {
     @EventHandler
     public void onLevelUp(RaceLevelUpEvent event) {
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         if (event.getNewLevel() >= event.getOldLevel()) {
             triggerManager.runTriggers(player, "race-levelup");
             triggerManager.runTriggers(player, "race-levelup " + event.getNewLevel());
@@ -152,6 +199,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         if (event.getNewExp() >= event.getOldExp())
             triggerManager.runTriggers(player, "race-exp-gain");
         else
@@ -164,6 +212,7 @@ public class RaceTriggerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "element-buy " + event.getPurchasedElement().getInternalName());
     }
 }
