@@ -1,6 +1,7 @@
 package net.pwing.races.race.trigger;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
@@ -116,9 +117,10 @@ public class RaceTriggerListener implements Listener {
             return;
 
         if (MythicMobs.inst().getAPIHelper().isMythicMob(event.getEntity())) {
-            triggerManager.runTriggers(player, "damage-mythicmob");
-            triggerManager.runTriggers(player, "damage-mythicmob " + event.getEntity().getType().name().toLowerCase());
+            ActiveMob mythicMob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
 
+            triggerManager.runTriggers(player, "damage-mythicmob");
+            triggerManager.runTriggers(player, "damage-mythicmob " + mythicMob.getType().getInternalName());
         }
     }
 
@@ -139,9 +141,10 @@ public class RaceTriggerListener implements Listener {
             return;
 
         if (MythicMobs.inst().getAPIHelper().isMythicMob(event.getEntity())) {
-            triggerManager.runTriggers(player, "kill-mythicmob");
-            triggerManager.runTriggers(player, "kill-mythicmob " + event.getEntity().getType().name().toLowerCase());
+            ActiveMob mythicMob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
 
+            triggerManager.runTriggers(player, "kill-mythicmob");
+            triggerManager.runTriggers(player, "kill-mythicmob " + mythicMob.getType().getInternalName());
         }
     }
 
