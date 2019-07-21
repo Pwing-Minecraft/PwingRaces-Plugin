@@ -38,6 +38,15 @@ public class AddPotionEffectTrigger extends RaceTriggerPassive {
         if (NumberUtil.isInteger(split[3]))
             amplifier = Integer.parseInt(split[3]) - 1;
 
+        boolean clear = true;
+        if (split.length > 4) {
+            clear = Boolean.parseBoolean(split[4]);
+        }
+
+        if (clear) {
+            player.removePotionEffect(effectType);
+        }
+
         player.addPotionEffect(new PotionEffect(effectType, duration, amplifier, false, false));
     }
 }
