@@ -409,11 +409,11 @@ public class RaceCommandExecutor implements TabExecutor {
                 }
             }
 
-            boolean hasSubCommand = false;
             if (args.length == 2) {
                 if (!commandMethods.containsKey(args[0]))
                     return null;
 
+                /*
                 for (CommandWrapper wrapper : commandMethods.get(args[0])) {
                     RaceCommand raceCommand = wrapper.getCommand();
 
@@ -428,8 +428,6 @@ public class RaceCommandExecutor implements TabExecutor {
 
                     for (String sub : raceCommand.subCommands())
                         completions.add(sub);
-
-                    hasSubCommand = true;
                 }
 
                 for (int i = 0; i < completions.size(); i++) {
@@ -439,12 +437,10 @@ public class RaceCommandExecutor implements TabExecutor {
                         i--;
                     }
                 }
+                */
             }
 
             if (args.length > 1) {
-                if (args.length == 2 && hasSubCommand)
-                    return completions;
-
                 Set<CommandWrapper> wrappers = commandMethods.get(args[0]);
                 for (CommandWrapper wrapper : wrappers) {
                     RaceCommand raceCommand = wrapper.getCommand();
