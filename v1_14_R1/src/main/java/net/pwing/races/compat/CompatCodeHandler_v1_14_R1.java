@@ -1,10 +1,16 @@
 package net.pwing.races.compat;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftSessionService;
 import net.pwing.races.PwingRaces;
+import net.pwing.races.utilities.HeadUtil;
+import net.pwing.races.utilities.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Arrow;
@@ -14,6 +20,9 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.Map;
+import java.util.UUID;
 
 public class CompatCodeHandler_v1_14_R1 extends CompatCodeHandlerDisabled {
 
@@ -167,5 +176,29 @@ public class CompatCodeHandler_v1_14_R1 extends CompatCodeHandlerDisabled {
 	@Override
 	public void setDamage(Arrow arrow, double damage) {
 		arrow.setDamage(damage);
+	}
+
+	@Override
+	public String getHeadURL(String player) {
+		String url = null;
+		if (HeadUtil.getCachedHeads().containsKey(player)) {
+			return HeadUtil.getCachedHeads().get(player);
+		} else {
+			try {
+				GameProfile gameProfile = new GameProfile(UUIDFetcher.getUUIDOf(player), player);
+				MinecraftSessionService sessionService = ((CraftServer) Bukkit.getServer()).getServer().getMinecraftSessionService();
+				sessionService.fillProfileProperties(gameProfile, true);
+				Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = sessionService.getTextures(gameProfile, true);
+				MinecraftProfileTexture texture = textures.get(MinecraftProfileTexture.Type.SKIN);
+				if (textures.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+					url = texture.getUrl();
+					HeadUtil.getCachedHeads().put(player, url);
+				}
+			} catch (Exception ex) {
+				return null;
+			}
+		}
+
+		return url;
 	}
 }

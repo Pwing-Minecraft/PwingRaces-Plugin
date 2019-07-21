@@ -1,4 +1,5 @@
 v1.1.3
+- Added an item cache for items in the race menu
 - Set the 'add-potion-effect' trigger to clear the current effect by default
 - Fixed major bug revolving around leveling up for races
 

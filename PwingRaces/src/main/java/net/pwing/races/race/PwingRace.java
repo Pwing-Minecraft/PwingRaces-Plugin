@@ -10,10 +10,12 @@ import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
 import net.pwing.races.api.race.attribute.RaceAttribute;
+import net.pwing.races.api.race.menu.RaceIconData;
 import net.pwing.races.api.race.permission.RacePermission;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.race.attribute.PwingRaceAttribute;
+import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
 import net.pwing.races.utilities.AttributeUtil;
 import net.pwing.races.utilities.ItemUtil;
@@ -35,10 +37,7 @@ public class PwingRace implements Race {
 
     private YamlConfiguration raceConfig;
 
-    private ItemStack iconUnlocked;
-    private ItemStack iconSelected;
-    private ItemStack iconLocked;
-    private int iconSlot;
+    private RaceIconData iconData;
 
     private Map<String, ItemStack> raceItems;
 
@@ -268,23 +267,22 @@ public class PwingRace implements Race {
             }
         }
 
-        this.iconUnlocked = ItemUtil.readItemFromConfig("race.gui.icon", raceConfig);
+        ItemStack iconUnlocked = ItemUtil.readItemFromConfig("race.gui.icon", raceConfig);
         if (iconUnlocked == null) {
             Bukkit.getLogger().warning("[PwingRaces] " + "Could not load icon for race " + name + ". Please make sure your config is correct!");
             return;
         }
 
+        ItemStack iconSelected = iconUnlocked;
         if (raceConfig.contains("race.gui.icon-selected"))
-            this.iconSelected = ItemUtil.readItemFromConfig("race.gui.icon-selected", raceConfig);
-        else
-            this.iconSelected = iconUnlocked;
+            iconSelected = ItemUtil.readItemFromConfig("race.gui.icon-selected", raceConfig);
 
+        ItemStack iconLocked = iconUnlocked;
         if (raceConfig.contains("race.gui.icon-locked"))
-            this.iconLocked = ItemUtil.readItemFromConfig("race.gui.icon-locked", raceConfig);
-        else
-            this.iconLocked = iconUnlocked;
+            iconLocked = ItemUtil.readItemFromConfig("race.gui.icon-locked", raceConfig);
 
-        this.iconSlot = raceConfig.getInt("race.gui.slot", 0);
+        int iconSlot = raceConfig.getInt("race.gui.slot", 0);
+        this.iconData = new PwingRaceIconData(iconUnlocked, iconLocked, iconSelected, iconSlot);
     }
 
     public String getName() {
@@ -335,36 +333,12 @@ public class PwingRace implements Race {
         this.raceItems = raceItems;
     }
 
-    public ItemStack getUnlockedIcon() {
-        return iconUnlocked;
+    public RaceIconData getIconData() {
+        return iconData;
     }
 
-    public void setUnlockedIcon(ItemStack iconUnlocked) {
-        this.iconUnlocked = iconUnlocked;
-    }
-
-    public ItemStack getSelectedIcon() {
-        return iconSelected;
-    }
-
-    public void setSelectedIcon(ItemStack iconSelected) {
-        this.iconSelected = iconSelected;
-    }
-
-    public ItemStack getLockedIcon() {
-        return iconLocked;
-    }
-
-    public void setLockedIcon(ItemStack iconLocked) {
-        this.iconLocked = iconLocked;
-    }
-
-    public int getIconSlot() {
-        return iconSlot;
-    }
-
-    public void setIconSlot(int iconSlot) {
-        this.iconSlot = iconSlot;
+    public void setIconData(RaceIconData iconData) {
+        this.iconData = iconData;
     }
 
     public Map<String, List<RacePermission>> getRacePermissionsMap() {

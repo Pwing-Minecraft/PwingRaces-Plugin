@@ -34,4 +34,6 @@ public interface ICompatCodeHandler {
 
 	void setPickupStatus(Arrow arrow, String status);
 	void setDamage(Arrow arrow, double damage);
+
+	String getHeadURL(String player);
 }

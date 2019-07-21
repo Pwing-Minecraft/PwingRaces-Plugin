@@ -16,35 +16,6 @@ import org.bukkit.potion.PotionEffectType;
 
 public class ItemUtil {
 
-    /*
-    @SuppressWarnings("deprecation")
-    public static ItemStack getReplacementItem(Race race, Player player, ItemStack stack) {
-        ItemStack newItem = stack.clone();
-        ItemMeta newMeta = newItem.getItemMeta();
-
-        if (newMeta.hasDisplayName())
-            newMeta.setDisplayName(MessageUtil.getPlaceholderMessage(race, player, newMeta.getDisplayName()));
-
-        if (newMeta.hasLore()) {
-            List<String> lores = new ArrayList<String>();
-            for (String lore : newMeta.getLore())
-                lores.add(MessageUtil.getPlaceholderMessage(race, player, lore));
-
-            newMeta.setLore(lores);
-        }
-
-        if (newMeta instanceof SkullMeta) {
-            SkullMeta skullMeta = (SkullMeta) newMeta;
-
-            if (skullMeta.hasOwner())
-                skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(MessageUtil.getPlaceholderMessage(race, player, skullMeta.getOwningPlayer().getName())));
-        }
-
-        newItem.setItemMeta(newMeta);
-        return newItem;
-    }
-    */
-
     public static ItemStack getItemFromRace(Race race, String str) {
         return race.getRaceItems().get(str);
     }
@@ -129,7 +100,8 @@ public class ItemUtil {
                     break;
                 case "owner":
                 case "head-owner":
-                    builder.setOwner(config.getString(configPath + "." + str));
+                    builder = new ItemBuilder(HeadUtil.getPlayerHead(builder.toItemStack(), config.getString(configPath + "." + str)));
+                    // builder.setOwner(config.getString(configPath + "." + str));
                     break;
                 case "color":
                 case "colour":

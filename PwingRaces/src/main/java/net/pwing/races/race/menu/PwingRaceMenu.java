@@ -1,14 +1,17 @@
-package net.pwing.races.race;
+package net.pwing.races.race.menu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
-import net.pwing.races.api.race.RaceMenu;
 import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.api.race.menu.RaceIconData;
+import net.pwing.races.api.race.menu.RaceMenu;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.builder.ItemBuilder;
 import net.pwing.races.builder.MenuBuilder;
@@ -39,12 +42,21 @@ public class PwingRaceMenu implements RaceMenu {
     private int slots;
     private boolean glassFilled;
 
+    private Map<String, RaceIconData> cachedIcons;
+
     public PwingRaceMenu(PwingRaces plugin, String name, int slots, boolean glassFilled) {
         this.plugin = plugin;
 
         this.name = name;
         this.slots = slots;
         this.glassFilled = glassFilled;
+
+        this.cachedIcons = new HashMap<String, RaceIconData>();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            for (Race race : plugin.getRaceManager().getRaces()) {
+                cachedIcons.put(race.getName(), race.getIconData());
+            }
+        });
     }
 
     public void openMenu(Player player) {
@@ -68,15 +80,16 @@ public class PwingRaceMenu implements RaceMenu {
             if (data == null)
                 continue;
 
-            ItemStack raceItem = race.getUnlockedIcon();
+            RaceIconData iconData = cachedIcons.get(race.getName());
+            ItemStack raceItem = race.getIconData().getUnlockedIcon();
 
             if (!data.isUnlocked())
-                raceItem = race.getLockedIcon();
+                raceItem = iconData.getLockedIcon();
             else if (racePlayer.getActiveRace() != null && racePlayer.getActiveRace().equals(race))
-                raceItem = race.getSelectedIcon();
+                raceItem = iconData.getSelectedIcon();
 
-            if (race.getIconSlot() >= 0) {
-                builder.setItem(raceItem, race.getIconSlot()).addClickEvent(race.getIconSlot(), new IMenuClickHandler() {
+            if (iconData.getIconSlot() >= 0) {
+                builder.setItem(raceItem, iconData.getIconSlot()).addClickEvent(iconData.getIconSlot(), new IMenuClickHandler() {
 
                     @Override
                     public void onClick(Player player, ClickType action, ItemStack item) {
@@ -98,7 +111,7 @@ public class PwingRaceMenu implements RaceMenu {
         RaceData data = racePlayer.getRaceData(race);
         MenuBuilder builder = new MenuBuilder(plugin, MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("race-gui", "%race% Race").replace("%race%", race.getName())));
 
-        ItemBuilder info = new ItemBuilder(race.getUnlockedIcon().clone());
+        ItemBuilder info = new ItemBuilder(cachedIcons.get(race.getName()).getUnlockedIcon().clone());
 
         List<String> lore = new ArrayList<String>();
         String level = ChatColor.GRAY + "Level: " + ChatColor.DARK_AQUA + data.getLevel();

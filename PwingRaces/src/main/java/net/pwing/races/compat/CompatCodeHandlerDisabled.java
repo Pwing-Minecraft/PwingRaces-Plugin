@@ -126,4 +126,9 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 	public void setDamage(Arrow arrow, double damage) {
 		arrow.spigot().setDamage(damage);
 	}
+
+	@Override
+	public String getHeadURL(String player) {
+		return null;
+	}
 }
