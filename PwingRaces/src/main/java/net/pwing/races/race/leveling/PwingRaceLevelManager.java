@@ -33,14 +33,13 @@ public class PwingRaceLevelManager implements RaceLevelManager {
 
     public boolean setLevel(Player player, Race race, int amount) {
         RaceData data = plugin.getRaceManager().getPlayerData(player, race);
-        RaceLevelUpEvent event = new RaceLevelUpEvent(player, race, data.getLevel(), data.getLevel() + amount);
+        RaceLevelUpEvent event = new RaceLevelUpEvent(player, race, data.getLevel(), amount);
         Bukkit.getPluginManager().callEvent(event);
 
         if (race.isMaxLevel(data.getLevel()))
             return false;
 
         int newAmount = event.getNewLevel();
-
         if (event.getNewLevel() > race.getMaxLevel())
             newAmount = race.getMaxLevel();
 

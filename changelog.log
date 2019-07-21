@@ -1,3 +1,6 @@
+v1.1.3
+- Fixed major bug revolving around leveling up for races
+
 v1.1.2
 - Added a 'damage-mythicmob' trigger
 - Added a 'kill-mythicmob' trigger
