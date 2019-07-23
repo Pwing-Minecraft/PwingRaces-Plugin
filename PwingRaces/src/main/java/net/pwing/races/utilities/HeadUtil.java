@@ -50,6 +50,10 @@ public class HeadUtil {
     }
 
     public static String getSkullURL(String player) {
+        if (cachedHeads.containsKey(player)) {
+            return cachedHeads.get(player);
+        }
+
         try {
             return PwingRaces.getInstance().getCompatCodeHandler().getHeadURL(player);
         } catch (Exception ex) {
