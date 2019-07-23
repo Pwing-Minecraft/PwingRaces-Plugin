@@ -50,7 +50,12 @@ public class HeadUtil {
     }
 
     public static String getSkullURL(String player) {
-        return PwingRaces.getInstance().getCompatCodeHandler().getHeadURL(player);
+        try {
+            return PwingRaces.getInstance().getCompatCodeHandler().getHeadURL(player);
+        } catch (Exception ex) {
+            PwingRaces.getInstance().getLogger().warning("Client has sent too many requests to Mojang's server, using builtin head system.");
+            return null;
+        }
     }
 
     public static Map<String, String> getCachedHeads() {
