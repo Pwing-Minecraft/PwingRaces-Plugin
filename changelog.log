@@ -3,6 +3,7 @@ v1.1.4
 - Added add/remove commands for race level
 - Added add/remove commands for race exp
 - Added add/remove commands for race skillpoints
+- Added check so player's don't accidentally waste their money on reclaiming skillpoints if they've not spent any
 
 v1.1.3
 - Added an item cache for items in the race menu
