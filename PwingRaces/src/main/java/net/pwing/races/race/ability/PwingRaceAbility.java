@@ -1,48 +1,26 @@
 package net.pwing.races.race.ability;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.ability.RaceAbility;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import net.pwing.races.utilities.ItemUtil;
 
-public abstract class PwingRaceAbility implements RaceAbility, Listener {
+public abstract class PwingRaceAbility extends RaceAbility {
 
     protected PwingRaces plugin;
 
-    protected String requirement;
-    protected String internalName;
-
-    protected double cooldown;
-
-    protected ItemStack[] abilityItems;
-    protected ItemStack[] leftClickAbilityItems;
-    protected ItemStack[] consumeAbilityItems;
-
-    protected String requiredPermission;
-    protected String cooldownMessage;
-
-    protected boolean cancelDefaultAction;
-    protected boolean overrideDefaultAction;
-
-    protected List<String> allowedWorlds = new ArrayList<String>();
-    protected List<String> passives = new ArrayList<String>();
-
     public PwingRaceAbility(PwingRaces plugin, String internalName, String configPath, FileConfiguration config, String requirement) {
-        this.plugin = plugin;
-        this.internalName = internalName;
-        this.requirement = requirement;
+        super(internalName, configPath, config, requirement);
 
-        loadDataFromConfig(configPath, config);
+        this.plugin = plugin;
     }
 
+    // Override the methods in RaceAbility as we have our own code to check this already
+    @Override
     public void loadDataFromConfig(String configPath, FileConfiguration config) {
         this.cooldown = config.getDouble(configPath + ".cooldown", 0);
 
@@ -96,98 +74,8 @@ public abstract class PwingRaceAbility implements RaceAbility, Listener {
 
     public abstract boolean runAbility(Player player);
 
-    public String getRequirement() {
-        return requirement;
-    }
-
-    public void setRequirement(String requirement) {
-        this.requirement = requirement;
-    }
-
-    public double getCooldown() {
-        return cooldown;
-    }
-
-    public void setCooldown(double cooldown) {
-        this.cooldown = cooldown;
-    }
-
-    public ItemStack[] getAbilityItems() {
-        return abilityItems;
-    }
-
-    public void setAbilityItems(ItemStack[] abilityItems) {
-        this.abilityItems = abilityItems;
-    }
-
-    public ItemStack[] getLeftClickAbilityItems() {
-        return leftClickAbilityItems;
-    }
-
-    public void setLeftClickAbilityItems(ItemStack[] leftClickAbilityItems) {
-        this.leftClickAbilityItems = leftClickAbilityItems;
-    }
-
-    public ItemStack[] getConsumeAbilityItems() {
-        return consumeAbilityItems;
-    }
-
-    public void setConsumeAbilityItems(ItemStack[] consumeAbilityItems) {
-        this.consumeAbilityItems = consumeAbilityItems;
-    }
-
-    public String getRequiredPermission() {
-        return requiredPermission;
-    }
-
-    public void setRequiredPermission(String requiredPermission) {
-        this.requiredPermission = requiredPermission;
-    }
-
-    public String getInternalName() {
-        return internalName;
-    }
-
-    public String getCooldownMessage() {
-        return cooldownMessage;
-    }
-
-    public void setCooldownMessage(String cooldownMessage) {
-        this.cooldownMessage = cooldownMessage;
-    }
-
-    public boolean isDefaultActionOverriden() {
-        return overrideDefaultAction;
-    }
-
-    public void setOverrideDefaultAction(boolean overrideDefaultAction) {
-        this.overrideDefaultAction = overrideDefaultAction;
-    }
-
-    public boolean isDefaultActionCancelled() {
-        return cancelDefaultAction;
-    }
-
-    public void setCancelDefaultAction(boolean cancelDefaultAction) {
-        this.cancelDefaultAction = cancelDefaultAction;
-    }
-
-    public List<String> getAllowedWorlds() {
-        return allowedWorlds;
-    }
-
-    public void setAllowedWorlds(List<String> allowedWorlds) {
-        this.allowedWorlds = allowedWorlds;
-    }
-
-    public List<String> getPassives() {
-        return passives;
-    }
-
-    public void setPassives(List<String> passives) {
-        this.passives = passives;
-    }
-
+    // Override the methods in RaceAbility as we have our own version code to check this already
+    @Override
     public boolean canRun(Player player, ItemStack stack) {
         ItemStack hand = plugin.getCompatCodeHandler().getItemInMainHand(player);
         if (hand == null)

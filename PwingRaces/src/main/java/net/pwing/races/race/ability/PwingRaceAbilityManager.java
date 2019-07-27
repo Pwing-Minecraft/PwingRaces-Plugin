@@ -172,10 +172,9 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         cooldown.put(ability, cooldownMap);
     }
 
-    // TODO: Convert to normal RaceAbility
-    public PwingRaceAbility getAbility(String key, String requirement, String configPath, FileConfiguration config) {
+    public RaceAbility getAbility(String key, String requirement, String configPath, FileConfiguration config) {
         String abilityClassName = config.getString(configPath + ".ability", "DummyAbility");
-        Class<? extends PwingRaceAbility> abilityClass = null;
+        Class<? extends RaceAbility> abilityClass = null;
 
         File folder = plugin.getModuleFolder();
         if (!folder.exists())
@@ -200,13 +199,13 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         }
 
         try {
-            abilityClass = classLoader.loadClass("net.pwing.races.race.ability.abilities." + abilityClassName).asSubclass(PwingRaceAbility.class);
+            abilityClass = classLoader.loadClass("net.pwing.races.race.ability.abilities." + abilityClassName).asSubclass(RaceAbility.class);
         } catch (ClassNotFoundException ex) {
             try {
                 // Assume it's a custom ability and the path is defined
                 if (abilityClassName.contains("")) {
                     plugin.getLogger().info("Loading custom ability " + abilityClassName);
-                    abilityClass = classLoader.loadClass(abilityClassName).asSubclass(PwingRaceAbility.class);
+                    abilityClass = classLoader.loadClass(abilityClassName).asSubclass(RaceAbility.class);
                 } else {
                     plugin.getLogger().warning("Attempted to find ability with name " + abilityClassName + ", but nothing was found.");
                     return null;
@@ -225,10 +224,10 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         }
 
         try {
-            Constructor<? extends PwingRaceAbility> abilityConstructor = abilityClass.getConstructor(PwingRaces.class, String.class, String.class, FileConfiguration.class, String.class);
+            Constructor<? extends RaceAbility> abilityConstructor = abilityClass.getConstructor(PwingRaces.class, String.class, String.class, FileConfiguration.class, String.class);
             abilityConstructor.setAccessible(true);
 
-            PwingRaceAbility ability = abilityConstructor.newInstance(plugin, key, configPath, config, requirement);
+            RaceAbility ability = abilityConstructor.newInstance(plugin, key, configPath, config, requirement);
             // RaceAbility implements listener, so no need to check if its assignable
             plugin.getServer().getPluginManager().registerEvents(ability, plugin);
 
