@@ -199,7 +199,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
-    @RaceCommand(commands = "set", subCommands = "skillpoint", description = "Set a player's skillpoints", permissionNode = "set.skillpoint")
+    @RaceCommand(commands = "set", subCommands = "skillpoint", description = "Set a player's skillpoints.", permissionNode = "set.skillpoint")
     public boolean setSkillpoints(CommandSender sender, OfflinePlayer player, Race race, int skillpoints) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null) {
@@ -210,6 +210,34 @@ public class RaceExecutor extends RaceCommandExecutor {
         RaceData raceData = racePlayer.getRaceData(race);
         raceData.setUnusedSkillpoints(skillpoints);
         sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(skillpoints)));
+        return true;
+    }
+
+    @RaceCommand(commands = "add", subCommands = "skillpoint", description = "Add to a player's skillpoint amount.", permissionNode = "add.skillpoint")
+    public boolean addSkillpoints(CommandSender sender, OfflinePlayer player, Race race, int skillpoints) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        RaceData raceData = racePlayer.getRaceData(race);
+        raceData.setUnusedSkillpoints(raceData.getUnusedSkillpoints() + skillpoints);
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints() + skillpoints)));
+        return true;
+    }
+
+    @RaceCommand(commands = "remove", subCommands = "skillpoint", description = "Remove from a player's skillpoint amount.", permissionNode = "remove.skillpoint")
+    public boolean removeSkillpoints(CommandSender sender, OfflinePlayer player, Race race, int skillpoints) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        RaceData raceData = racePlayer.getRaceData(race);
+        raceData.setUnusedSkillpoints(raceData.getUnusedSkillpoints() - skillpoints);
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints() - skillpoints)));
         return true;
     }
 
@@ -227,6 +255,34 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
+    @RaceCommand(commands = "add", subCommands = "level", description = "Add to a player's level.", permissionNode = "add.level")
+    public boolean addLevel(CommandSender sender, OfflinePlayer player, Race race, int level) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        RaceData raceData = racePlayer.getRaceData(race);
+        raceData.setLevel(raceData.getLevel() + level);
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.")).replace("%level%", String.valueOf(raceData.getLevel() + level)));
+        return true;
+    }
+
+    @RaceCommand(commands = "remove", subCommands = "level", description = "Remove from a player's level.", permissionNode = "remove.level")
+    public boolean removeLevel(CommandSender sender, OfflinePlayer player, Race race, int level) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        RaceData raceData = racePlayer.getRaceData(race);
+        raceData.setLevel(raceData.getLevel() - level);
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.")).replace("%level%", String.valueOf(raceData.getLevel() - level)));
+        return true;
+    }
+
     @RaceCommand(commands = "set", subCommands = "exp", description = "Set a player's race exp.", permissionNode = "set.exp")
     public boolean setExp(CommandSender sender, OfflinePlayer player, Race race, int exp) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
@@ -238,6 +294,34 @@ public class RaceExecutor extends RaceCommandExecutor {
         RaceData raceData = racePlayer.getRaceData(race);
         raceData.setExperience(exp);
         sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.")).replace("%exp%", String.valueOf(exp)));
+        return true;
+    }
+
+    @RaceCommand(commands = "add", subCommands = "exp", description = "Add to a player's race exp.", permissionNode = "add.exp")
+    public boolean addExp(CommandSender sender, OfflinePlayer player, Race race, int exp) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        RaceData raceData = racePlayer.getRaceData(race);
+        raceData.setExperience(raceData.getExperience() + exp);
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.")).replace("%exp%", String.valueOf(raceData.getExperience() + exp)));
+        return true;
+    }
+
+    @RaceCommand(commands = "remove", subCommands = "exp", description = "Remove from a player's race exp.", permissionNode = "remove.exp")
+    public boolean removeExp(CommandSender sender, OfflinePlayer player, Race race, int exp) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        RaceData raceData = racePlayer.getRaceData(race);
+        raceData.setExperience(raceData.getExperience() - exp);
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.")).replace("%exp%", String.valueOf(raceData.getExperience() - exp)));
         return true;
     }
 
