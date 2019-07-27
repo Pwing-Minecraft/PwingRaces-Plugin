@@ -26,6 +26,9 @@ public class MessageUtil {
         config.set(configPath + ".set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.");
         config.set(configPath + ".set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.");
         config.set(configPath + ".set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.");
+
+        // Adding default from version 1.1.4
+        config.set(configPath + ".no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
         configManager.getMessageConfig().saveConfig();
 
         for (String str : config.getConfigurationSection(configPath).getKeys(false))

@@ -206,6 +206,13 @@ public class PwingRaceMenu implements RaceMenu {
                             VaultAPIHook vaultHook = plugin.getVaultHook();
                             if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost)) {
                                 MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                                player.closeInventory();
+                                return;
+                            }
+
+                            if (data.getPurchasedElementsMap().isEmpty()) {
+                                MessageUtil.sendMessage(player, "no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
+                                player.closeInventory();
                                 return;
                             }
 
@@ -257,6 +264,7 @@ public class PwingRaceMenu implements RaceMenu {
                             VaultAPIHook vaultHook = plugin.getVaultHook();
                             if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost)) {
                                 MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                                player.closeInventory();
                                 return;
                             }
 
