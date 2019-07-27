@@ -2,12 +2,14 @@ package net.pwing.races.hooks.quests;
 
 import java.util.Map;
 
+import me.blackvein.quests.CustomReward;
+import net.pwing.races.api.events.RaceUnlockEvent;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.utilities.MessageUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import me.blackvein.quests.CustomReward;
 
 public class RaceReward extends CustomReward {
 
@@ -32,7 +34,14 @@ public class RaceReward extends CustomReward {
         if (race == null)
             return;
 
+        RaceUnlockEvent event = new RaceUnlockEvent(player, race);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            MessageUtil.sendMessage(player, "cannot-unlock-race", "%prefix% &cCannot unlock race.");
+            return;
+        }
+
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
-        racePlayer.getRaceData(race).setUnlocked(true);
+        racePlayer.getRaceData(event.getRace()).setUnlocked(true);
     }
 }

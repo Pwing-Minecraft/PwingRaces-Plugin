@@ -2,11 +2,11 @@ package net.pwing.races.hooks.quests;
 
 import java.util.Map;
 
+import me.blackvein.quests.CustomRequirement;
+import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 import org.bukkit.entity.Player;
-
-import me.blackvein.quests.CustomRequirement;
 
 public class RaceExperienceRequirement extends CustomRequirement {
 
@@ -25,7 +25,11 @@ public class RaceExperienceRequirement extends CustomRequirement {
         int amount = (int) data.get("Amount");
 
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
-        if (racePlayer.getRaceData(racePlayer.getActiveRace()).getExperience() >= amount)
+        Race race = racePlayer.getActiveRace();
+        if (race == null)
+            return false;
+
+        if (racePlayer.getRaceData(race).getExperience() >= amount)
             return true;
 
         return false;
