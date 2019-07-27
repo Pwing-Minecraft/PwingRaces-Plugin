@@ -23,6 +23,7 @@ import net.pwing.races.menu.ConfirmationMenu;
 import net.pwing.races.menu.IConfirmationHandler;
 import net.pwing.races.menu.IMenuClickHandler;
 import net.pwing.races.race.skilltree.PwingRaceSkilltreeMenu;
+import net.pwing.races.utilities.ItemUtil;
 import net.pwing.races.utilities.MessageUtil;
 import net.pwing.races.utilities.RaceMaterial;
 import net.pwing.races.utilities.RaceSound;
@@ -275,7 +276,7 @@ public class PwingRaceMenu implements RaceMenu {
                                 return;
 
                             vaultHook.withdrawPlayer(player, cost);
-                            race.getRaceItems().values().forEach(raceItem -> player.getInventory().addItem(raceItem));
+                            race.getRaceItems().values().forEach(raceItem -> ItemUtil.addItem(player, raceItem));
                             MessageUtil.sendMessage(player, "race-item-claim", "%prefix% Sucessfully reclaimed your race items!");
                             player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
                             openRaceMenu(player, race);

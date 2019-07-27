@@ -1,6 +1,5 @@
 package net.pwing.races.utilities;
 
-import net.pwing.races.api.race.Race;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.builder.ItemBuilder;
 
@@ -9,6 +8,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -16,8 +16,13 @@ import org.bukkit.potion.PotionEffectType;
 
 public class ItemUtil {
 
-    public static ItemStack getItemFromRace(Race race, String str) {
-        return race.getRaceItems().get(str);
+    public static void addItem(Player player, ItemStack item) {
+        // Check if their inventory is full
+        if (player.getInventory().firstEmpty() == -1) {
+            player.getWorld().dropItem(player.getLocation(), item);
+        } else {
+            player.getInventory().addItem(item);
+        }
     }
 
     public static ItemStack fromString(String str) {

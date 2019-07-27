@@ -30,6 +30,7 @@ import net.pwing.races.race.menu.PwingRaceMenu;
 import net.pwing.races.race.permission.PwingRacePermissionManager;
 import net.pwing.races.race.skilltree.PwingRaceSkilltreeManager;
 import net.pwing.races.race.trigger.PwingRaceTriggerManager;
+import net.pwing.races.utilities.ItemUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -171,7 +172,7 @@ public class PwingRaceManager implements RaceManager {
                     plugin.getLogger().severe("Could not find default race " + plugin.getConfigManager().getDefaultRace() + "! Please make sure your config is correct!");
                 } else {
                     config.set("active-race", plugin.getConfigManager().getDefaultRace());
-                    defaultRace.getRaceItems().values().forEach(item -> player.getInventory().addItem(item));
+                    defaultRace.getRaceItems().values().forEach(item -> ItemUtil.addItem(player, item));
                 }
             }
         }
