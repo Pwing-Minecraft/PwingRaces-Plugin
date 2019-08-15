@@ -7,6 +7,7 @@ import java.util.List;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
@@ -30,7 +31,7 @@ public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
         }
     }
 
-    public void initSkilltree(String regName, YamlConfiguration config) {
+    public void initSkilltree(String regName, FileConfiguration config) {
         skilltrees.add(new PwingRaceSkilltree(regName, config));
     }
 

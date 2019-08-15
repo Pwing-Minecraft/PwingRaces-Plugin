@@ -8,7 +8,7 @@ import net.pwing.races.config.RaceConfigurationManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class MessageUtil {
     public static void initMessages(String configPath, RaceConfigurationManager configManager) {
         messages = new HashMap<String, String>();
 
-        YamlConfiguration config = configManager.getMessageConfig().getConfig();
+        FileConfiguration config = configManager.getMessageConfig().getConfig();
         // Adding default from version 1.0.9
         config.set(configPath + ".set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.");
         config.set(configPath + ".set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.");

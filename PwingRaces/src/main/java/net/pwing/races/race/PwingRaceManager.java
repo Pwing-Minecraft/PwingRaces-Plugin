@@ -36,7 +36,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class PwingRaceManager implements RaceManager {
@@ -114,7 +113,7 @@ public class PwingRaceManager implements RaceManager {
 
         RaceConfiguration playerConfig = plugin.getConfigManager().getPlayerDataConfig(player.getUniqueId());
 
-        YamlConfiguration config = playerConfig.getConfig();
+        FileConfiguration config = playerConfig.getConfig();
         String raceName = plugin.getConfigManager().getDefaultRace();
         Race activeRace = racePlayer.getActiveRace();
         if (activeRace != null) {
@@ -162,7 +161,7 @@ public class PwingRaceManager implements RaceManager {
     public void registerPlayer(Player player, boolean override) {
         RaceConfiguration playerConfig = plugin.getConfigManager().getPlayerDataConfig(player.getUniqueId());
 
-        YamlConfiguration config = playerConfig.getConfig();
+        FileConfiguration config = playerConfig.getConfig();
         if (!config.contains("active-race") || override) {
             boolean hasDefaultRace = plugin.getConfigManager().hasDefaultRaceOnJoin();
 

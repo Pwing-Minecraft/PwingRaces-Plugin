@@ -3,14 +3,15 @@ package net.pwing.races.config;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class RaceConfiguration {
 
 	private File configFile;
-	private YamlConfiguration config;
+	private FileConfiguration config;
 
-	public RaceConfiguration(File configFile, YamlConfiguration config) {
+	public RaceConfiguration(File configFile, FileConfiguration config) {
 		this.configFile = configFile;
 		this.config = config;
 	}
@@ -37,7 +38,7 @@ public class RaceConfiguration {
 		return configFile;
 	}
 
-	public YamlConfiguration getConfig() {
+	public FileConfiguration getConfig() {
 		return config;
 	}
 }

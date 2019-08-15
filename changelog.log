@@ -5,6 +5,7 @@ v1.1.6
 - Added 'health-regen' as a modifiable attribute
 - Added 'race-change' trigger
 - Moved 'block-relative' trigger to run on tick rather than movement
+- Code cleanups
 
 v1.1.5
 - Added more API functionality for abilities

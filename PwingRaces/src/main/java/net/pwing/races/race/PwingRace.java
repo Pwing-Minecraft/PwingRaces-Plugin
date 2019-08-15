@@ -24,7 +24,8 @@ import net.pwing.races.utilities.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 public class PwingRace implements Race {
@@ -38,7 +39,7 @@ public class PwingRace implements Race {
 
     private boolean requireUnlock = false;
 
-    private YamlConfiguration raceConfig;
+    private FileConfiguration raceConfig;
 
     private RaceIconData iconData;
 
@@ -55,17 +56,17 @@ public class PwingRace implements Race {
 
     // private RaceCommandExecutor executor;
 
-    public PwingRace(RaceManager raceManager, YamlConfiguration raceConfig) {
+    public PwingRace(RaceManager raceManager, FileConfiguration raceConfig) {
         loadDataFromConfig(raceManager, raceConfig);
 
         // this.executor = new IndividualRaceExecutor(raceManager.getPlugin(), this, name.toLowerCase());
     }
 
-    public void loadDataFromConfig(RaceManager raceManager, YamlConfiguration raceConfig) {
+    public void loadDataFromConfig(RaceManager raceManager, FileConfiguration raceConfig) {
         this.raceConfig = raceConfig;
 
         this.name = raceConfig.getString("race.name");
-        this.displayName = ChatColor.translateAlternateColorCodes('&', raceConfig.getString("race.displayName", name));
+        this.displayName = ChatColor.translateAlternateColorCodes('&', raceConfig.getString("race.display-name", name));
 
         this.maxLevel = raceConfig.getInt("race.max-level");
 
@@ -117,34 +118,6 @@ public class PwingRace implements Race {
             }
         }
 
-        // Get triggers defined in the elements section
-        if (raceConfig.contains("race.elements")) {
-            for (String elem : raceConfig.getConfigurationSection("race.elements").getKeys(false)) {
-                if (!raceConfig.contains("race.elements." + elem + ".triggers"))
-                    continue;
-
-                for (String trigger : raceConfig.getConfigurationSection("race.elements." + elem + ".triggers").getKeys(false)) {
-                    List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
-                    raceTriggers.add(new RaceTrigger(trigger, "race.elements." + elem + ".triggers." + trigger, raceConfig, elem));
-                    raceTriggersMap.put(trigger, raceTriggers);
-                }
-            }
-        }
-
-        // Get triggers defined in the level section
-        if (raceConfig.contains("race.levels")) {
-            for (String level : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
-                if (!raceConfig.contains("race.levels." + level + ".triggers"))
-                    continue;
-
-                for (String trigger : raceConfig.getConfigurationSection("race.levels." + level + ".triggers").getKeys(false)) {
-                    List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
-                    raceTriggers.add(new RaceTrigger(trigger, "race.levels." + level + ".triggers." + trigger, raceConfig, "level" + level));
-                    raceTriggersMap.put(trigger, raceTriggers);
-                }
-            }
-        }
-
         this.raceAttributesMap = new HashMap<String, List<RaceAttribute>>();
 
         // Get attributes defined in the attributes section
@@ -156,34 +129,6 @@ public class PwingRace implements Race {
             }
         }
 
-        // Get attributes defined in the elements section
-        if (raceConfig.contains("race.elements")) {
-            for (String elem : raceConfig.getConfigurationSection("race.elements").getKeys(false)) {
-                if (!raceConfig.contains("race.elements." + elem + ".attributes"))
-                    continue;
-
-                for (String attribute : raceConfig.getConfigurationSection("race.elements." + elem + ".attributes").getKeys(false)) {
-                    List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
-                    raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), raceConfig.getDouble("race.elements." + elem + ".attributes." + attribute), elem));
-                    raceAttributesMap.put(attribute, raceAttributes);
-                }
-            }
-        }
-
-        // Get attributes defined in the level section
-        if (raceConfig.contains("race.levels")) {
-            for (String level : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
-                if (!raceConfig.contains("race.levels." + level + ".attributes"))
-                    continue;
-
-                for (String attribute : raceConfig.getConfigurationSection("race.levels." + level + ".attributes").getKeys(false)) {
-                    List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
-                    raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), raceConfig.getDouble("race.levels." + level + ".attributes." + attribute), "level" + level));
-                    raceAttributesMap.put(attribute, raceAttributes);
-                }
-            }
-        }
-
         this.racePermissionsMap = new HashMap<String, List<RacePermission>>();
 
         // Get permissions defined in the permissions section
@@ -192,34 +137,6 @@ public class PwingRace implements Race {
                 List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(str, new ArrayList<RacePermission>());
                 racePermissions.add(new PwingRacePermission(str, "none"));
                 racePermissionsMap.put(str, racePermissions);
-            }
-        }
-
-        // Get permissions defined in the elements section
-        if (raceConfig.contains("race.elements")) {
-            for (String elem : raceConfig.getConfigurationSection("race.elements").getKeys(false)) {
-                if (!raceConfig.contains("race.elements." + elem + ".permissions"))
-                    continue;
-
-                for (String permission : raceConfig.getStringList("race.elements." + elem + ".permissions")) {
-                    List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
-                    racePermissions.add(new PwingRacePermission(permission, elem));
-                    racePermissionsMap.put(permission, racePermissions);
-                }
-            }
-        }
-
-        // Get permissions defined in the level section
-        if (raceConfig.contains("race.levels")) {
-            for (String level : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
-                if (!raceConfig.contains("race.levels," + level + ".permissions"))
-                    continue;
-
-                for (String permission : raceConfig.getStringList("race.levels." + level + ".permissions")) {
-                    List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
-                    racePermissions.add(new PwingRacePermission(permission, "level" + level));
-                    racePermissionsMap.put(permission, racePermissions);
-                }
             }
         }
 
@@ -238,36 +155,86 @@ public class PwingRace implements Race {
             }
         }
 
-        // Get abilities defined in the elements section
+        // Get sections in the elements section
         if (raceConfig.contains("race.elements")) {
-            for (String elem : raceConfig.getConfigurationSection("race.elements").getKeys(false)) {
-                if (!raceConfig.contains("race.elements." + elem + ".abilities"))
-                    continue;
+            ConfigurationSection section = raceConfig.getConfigurationSection("race.elements");
+            for (String elem : section.getKeys(false)) {
+                ConfigurationSection elementSection = section.getConfigurationSection(elem);
+                if (elementSection.contains("abilities")) {
+                    for (String ability : elementSection.getConfigurationSection("abilities").getKeys(false)) {
+                        List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<RaceAbility>());
+                        RaceAbility raceAbility = abilityManager.getAbility(ability, elem, "race.elements." + elem + ".abilities." + ability, raceConfig);
+                        if (raceAbility != null)
+                            raceAbilities.add(raceAbility);
 
-                for (String ability : raceConfig.getConfigurationSection("race.elements." + elem + ".abilities").getKeys(false)) {
-                    List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<RaceAbility>());
-                    RaceAbility raceAbility = abilityManager.getAbility(ability, elem, "race.elements." + elem + ".abilities." + ability, raceConfig);
-                    if (raceAbility != null)
-                        raceAbilities.add(raceAbility);
+                        raceAbilitiesMap.put(ability, raceAbilities);
+                    }
+                }
 
-                    raceAbilitiesMap.put(ability, raceAbilities);
+                if (elementSection.contains("permissions")) {
+                    for (String permission : elementSection.getStringList("permissions")) {
+                        List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
+                        racePermissions.add(new PwingRacePermission(permission, elem));
+                        racePermissionsMap.put(permission, racePermissions);
+                    }
+                }
+
+                if (elementSection.contains("attributes")) {
+                    for (String attribute : elementSection.getConfigurationSection("attributes").getKeys(false)) {
+                        List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
+                        raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), elementSection.getDouble("attributes." + attribute), elem));
+                        raceAttributesMap.put(attribute, raceAttributes);
+                    }
+                }
+
+                if (elementSection.contains("triggers")) {
+                    for (String trigger : elementSection.getConfigurationSection("triggers").getKeys(false)) {
+                        List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
+                        raceTriggers.add(new RaceTrigger(trigger, "race.elements." + elem + ".triggers." + trigger, raceConfig, elem));
+                        raceTriggersMap.put(trigger, raceTriggers);
+                    }
                 }
             }
         }
 
-        // Get abilities defined in the level section
+        // Get sections in the level section
         if (raceConfig.contains("race.levels")) {
-            for (String level : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
-                if (!raceConfig.contains("race.levels." + level + ".abilities"))
-                    continue;
+            ConfigurationSection section = raceConfig.getConfigurationSection("race.levels");
+            for (String level : section.getKeys(false)) {
+                ConfigurationSection levelSection = section.getConfigurationSection(level);
+                if (levelSection.contains("abilities")) {
+                    for (String ability : levelSection.getConfigurationSection("abilities").getKeys(false)) {
+                        List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<RaceAbility>());
+                        RaceAbility raceAbility = abilityManager.getAbility(ability, level, "race.levels." + level + ".abilities." + ability, raceConfig);
+                        if (raceAbility != null)
+                            raceAbilities.add(raceAbility);
 
-                for (String ability : raceConfig.getConfigurationSection("race.levels." + level + ".abilities").getKeys(false)) {
-                    List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<RaceAbility>());
-                    RaceAbility raceAbility = abilityManager.getAbility(ability, "level" + level, "race.levels." + level + ".abilities." + ability, raceConfig);
-                    if (raceAbility != null)
-                        raceAbilities.add(raceAbility);
+                        raceAbilitiesMap.put(ability, raceAbilities);
+                    }
+                }
 
-                    raceAbilitiesMap.put(ability, raceAbilities);
+                if (levelSection.contains("permissions")) {
+                    for (String permission : levelSection.getStringList("permissions")) {
+                        List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
+                        racePermissions.add(new PwingRacePermission(permission, level));
+                        racePermissionsMap.put(permission, racePermissions);
+                    }
+                }
+
+                if (levelSection.contains("attributes")) {
+                    for (String attribute : levelSection.getConfigurationSection("attributes").getKeys(false)) {
+                        List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
+                        raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), levelSection.getDouble("attributes." + attribute), level));
+                        raceAttributesMap.put(attribute, raceAttributes);
+                    }
+                }
+
+                if (levelSection.contains("triggers")) {
+                    for (String trigger : levelSection.getConfigurationSection("triggers").getKeys(false)) {
+                        List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
+                        raceTriggers.add(new RaceTrigger(trigger, "race.levels." + level + ".triggers." + trigger, raceConfig, level));
+                        raceTriggersMap.put(trigger, raceTriggers);
+                    }
                 }
             }
         }
@@ -434,7 +401,7 @@ public class PwingRace implements Race {
     //	this.executor = executor;
     // }
 
-    public YamlConfiguration getConfig() {
+    public FileConfiguration getConfig() {
         return raceConfig;
     }
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.pwing.races.api.race.RaceData;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import net.pwing.races.config.RaceConfiguration;
+
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class PwingRaceData implements RaceData {
 
@@ -32,7 +32,7 @@ public class PwingRaceData implements RaceData {
 	}
 
 	public void loadDataFromConfig(String configPath) {
-		YamlConfiguration config = playerConfig.getConfig();
+		FileConfiguration config = playerConfig.getConfig();
 
 		this.unlocked = config.getBoolean(configPath + "." + raceName + ".unlocked");
 		this.level = config.getInt(configPath + "." + raceName + ".level");
