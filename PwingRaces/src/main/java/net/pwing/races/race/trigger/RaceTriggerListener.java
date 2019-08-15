@@ -2,13 +2,13 @@ package net.pwing.races.race.trigger;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -156,6 +157,16 @@ public class RaceTriggerListener implements Listener {
         Player player = event.getPlayer();
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "move");
+    }
+
+    @EventHandler
+    public void onHealthRegen(EntityRegainHealthEvent event) {
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        Player player = (Player) event.getEntity();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "health-regen");
     }
 
     @EventHandler
