@@ -1,4 +1,5 @@
 v1.1.6
+- Added 'display-name' option for races
 - Moved 'block-relative' trigger to run on tick rather than movement
 
 v1.1.5

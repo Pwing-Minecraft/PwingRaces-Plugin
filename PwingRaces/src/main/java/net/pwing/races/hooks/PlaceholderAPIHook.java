@@ -47,6 +47,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         switch (params) {
             case "race":
                 return race.getName();
+            case "race_display_name":
+                return race.getDisplayName();
             case "level":
                 return String.valueOf(data.getLevel());
             case "maxlevel":
