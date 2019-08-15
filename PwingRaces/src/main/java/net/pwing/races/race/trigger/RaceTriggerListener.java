@@ -4,6 +4,7 @@ import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
@@ -189,6 +190,17 @@ public class RaceTriggerListener implements Listener {
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "block-place");
         triggerManager.runTriggers(player, "block-place " + event.getBlock().getType().name().toLowerCase());
+    }
+
+    @EventHandler
+    public void onRaceChange(RaceChangeEvent event) {
+        if (event.isCancelled())
+            return;
+
+        Player player = event.getPlayer();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "race-change");
+        triggerManager.runTriggers(player, "race-change " + event.getNewRace().getName());
     }
 
     @EventHandler
