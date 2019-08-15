@@ -49,6 +49,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
 
         player.sendMessage(MessageUtil.getHeader());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Race: " + ChatColor.WHITE + race.getDisplayName());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + " / " + race.getRequiredExperience(raceData.getLevel()));
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience Until Level Up: " + ChatColor.WHITE + (race.getRequiredExperience(raceData.getLevel()) - raceData.getExperience()));
@@ -75,6 +76,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
 
         player.sendMessage(MessageUtil.getHeader());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Race: " + ChatColor.WHITE + race.getDisplayName());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + " / " + race.getRequiredExperience(raceData.getLevel()));
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience Until Level Up: " + ChatColor.WHITE + (race.getRequiredExperience(raceData.getLevel()) - raceData.getExperience()));
@@ -107,6 +109,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         RaceData raceData = racePlayer.getRaceData(race);
 
         sender.sendMessage(MessageUtil.getHeader());
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "Race: " + ChatColor.WHITE + race.getDisplayName());
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + " / " + race.getRequiredExperience(raceData.getLevel()));
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Experience Until Level Up: " + ChatColor.WHITE + (race.getRequiredExperience(raceData.getLevel()) - raceData.getExperience()));
@@ -164,9 +167,9 @@ public class RaceExecutor extends RaceCommandExecutor {
         }
 
         racePlayer.getRaceData(event.getRace()).setUnlocked(true);
-        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-unlocked-new-race", "%prefix% Successfully unlocked %race% for %player_name%!").replace("%race%", race.getName())));
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-unlocked-new-race", "%prefix% Successfully unlocked %race% for %player_name%!").replace("%race%", race.getDisplayName())));
         if (player.isOnline()) {
-            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("unlocked-new-race", "%prefix% You have unlocked the race %race%!").replace("%race%", race.getName())));
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("unlocked-new-race", "%prefix% You have unlocked the race %race%!").replace("%race%", race.getDisplayName())));
         }
         return true;
     }

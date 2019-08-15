@@ -110,7 +110,7 @@ public class PwingRaceMenu implements RaceMenu {
         RaceManager raceManager = plugin.getRaceManager();
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
         RaceData data = racePlayer.getRaceData(race);
-        MenuBuilder builder = new MenuBuilder(plugin, MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("race-gui", "%race% Race").replace("%race%", race.getName())));
+        MenuBuilder builder = new MenuBuilder(plugin, MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("race-gui", "%race% Race").replace("%race%", race.getDisplayName())));
 
         ItemBuilder info = new ItemBuilder(cachedIcons.get(race.getName()).getUnlockedIcon().clone());
 

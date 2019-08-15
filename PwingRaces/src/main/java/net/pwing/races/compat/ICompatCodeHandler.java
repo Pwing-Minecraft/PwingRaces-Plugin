@@ -1,9 +1,6 @@
 package net.pwing.races.compat;
 
-import net.pwing.races.command.RaceCommandExecutor;
 import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;

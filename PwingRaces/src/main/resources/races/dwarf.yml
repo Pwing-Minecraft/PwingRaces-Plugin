@@ -13,6 +13,7 @@
 # Wiki Link: https://pwing-races.fandom.com/wiki/
 race:
     name: Dwarf
+    display-name: "&6Dwarf"
     max-level: 15
     require-unlock: true
     skilltrees:

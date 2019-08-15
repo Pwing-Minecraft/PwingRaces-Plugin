@@ -22,6 +22,7 @@ import net.pwing.races.utilities.ItemUtil;
 import net.pwing.races.utilities.LocationUtil;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,8 @@ import org.bukkit.inventory.ItemStack;
 public class PwingRace implements Race {
 
     private String name;
+    private String displayName;
+
     private int maxLevel;
 
     private Location spawnLocation;
@@ -62,6 +65,8 @@ public class PwingRace implements Race {
         this.raceConfig = raceConfig;
 
         this.name = raceConfig.getString("race.name");
+        this.displayName = ChatColor.translateAlternateColorCodes('&', raceConfig.getString("race.displayName", name));
+
         this.maxLevel = raceConfig.getInt("race.max-level");
 
         this.spawnLocation = LocationUtil.fromString(raceConfig.getString("race.spawn-location", ""));
@@ -287,6 +292,14 @@ public class PwingRace implements Race {
 
     public String getName() {
         return name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public boolean doesRequireUnlock() {

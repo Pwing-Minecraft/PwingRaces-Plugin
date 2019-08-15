@@ -11,6 +11,7 @@
 # Wiki Link: https://pwing-races.fandom.com/wiki/
 race:
     name: Human
+    display-name: "&fHuman"
     max-level: 10
     require-unlock: false
     gui:
