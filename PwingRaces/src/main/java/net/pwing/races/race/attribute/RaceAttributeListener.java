@@ -15,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -64,6 +65,26 @@ public class RaceAttributeListener implements Listener {
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
         plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onHealthRegen(EntityRegainHealthEvent event) {
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        RaceManager raceManager = plugin.getRaceManager();
+        Player player = (Player) event.getEntity();
+        if (!raceManager.isRacesEnabledInWorld(player.getWorld()))
+            return;
+
+        RacePlayer racePlayer = raceManager.getRacePlayer(player);
+        if (racePlayer == null)
+            return;
+
+        if (racePlayer.getActiveRace() == null)
+            return;
+
+        event.setAmount(event.getAmount() + raceManager.getAttributeManager().getAttributeBonus(player, "health-regen"));
     }
 
     @EventHandler
