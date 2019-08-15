@@ -4,6 +4,7 @@ import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
@@ -49,6 +50,9 @@ public class RaceTriggerTickTask implements Runnable {
 
                 for (BlockFace face : BlockFace.values())
                     triggerManager.runTriggers(player, "block-relative " + face.name().toLowerCase() + " " + player.getLocation().getBlock().getRelative(face).getType().name().toLowerCase());
+
+                for (World world : Bukkit.getWorlds())
+                    triggerManager.runTriggers(player, "in-world " + world.getName());
             });
         }
     }
