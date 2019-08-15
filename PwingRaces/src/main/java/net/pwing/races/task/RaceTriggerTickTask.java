@@ -4,6 +4,7 @@ import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class RaceTriggerTickTask implements Runnable {
@@ -45,6 +46,9 @@ public class RaceTriggerTickTask implements Runnable {
 
                 if ((time >= 1300 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
                     triggerManager.runTriggers(player, "in-moonlight");
+
+                for (BlockFace face : BlockFace.values())
+                    triggerManager.runTriggers(player, "block-relative " + face.name().toLowerCase() + " " + player.getLocation().getBlock().getRelative(face).getType().name().toLowerCase());
             });
         }
     }

@@ -156,9 +156,6 @@ public class RaceTriggerListener implements Listener {
         Player player = event.getPlayer();
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "move");
-
-        for (BlockFace face : BlockFace.values())
-            triggerManager.runTriggers(player, "block-relative " + face.name().toLowerCase() + " " + player.getLocation().getBlock().getRelative(face).getType().name().toLowerCase());
     }
 
     @EventHandler
