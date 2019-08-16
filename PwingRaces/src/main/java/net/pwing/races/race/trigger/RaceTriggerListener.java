@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -214,6 +215,19 @@ public class RaceTriggerListener implements Listener {
             triggerManager.runTriggers(player, "race-leveldown");
             triggerManager.runTriggers(player, "race-leveldown " + event.getNewLevel());
         }
+    }
+
+    @EventHandler
+    public void onBurn(EntityCombustEvent event) {
+        if (event.isCancelled())
+            return;
+
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        Player player = (Player) event.getEntity();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "burn");
     }
 
     @EventHandler
