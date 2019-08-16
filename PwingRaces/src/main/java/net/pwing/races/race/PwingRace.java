@@ -216,7 +216,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("permissions")) {
                     for (String permission : levelSection.getStringList("permissions")) {
                         List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
-                        racePermissions.add(new PwingRacePermission(permission, level));
+                        racePermissions.add(new PwingRacePermission(permission, "level" + level));
                         racePermissionsMap.put(permission, racePermissions);
                     }
                 }
@@ -224,7 +224,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("attributes")) {
                     for (String attribute : levelSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
-                        raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), levelSection.getDouble("attributes." + attribute), level));
+                        raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), levelSection.getDouble("attributes." + attribute), "level" + level));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }
@@ -232,7 +232,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("triggers")) {
                     for (String trigger : levelSection.getConfigurationSection("triggers").getKeys(false)) {
                         List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
-                        raceTriggers.add(new RaceTrigger(trigger, "race.levels." + level + ".triggers." + trigger, raceConfig, level));
+                        raceTriggers.add(new RaceTrigger(trigger, "race.levels." + level + ".triggers." + trigger, raceConfig, "level" + level));
                         raceTriggersMap.put(trigger, raceTriggers);
                     }
                 }
