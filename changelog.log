@@ -2,6 +2,7 @@ v1.1.7
 - Added 'burn' trigger
 - Fixed bug where attributes would reset to their default value upon skilltree element purchase
 - Fixed bug where race items in abilities sometimes wouldn't work properly
+- Fixed bug where regen attribute would regen health for every regen reason except on only hunger satiation
 
 v1.1.6
 - Added 'display-name' option for races

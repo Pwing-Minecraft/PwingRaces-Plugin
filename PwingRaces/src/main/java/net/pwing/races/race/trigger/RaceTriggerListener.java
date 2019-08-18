@@ -166,6 +166,9 @@ public class RaceTriggerListener implements Listener {
         if (!(event.getEntity() instanceof Player))
             return;
 
+        if (event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED)
+            return;
+
         Player player = (Player) event.getEntity();
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "health-regen");
