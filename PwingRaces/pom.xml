@@ -14,7 +14,7 @@
     <name>PwingRaces</name>
     <description>A very highly-customizable race plugin for any server!</description>
     <packaging>jar</packaging>
-    <version>1.1.7-SNAPSHOT</version>
+    <version>${revision}</version>
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
