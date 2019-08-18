@@ -1,6 +1,7 @@
 package net.pwing.races.utilities;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.race.Race;
 import net.pwing.races.builder.ItemBuilder;
 
 import org.bukkit.ChatColor;
@@ -23,6 +24,14 @@ public class ItemUtil {
         } else {
             player.getInventory().addItem(item);
         }
+    }
+
+    public static ItemStack fromString(Race race, String str) {
+        ItemStack raceItem = race.getRaceItems().get(str);
+        if (raceItem == null)
+            return fromString(str);
+
+        return raceItem;
     }
 
     public static ItemStack fromString(String str) {
