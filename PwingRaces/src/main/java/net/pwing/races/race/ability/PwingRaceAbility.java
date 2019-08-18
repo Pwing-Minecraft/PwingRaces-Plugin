@@ -14,13 +14,10 @@ public abstract class PwingRaceAbility extends RaceAbility {
 
     protected PwingRaces plugin;
 
-    private Race race;
-
-    public PwingRaceAbility(PwingRaces plugin, Race race, String internalName, String configPath, FileConfiguration config, String requirement) {
+    public PwingRaceAbility(PwingRaces plugin, String internalName, String configPath, FileConfiguration config, String requirement) {
         super(internalName, configPath, config, requirement);
 
         this.plugin = plugin;
-        this.race = race;
     }
 
     // Override the methods in RaceAbility as we have our own code to check this already
@@ -33,7 +30,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
             this.abilityItems = new ItemStack[abilityItemStr.length];
 
             for (int i = 0; i < abilityItemStr.length; i++) {
-                ItemStack stack = ItemUtil.fromString(race, abilityItemStr[i]);
+                ItemStack stack = ItemUtil.fromString(abilityItemStr[i]);
                 if (stack != null)
                     this.abilityItems[i] = stack;
             }
@@ -46,7 +43,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
             this.leftClickAbilityItems = new ItemStack[leftClickAbilityItemStr.length];
 
             for (int i = 0; i < leftClickAbilityItemStr.length; i++) {
-                ItemStack stack = ItemUtil.fromString(race, leftClickAbilityItemStr[i]);
+                ItemStack stack = ItemUtil.fromString(leftClickAbilityItemStr[i]);
                 if (stack != null)
                     this.leftClickAbilityItems[i] = stack;
             }
@@ -59,7 +56,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
             this.consumeAbilityItems = new ItemStack[consumeAbilityItemStr.length];
 
             for (int i = 0; i < consumeAbilityItemStr.length; i++) {
-                ItemStack stack = ItemUtil.fromString(race, consumeAbilityItemStr[i]);
+                ItemStack stack = ItemUtil.fromString(consumeAbilityItemStr[i]);
                 if (stack != null)
                     this.consumeAbilityItems[i] = stack;
             }
