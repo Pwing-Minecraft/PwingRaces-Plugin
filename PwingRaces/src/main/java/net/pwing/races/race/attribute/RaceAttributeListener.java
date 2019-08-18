@@ -42,10 +42,10 @@ public class RaceAttributeListener implements Listener {
 
     @EventHandler
     public void onRaceChangeEvent(RaceChangeEvent event) {
-        plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
-
         if (event.isCancelled())
             return;
+
+        plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
@@ -59,7 +59,7 @@ public class RaceAttributeListener implements Listener {
 
     @EventHandler
     public void onRaceElementPurchase(RaceElementPurchaseEvent event) {
-        plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
+        plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
     }
 
     @EventHandler

@@ -1,5 +1,6 @@
 v1.1.7
 - Added 'burn' trigger
+- Fixed bug where attributes would reset to their default value upon skilltree element purchase
 
 v1.1.6
 - Added 'display-name' option for races
