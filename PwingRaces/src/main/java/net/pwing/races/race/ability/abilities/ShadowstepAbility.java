@@ -73,8 +73,8 @@ public class ShadowstepAbility extends PwingRaceAbility {
         x = Math.cos(Math.toRadians(yaw));
         z = Math.sin(Math.toRadians(yaw));
 
-        Location loc = player.getLocation();
-        Location newLoc = new Location(player.getWorld(), loc.getX() - x, loc.getY(), loc.getZ() - z, loc.getYaw(), loc.getPitch());
+        Location loc = target.getLocation();
+        Location newLoc = new Location(target.getWorld(), loc.getX() - x, loc.getY(), loc.getZ() - z, loc.getYaw(), loc.getPitch());
         player.teleport(newLoc);
         shadowstepping.add(player.getUniqueId());
 
