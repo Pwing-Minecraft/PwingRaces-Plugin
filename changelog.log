@@ -3,6 +3,7 @@ v1.1.7
 - Fixed bug where attributes would reset to their default value upon skilltree element purchase
 - Fixed bug where regen attribute would regen health for every regen reason except on only hunger satiation
 - Fixed shadowstep ability teleporting you behind your relative location rather than the target
+- Fixed commands displaying wrong skillpoint value
 
 v1.1.6
 - Added 'display-name' option for races

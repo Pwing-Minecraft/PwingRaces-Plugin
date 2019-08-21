@@ -226,7 +226,7 @@ public class RaceExecutor extends RaceCommandExecutor {
 
         RaceData raceData = racePlayer.getRaceData(race);
         raceData.setUnusedSkillpoints(raceData.getUnusedSkillpoints() + skillpoints);
-        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints() + skillpoints)));
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints())));
         return true;
     }
 
@@ -240,7 +240,7 @@ public class RaceExecutor extends RaceCommandExecutor {
 
         RaceData raceData = racePlayer.getRaceData(race);
         raceData.setUnusedSkillpoints(raceData.getUnusedSkillpoints() - skillpoints);
-        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints() - skillpoints)));
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.")).replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints())));
         return true;
     }
 
