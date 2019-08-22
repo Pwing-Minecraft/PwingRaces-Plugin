@@ -44,7 +44,7 @@ public class PwingRaceLevelManager implements RaceLevelManager {
             newAmount = race.getMaxLevel();
 
         // Just incase amount is higher than 1
-        for (int i = (event.getOldLevel() - 1); i < event.getNewLevel(); i++)
+        for (int i = event.getOldLevel(); i < event.getNewLevel(); i++)
             data.setUnusedSkillpoints(data.getUnusedSkillpoints() + race.getSkillpointsForLevel(i));
 
         data.setLevel(newAmount);

@@ -4,6 +4,7 @@ v1.1.7
 - Fixed bug where regen attribute would regen health for every regen reason except on only hunger satiation
 - Fixed shadowstep ability teleporting you behind your relative location rather than the target
 - Fixed commands displaying wrong skillpoint value
+- Fixed bug where level manager would give double the amount of specified skillpoints upon levelup
 
 v1.1.6
 - Added 'display-name' option for races
