@@ -4,6 +4,7 @@ import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
+import net.pwing.races.api.events.RaceLevelUpEvent;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 
@@ -53,7 +54,7 @@ public class RaceAttributeListener implements Listener {
     }
 
     @EventHandler
-    public void onRaceExpChange(RaceExpChangeEvent event) {
+    public void onRaceExpChange(RaceLevelUpEvent event) {
         plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
     }
 
