@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
@@ -167,7 +168,15 @@ public class PwingRaceMenu implements RaceMenu {
 
                         @Override
                         public void onConfirm(Player player, ClickType action, ItemStack item) {
-                            racePlayer.setActiveRace(race);
+                            RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getActiveRace(), race);
+                            Bukkit.getPluginManager().callEvent(event);
+                            if (event.isCancelled()) {
+                                player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
+                                return;
+                            }
+
+                            racePlayer.setActiveRace(event.getNewRace());
+
                             openRaceMenu(player, race);
                             MessageUtil.sendMessage(player, "set-your-active-race", "%prefix% Successfully set your race to %race%!");
                         }
