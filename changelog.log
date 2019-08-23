@@ -1,12 +1,13 @@
 v1.1.7
 - Added 'burn' trigger
-- Reimplement 'race-change-cost' configuration option
+- Reimplemented 'race-change-cost' configuration option
 - Fixed bug where attributes would reset to their default value upon skilltree element purchase
 - Fixed bug where regen attribute would regen health for every regen reason except on only hunger satiation
 - Fixed shadowstep ability teleporting you behind your relative location rather than the target
 - Fixed commands displaying wrong skillpoint value
 - Fixed bug where level manager would give double the amount of specified skillpoints upon levelup
 - Fixed event bug for races, this should resolve a few minor issues here and there
+- Performance enhancements
 
 v1.1.6
 - Added 'display-name' option for races

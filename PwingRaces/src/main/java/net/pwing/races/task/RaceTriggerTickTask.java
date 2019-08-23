@@ -28,32 +28,30 @@ public class RaceTriggerTickTask implements Runnable {
             RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
             triggerManager.runTaskTriggers(player, "ticks " + tick, tick);
 
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                long time = player.getWorld().getTime();
-                if (time < 13000 || time > 23850) {
-                    triggerManager.runTriggers(player, "day");
-                } else {
-                    triggerManager.runTriggers(player, "night");
-                }
+            long time = player.getWorld().getTime();
+            if (time < 13000 || time > 23850) {
+                triggerManager.runTriggers(player, "day");
+            } else {
+                triggerManager.runTriggers(player, "night");
+            }
 
-                if (player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY())
-                    triggerManager.runTriggers(player, "outside");
-                else
-                    triggerManager.runTriggers(player, "inside");
+            if (player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY())
+                triggerManager.runTriggers(player, "outside");
+            else
+                triggerManager.runTriggers(player, "inside");
 
-                // TODO: Find a way to allow multiple triggers?
-                if ((time < 13000 || time > 23850) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
-                    triggerManager.runTriggers(player, "in-sunlight");
+            // TODO: Find a way to allow multiple triggers?
+            if ((time < 13000 || time > 23850) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
+                triggerManager.runTriggers(player, "in-sunlight");
 
-                if ((time >= 1300 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
-                    triggerManager.runTriggers(player, "in-moonlight");
+            if ((time >= 1300 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
+                triggerManager.runTriggers(player, "in-moonlight");
 
-                for (BlockFace face : BlockFace.values())
-                    triggerManager.runTriggers(player, "block-relative " + face.name().toLowerCase() + " " + player.getLocation().getBlock().getRelative(face).getType().name().toLowerCase());
+            for (BlockFace face : BlockFace.values())
+                triggerManager.runTriggers(player, "block-relative " + face.name().toLowerCase() + " " + player.getLocation().getBlock().getRelative(face).getType().name().toLowerCase());
 
-                for (World world : Bukkit.getWorlds())
-                    triggerManager.runTriggers(player, "in-world " + world.getName());
-            });
+            for (World world : Bukkit.getWorlds())
+                triggerManager.runTriggers(player, "in-world " + world.getName());
         }
     }
 }

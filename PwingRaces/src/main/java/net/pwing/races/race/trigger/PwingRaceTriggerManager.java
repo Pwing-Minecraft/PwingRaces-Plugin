@@ -84,7 +84,10 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if ((random.nextFloat() * 100) > raceTrigger.getChance())
                 continue;
 
-            runTriggerPassives(player, raceTrigger);
+            // Run task synchronously
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                runTriggerPassives(player, raceTrigger);
+            });
         }
     }
 
