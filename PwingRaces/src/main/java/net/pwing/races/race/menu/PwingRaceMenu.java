@@ -168,10 +168,19 @@ public class PwingRaceMenu implements RaceMenu {
 
                         @Override
                         public void onConfirm(Player player, ClickType action, ItemStack item) {
+                            if (plugin.getConfigManager().doesRaceUnlockUseCost()) {
+                                if (!plugin.getVaultHook().hasBalance(player, plugin.getConfigManager().getRaceChangeCost())) {
+                                    MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                                    player.closeInventory();
+                                    return;
+                                }
+                            }
+
                             RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getActiveRace(), race);
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
                                 player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
+                                player.closeInventory();
                                 return;
                             }
 
