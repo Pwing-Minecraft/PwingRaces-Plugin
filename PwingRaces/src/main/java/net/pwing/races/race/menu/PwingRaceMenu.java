@@ -174,6 +174,8 @@ public class PwingRaceMenu implements RaceMenu {
                                     player.closeInventory();
                                     return;
                                 }
+
+                                plugin.getVaultHook().withdrawPlayer(player, plugin.getConfigManager().getRaceChangeCost());
                             }
 
                             RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getActiveRace(), race);
