@@ -29,7 +29,7 @@ messages:
     cancelled-item-claim: "%prefix% &cCancelled item reclaim."
     cancelled-race-change: "%prefix% &cCancelled race change."
     invalid-command-syntax: "%prefix% &cInvalid Syntax! Usage: %usage%."
-    not-enough-money: "%prefix% &cYou do not have enough %currency-name_plural% for this transaction!"
+    not-enough-money: "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!"
     skillpoint-amount-message: "%prefix% &aYou have %skillpoints% unused skillpoints."
     set-skillpoint-message: "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%."
     set-level-message: "%prefix% &aYou have set %player_name%'s level to %level%."
