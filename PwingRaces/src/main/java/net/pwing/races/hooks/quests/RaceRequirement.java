@@ -15,7 +15,7 @@ public class RaceRequirement extends CustomRequirement {
     public RaceRequirement(RaceManager raceManager) {
         this.raceManager = raceManager;
 
-        setName("Race Level Requirement");
+        setName("Race Requirement");
         setAuthor("Redned");
         addStringPrompt("Race", "Enter the race requirement.", null);
     }
