@@ -29,7 +29,7 @@ public class RaceRequirement extends CustomRequirement {
             return false;
 
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
-        if (racePlayer.getActiveRace().getName().equals(race))
+        if (racePlayer.getActiveRace().getName().equals(race.getName()))
             return true;
 
         return false;
