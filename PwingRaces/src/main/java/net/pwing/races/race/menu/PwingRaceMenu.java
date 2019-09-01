@@ -116,12 +116,12 @@ public class PwingRaceMenu implements RaceMenu {
         ItemBuilder info = new ItemBuilder(cachedIcons.get(race.getName()).getUnlockedIcon().clone());
 
         List<String> lore = new ArrayList<String>();
-        String level = ChatColor.GRAY + "Level: " + ChatColor.DARK_AQUA + data.getLevel();
-        String experience = ChatColor.GRAY + "Experience: " + ChatColor.DARK_AQUA + "Max Level";
+        String level = MessageUtil.getMessage("menu-level", "&7Level: &3") + data.getLevel();
+        String experience = MessageUtil.getMessage("menu-experience", "&7Experience: &3") + MessageUtil.getMessage("menu-max-level", "Max Level");
         if (race.getRaceLevelMap().containsKey(data.getLevel()))
-            experience = ChatColor.GRAY + "Experience: " + ChatColor.DARK_AQUA + "" + data.getExperience() + ChatColor.GRAY + " / " + ChatColor.DARK_AQUA + race.getRequiredExperience(data.getLevel());
+            experience = MessageUtil.getMessage("menu-experience", "&7Experience: &3") + data.getExperience() + ChatColor.GRAY + " / " + ChatColor.DARK_AQUA + race.getRequiredExperience(data.getLevel());
 
-        String skillpoint = ChatColor.GRAY + "Remaining Skill Points: " + ChatColor.DARK_AQUA + data.getUnusedSkillpoints();
+        String skillpoint = MessageUtil.getMessage("menu-remaining-skillpoints", "&7Remaining Skillpoints: &3") + data.getUnusedSkillpoints();
         lore.add(level);
         lore.add(experience);
         lore.add(skillpoint);
@@ -129,16 +129,18 @@ public class PwingRaceMenu implements RaceMenu {
 
         int pointCost = plugin.getConfigManager().getReclaimSkillpointCost();
 
-        ItemBuilder reclaimItems = new ItemBuilder(Material.CHEST).setName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Reclaim Race Items").setLore(ChatColor.GRAY + "Reclaim your race items if you lost them.");
-        ItemBuilder reclaimSkillpoints = new ItemBuilder(Material.PRISMARINE_SHARD).setName(ChatColor.AQUA + "" + ChatColor.BOLD + "Reclaim Skillpoints").setLore(ChatColor.GRAY + "Reclaim all your spent skillpoints.", ChatColor.RED + "Resets all your purchased skills.",
-            ChatColor.GRAY + "Cost: " + ChatColor.GREEN + pointCost + " " + plugin.getVaultHook().getCurrencyName(pointCost));
+        ItemBuilder reclaimItems = new ItemBuilder(Material.CHEST).setName(MessageUtil.getMessage("menu-reclaim-race-items", "&b&lReclaim Race Items")).setLore(
+                MessageUtil.getMessage("menu-reclaim-race-items-lore", "&7Reclaim your race items if you lost them."));
+        ItemBuilder reclaimSkillpoints = new ItemBuilder(Material.PRISMARINE_SHARD).setName(MessageUtil.getMessage("menu-reclaim-skillpoints", "&b&lReclaim Skillpoints")).setLore(
+                MessageUtil.getMessage("menu-reclaim-skillpoints-lore", "&7Reclaim all your spent skillpoints. \n&cResets all your purchased skills.") +
+                "\n" + MessageUtil.getMessage("menu-cost-display", "&7Cost: &a") + pointCost + " " + plugin.getVaultHook().getCurrencyName(pointCost));
 
         boolean allowReclaim = plugin.getConfigManager().isReclaimingSkillpointsAllowed();
         int cost = plugin.getConfigManager().getReclaimItemsCost();
 
         if (allowReclaim && cost > 0) {
             List<String> reclaimLore = reclaimItems.toItemStack().getItemMeta().getLore();
-            reclaimLore.add(ChatColor.GRAY + "Cost: " + ChatColor.GREEN + cost + " " + plugin.getVaultHook().getCurrencyName(cost));
+            reclaimLore.add(MessageUtil.getMessage("menu-cost-display", "&7Cost: &a") + cost + " " + plugin.getVaultHook().getCurrencyName(cost));
             reclaimItems.setLore(reclaimLore);
         }
 
@@ -164,7 +166,8 @@ public class PwingRaceMenu implements RaceMenu {
                 if (action == ClickType.RIGHT) {
                     openMenu(player);
                 } else if (action == ClickType.LEFT) {
-                    ConfirmationMenu menu = new ConfirmationMenu(plugin, "Confirmation", "Confirm", "Cancel", new IConfirmationHandler() {
+                    ConfirmationMenu menu = new ConfirmationMenu(plugin, MessageUtil.getMessage("menu-confirmation", "Confirmation"),
+                            MessageUtil.getMessage("menu-confirm", "&aConfirm"), MessageUtil.getMessage("menu-cancel", "&cCancel Purchase"), new IConfirmationHandler() {
 
                         @Override
                         public void onConfirm(Player player, ClickType action, ItemStack item) {

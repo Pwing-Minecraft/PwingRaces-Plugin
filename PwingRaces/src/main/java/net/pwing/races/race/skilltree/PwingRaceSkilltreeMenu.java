@@ -127,7 +127,7 @@ public class PwingRaceSkilltreeMenu {
         RaceManager raceManager = plugin.getRaceManager();
         RaceData data = raceManager.getPlayerData(player, race);
 
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         lore.addAll(element.getDescription());
 
         if (data.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName())) {
@@ -159,8 +159,8 @@ public class PwingRaceSkilltreeMenu {
             if (element.getIcon() != null)
                 return element.getIcon();
 
-            lore.add(ChatColor.GRAY + "Skillpoint Cost: " + ChatColor.GREEN + element.getCost());
-            lore.add(ChatColor.YELLOW + "Click to purchase.");
+            lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
+            lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
             return new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked").setLore(lore).toItemStack();
         }
 
@@ -172,8 +172,17 @@ public class PwingRaceSkilltreeMenu {
         if (parents.size() >= 1)
             purchaseString = parents.get(0);
 
-        lore.add(ChatColor.RED + "You must unlock " + element.getTitle() + ChatColor.RED + " before");
-        lore.add(ChatColor.RED + "purchasing this upgrade.");
+        String unlock = MessageUtil.getMessage("menu-skilltree-unlock", "&cYou must unlock %element% before \n&cpurchasing this upgrade.")
+                .replace("%element%", purchaseString);
+
+        if (!unlock.contains("\\n")) {
+            lore.add(unlock);
+        } else {
+            String[] split = unlock.split("\\n");
+            for (String str : split) {
+                lore.add(str);
+            }
+        }
 
         ItemBuilder item = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked").setLore(lore);
         return item.toItemStack();

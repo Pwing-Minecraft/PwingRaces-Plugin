@@ -1,6 +1,8 @@
 v1.1.8
-- Fixed bug where race change cost wouldn't deduct balance from the player's account
+- Added more translatable messages to messages.yml
+- Fixed race quest requirement
 - Fixed minor typo in messages.yml
+- Fixed bug where race change cost wouldn't deduct balance from the player's account
 
 v1.1.7
 - Added 'burn' trigger

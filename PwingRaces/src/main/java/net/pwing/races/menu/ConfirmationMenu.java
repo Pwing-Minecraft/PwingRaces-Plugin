@@ -2,6 +2,7 @@ package net.pwing.races.menu;
 
 import net.pwing.races.builder.ItemBuilder;
 
+import net.pwing.races.utilities.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,11 +21,11 @@ public class ConfirmationMenu {
 	private IConfirmationHandler handler;
 
 	public ConfirmationMenu(Plugin plugin, IConfirmationHandler handler) {
-		this(plugin, "Confirmation", handler);
+		this(plugin, MessageUtil.getMessage("menu-confirmation", "Confirmation"), handler);
 	}
 
 	public ConfirmationMenu(Plugin plugin, String name, IConfirmationHandler handler) {
-		this(plugin, name, "Confirm Purchase", "Cancel Purchase", handler);
+		this(plugin, name, MessageUtil.getMessage("menu-confirm-purchase", "&aConfirm Purchase"), MessageUtil.getMessage("menu-cancel-purchase", "&cCancel Purchase"), handler);
 	}
 
 	public ConfirmationMenu(Plugin plugin, String name, String yesMessage, String noMessage, IConfirmationHandler handler) {

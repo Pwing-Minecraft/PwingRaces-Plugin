@@ -19,16 +19,37 @@ public class MessageUtil {
     private static Map<String, String> messages;
 
     public static void initMessages(String configPath, RaceConfigurationManager configManager) {
-        messages = new HashMap<String, String>();
+        messages = new HashMap<>();
 
         FileConfiguration config = configManager.getMessageConfig().getConfig();
         // Adding default from version 1.0.9
-        config.set(configPath + ".set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.");
-        config.set(configPath + ".set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.");
-        config.set(configPath + ".set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.");
+        config.addDefault(configPath + ".set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.");
+        config.addDefault(configPath + ".set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.");
+        config.addDefault(configPath + ".set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.");
 
         // Adding default from version 1.1.4
-        config.set(configPath + ".no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
+        config.addDefault(configPath + ".no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
+
+        // Adding default from version 1.1.8
+        config.addDefault(configPath + ".menu-confirmation", "Confirmation");
+        config.addDefault(configPath + ".menu-confirm", "Confirm");
+        config.addDefault(configPath + ".menu-cancel", "&cCancel");
+        config.addDefault(configPath + ".menu-confirm-purchase", "&aConfirm Purchase");
+        config.addDefault(configPath + ".menu-cancel-purchase", "&cCancel Purchase");
+        config.addDefault(configPath + ".menu-reclaim-skillpoints", "&b&lReclaim Skillpoints");
+        config.addDefault(configPath + ".menu-reclaim-skillpoints-lore", "&7Reclaim all your spent skillpoints. \n&cResets all your purchased skills.");
+        config.addDefault(configPath + ".menu-reclaim-race-items", "&e&lReclaim Race Items");
+        config.addDefault(configPath + ".menu-reclaim-race-items-lore", "&7Reclaim your race items if you lost them.");
+        config.addDefault(configPath + ".menu-cost-display", "&7Cost: &a");
+        config.addDefault(configPath + ".menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a");
+        config.addDefault(configPath + ".menu-skilltree-purchase", "&eClick to purchase.");
+        config.addDefault(configPath + ".menu-skilltree-unlock", "&cYou must unlock %element% before \n&cpurchasing this upgrade.");
+        config.addDefault(configPath + ".menu-level", "&7Level: &3");
+        config.addDefault(configPath + ".menu-max-level", "Max Level");
+        config.addDefault(configPath + ".menu-experience", "&7Experience: &3");
+        config.addDefault(configPath + ".menu-remaining-skillpoints", "&7Remaining Skillpoints: &3");
+
+        config.options().copyDefaults(true);
         configManager.getMessageConfig().saveConfig();
 
         for (String str : config.getConfigurationSection(configPath).getKeys(false))
