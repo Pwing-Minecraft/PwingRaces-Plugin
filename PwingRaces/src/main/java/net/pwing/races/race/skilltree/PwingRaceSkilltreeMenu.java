@@ -175,16 +175,13 @@ public class PwingRaceSkilltreeMenu {
         String unlock = MessageUtil.getMessage("menu-skilltree-unlock", "&cYou must unlock %element% before \n&cpurchasing this upgrade.")
                 .replace("%element%", purchaseString);
 
-        if (!unlock.contains("\\n")) {
-            lore.add(unlock);
-        } else {
-            String[] split = unlock.split("\\n");
-            for (String str : split) {
-                lore.add(str);
-            }
-        }
+        lore.add(unlock);
 
-        ItemBuilder item = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked").setLore(lore);
+        String loreString = "";
+        for (String str : lore) {
+            loreString += str + "\n";
+        }
+        ItemBuilder item = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked").setLore(loreString);
         return item.toItemStack();
     }
 }
