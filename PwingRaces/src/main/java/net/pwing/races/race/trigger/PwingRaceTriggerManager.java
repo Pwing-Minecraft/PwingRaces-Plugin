@@ -19,6 +19,7 @@ import net.pwing.races.api.race.trigger.RaceTriggerManager;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.race.trigger.passives.AddPotionEffectTrigger;
 import net.pwing.races.race.trigger.passives.BurnTrigger;
+import net.pwing.races.race.trigger.passives.DamageTrigger;
 import net.pwing.races.race.trigger.passives.DropItemTrigger;
 import net.pwing.races.race.trigger.passives.GiveHealthTrigger;
 import net.pwing.races.race.trigger.passives.RunCommandTrigger;
@@ -52,6 +53,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     public void initTriggerPassives() {
         passives.put("add-potion-effect", new AddPotionEffectTrigger(plugin, "add-potion-effect"));
         passives.put("burn", new BurnTrigger(plugin, "burn"));
+        passives.put("damage", new DamageTrigger(plugin, "damage"));
         passives.put("disguise", new DisguiseTrigger(plugin, "disguise"));
         passives.put("drop-item", new DropItemTrigger(plugin, "drop-item"));
         passives.put("give-exp", new GiveExpTrigger(plugin, "give-exp"));
