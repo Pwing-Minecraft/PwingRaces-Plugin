@@ -102,7 +102,7 @@ public class PwingRaces extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceTriggerTickTask(this), 1, 1);
 
-        long autosave = getConfig().getLong("settings.autosave");
+        long autosave = configManager.getAutosave();
         if (autosave > 0)
             getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceSaveTask(raceManager), autosave, autosave);
 
