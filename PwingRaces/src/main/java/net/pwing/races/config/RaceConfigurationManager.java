@@ -77,7 +77,7 @@ public class RaceConfigurationManager {
 			if (!file.getName().endsWith(".yml"))
 				continue;
 
-			YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			raceConfigs.add(new RaceConfiguration(file, config));
 		}
 
