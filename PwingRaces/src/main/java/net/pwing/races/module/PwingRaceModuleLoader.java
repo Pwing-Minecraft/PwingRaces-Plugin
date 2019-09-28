@@ -1,6 +1,8 @@
 package net.pwing.races.module;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.module.RaceModule;
+import net.pwing.races.api.module.RaceModuleLoader;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,18 +17,19 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class RaceModuleLoader {
+public class PwingRaceModuleLoader implements RaceModuleLoader {
 
     private PwingRaces plugin;
     protected Map<String, RaceModule> modules;
 
-    public RaceModuleLoader(PwingRaces plugin) {
+    public PwingRaceModuleLoader(PwingRaces plugin) {
         this.plugin = plugin;
         this.modules = new HashMap<>();
 
         loadModules();
     }
 
+    @Override
     public void loadModules() {
         File directory = plugin.getModuleFolder();
         if (!directory.exists())
@@ -67,10 +70,11 @@ public class RaceModuleLoader {
                 FileConfiguration moduleConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(moduleYml));
                 plugin.getLogger().info("Loading module " + moduleConfig.getString("name") + "...");
 
-                RaceModule module = (RaceModule) Class.forName(moduleConfig.getString("main"), true, classLoader).newInstance();
+                RaceModuleWrapper module = new RaceModuleWrapper((RaceModule) Class.forName(moduleConfig.getString("main"), true, classLoader).newInstance());
                 module.name = moduleConfig.getString("name");
                 module.version = moduleConfig.getString("version");
                 module.author = moduleConfig.getString("author");
+                module.plugin = plugin;
                 plugin.getLogger().info("Loaded module " + module.name + "!");
 
                 module.onEnable();
@@ -82,14 +86,16 @@ public class RaceModuleLoader {
         }
     }
 
+    @Override
     public void enableModule(RaceModule module) {
         module.onEnable();
-        module.enabled = true;
+        module.setEnabled(true);
         modules.put(module.getName(), module);
     }
 
+    @Override
     public void disableModule(RaceModule module) {
-        module.enabled = false;
+        module.setEnabled(false);
         modules.remove(module.getName());
         module.onDisable();
     }

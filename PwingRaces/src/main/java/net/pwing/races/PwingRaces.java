@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import net.pwing.races.api.PwingRacesAPI;
+import net.pwing.races.api.module.RaceModuleManager;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.compat.CompatCodeHandlerDisabled;
 import net.pwing.races.compat.ICompatCodeHandler;
@@ -19,8 +20,8 @@ import net.pwing.races.hooks.QuestsHook;
 import net.pwing.races.hooks.VaultAPIHook;
 import net.pwing.races.hooks.WorldEditHook;
 import net.pwing.races.hooks.WorldGuardHook;
-import net.pwing.races.module.RaceModuleLoader;
-import net.pwing.races.module.RaceModuleManager;
+import net.pwing.races.module.PwingRaceModuleLoader;
+import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.task.RaceSaveTask;
 import net.pwing.races.task.RaceTriggerTickTask;
@@ -78,7 +79,7 @@ public class PwingRaces extends JavaPlugin {
         MessageUtil.initMessages("messages", configManager);
 
         try {
-            moduleManager = new RaceModuleManager(new RaceModuleLoader(this));
+            moduleManager = new PwingRaceModuleManager(new PwingRaceModuleLoader(this));
         } catch (Throwable ex) {
             getLogger().warning("Error when loading modules! Please report this error!");
             ex.printStackTrace();
@@ -86,6 +87,7 @@ public class PwingRaces extends JavaPlugin {
         raceManager = new PwingRaceManager(this);
 
         PwingRacesAPI.setRaceManager(raceManager);
+        PwingRacesAPI.setModuleManager(moduleManager);
 
         if (setupPlaceholderAPI()) {
             this.getLogger().info("PlaceholderAPI found, support for placeholders enabled.");
