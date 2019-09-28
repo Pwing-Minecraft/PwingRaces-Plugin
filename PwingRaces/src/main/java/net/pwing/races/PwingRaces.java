@@ -19,6 +19,8 @@ import net.pwing.races.hooks.QuestsHook;
 import net.pwing.races.hooks.VaultAPIHook;
 import net.pwing.races.hooks.WorldEditHook;
 import net.pwing.races.hooks.WorldGuardHook;
+import net.pwing.races.module.RaceModuleLoader;
+import net.pwing.races.module.RaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.task.RaceSaveTask;
 import net.pwing.races.task.RaceTriggerTickTask;
@@ -39,6 +41,7 @@ public class PwingRaces extends JavaPlugin {
 
     private RaceManager raceManager;
     private RaceConfigurationManager configManager;
+    private RaceModuleManager moduleManager;
 
     private VaultAPIHook vaultHook;
     private MagicSpellsHook magicSpellsHook;
@@ -74,6 +77,12 @@ public class PwingRaces extends JavaPlugin {
         configManager = new RaceConfigurationManager(this);
         MessageUtil.initMessages("messages", configManager);
 
+        try {
+            moduleManager = new RaceModuleManager(new RaceModuleLoader(this));
+        } catch (Throwable ex) {
+            getLogger().warning("Error when loading modules! Please report this error!");
+            ex.printStackTrace();
+        }
         raceManager = new PwingRaceManager(this);
 
         PwingRacesAPI.setRaceManager(raceManager);
@@ -117,6 +126,9 @@ public class PwingRaces extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             raceManager.savePlayer(player);
         }
+
+        getLogger().info("Disabling modules...");
+        moduleManager.getModules().values().forEach(module -> moduleManager.disableModule(module));
     }
 
     public boolean reloadPlugin(){
@@ -272,6 +284,10 @@ public class PwingRaces extends JavaPlugin {
 
     public RaceConfigurationManager getConfigManager() {
         return configManager;
+    }
+
+    public RaceModuleManager getModuleManager() {
+        return moduleManager;
     }
 
     public boolean isPlaceholderAPILoaded() {

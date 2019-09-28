@@ -1,12 +1,7 @@
 package net.pwing.races.race.ability;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -176,51 +171,23 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         String abilityClassName = config.getString(configPath + ".ability", "DummyAbility");
         Class<? extends RaceAbility> abilityClass = null;
 
-        File folder = plugin.getModuleFolder();
-        if (!folder.exists())
-            folder.mkdir();
-
-        List<File> modules = new ArrayList<File>();
-        for (File module : folder.listFiles()) {
-            if (module.getName().endsWith(".jar"))
-                modules.add(module);
-        }
-
-        URL[] urls = new URL[modules.size() + 1];
-        ClassLoader classLoader = plugin.getPluginClassLoader();
         try {
-            urls[0] = folder.toURI().toURL();
-            for (int i = 1; i <= modules.size(); i++)
-                urls[i] = modules.get(i - 1).toURI().toURL();
-
-            classLoader = new URLClassLoader(urls, plugin.getPluginClassLoader());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            abilityClass = classLoader.loadClass("net.pwing.races.race.ability.abilities." + abilityClassName).asSubclass(RaceAbility.class);
+            abilityClass = Class.forName("net.pwing.races.race.ability.abilities." + abilityClassName).asSubclass(RaceAbility.class);
         } catch (ClassNotFoundException ex) {
             try {
                 // Assume it's a custom ability and the path is defined
-                if (abilityClassName.contains("")) {
-                    plugin.getLogger().info("Loading custom ability " + abilityClassName);
-                    abilityClass = classLoader.loadClass(abilityClassName).asSubclass(RaceAbility.class);
-                } else {
+                if (abilityClassName == null || abilityClassName.isEmpty()) {
                     plugin.getLogger().warning("Attempted to find ability with name " + abilityClassName + ", but nothing was found.");
                     return null;
                 }
+                plugin.getLogger().info("Loading custom ability " + abilityClassName);
+                abilityClass = Class.forName(abilityClassName).asSubclass(RaceAbility.class);
 
                 plugin.getLogger().info("Successfully loaded custom ability module " + abilityClassName + "!");
-            } catch (ClassNotFoundException e2) {
+            } catch (ClassNotFoundException ex2) {
                 plugin.getLogger().warning("Attempted to find custom ability with class path " + abilityClassName + ", but nothing was found.");
                 return null;
             }
-        }
-
-        if (abilityClass == null) {
-            plugin.getLogger().warning("Attempted to find ability with name " + abilityClassName + ", but nothing was found.");
-            return null;
         }
 
         try {
@@ -230,19 +197,10 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             RaceAbility ability = abilityConstructor.newInstance(plugin, key, configPath, config, requirement);
             // RaceAbility implements listener, so no need to check if its assignable
             plugin.getServer().getPluginManager().registerEvents(ability, plugin);
-
             return ability;
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             plugin.getLogger().warning("Could not load ability " + abilityClassName + ", please make sure everything in your config is correct.");
             ex.printStackTrace();
-        } finally {
-            if (classLoader instanceof URLClassLoader) {
-                try {
-                    ((URLClassLoader) classLoader).close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         return null;
