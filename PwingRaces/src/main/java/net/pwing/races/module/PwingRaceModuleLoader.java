@@ -10,10 +10,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -24,7 +26,7 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
 
     public PwingRaceModuleLoader(PwingRaces plugin) {
         this.plugin = plugin;
-        this.modules = new HashMap<>();
+        this.modules = new ConcurrentHashMap<>();
 
         loadModules();
     }
@@ -70,15 +72,27 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
                 FileConfiguration moduleConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(moduleYml));
                 plugin.getLogger().info("Loading module " + moduleConfig.getString("name") + "...");
 
-                RaceModuleWrapper module = new RaceModuleWrapper((RaceModule) Class.forName(moduleConfig.getString("main"), true, classLoader).newInstance());
-                module.name = moduleConfig.getString("name");
-                module.version = moduleConfig.getString("version");
-                module.author = moduleConfig.getString("author");
-                module.plugin = plugin;
-                plugin.getLogger().info("Loaded module " + module.name + "!");
+                RaceModule module = (RaceModule) Class.forName(moduleConfig.getString("main"), true, classLoader).newInstance();
 
-                module.onEnable();
-                plugin.getLogger().info("Enabled module " + module.name + "!");
+                Field name = getField(module.getClass(), "name");
+                setAccessible(name);
+                name.set(module, moduleConfig.getString("name"));
+
+                Field version = getField(module.getClass(), "version");
+                setAccessible(version);
+                version.set(module, moduleConfig.getString("version"));
+
+                Field author = getField(module.getClass(), "author");
+                setAccessible(author);
+                author.set(module, moduleConfig.getString("author"));
+
+                Field plugin = getField(module.getClass(), "plugin");
+                setAccessible(plugin);
+                plugin.set(module, this.plugin);
+
+                this.plugin.getLogger().info("Loaded module " + module.getName() + "!");
+                enableModule(module);
+                this.plugin.getLogger().info("Enabled module " + module.getName() + "!");
             } catch (Exception ex) {
                 plugin.getLogger().warning("Error loading module " + moduleFile.getName() + "! Please contact the module author!");
                 ex.printStackTrace();
@@ -110,6 +124,24 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
             return entryName.replaceAll("/", ".");
         } else {
             return null;
+        }
+    }
+
+    private Field getField(Class clazz, String fieldName) throws NoSuchFieldException {
+        try {
+            return clazz.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            Class superClass = clazz.getSuperclass();
+            if (superClass == null) {
+                throw e;
+            } else {
+                return getField(superClass, fieldName);
+            }
+        }
+    }
+    private void setAccessible(Field field) {
+        if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())) {
+            field.setAccessible(true);
         }
     }
 }
