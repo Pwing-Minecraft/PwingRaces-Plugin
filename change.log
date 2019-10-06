@@ -1,3 +1,6 @@
+v1.2.1
+- Fixed bug where 'race-change' trigger wasn't ran in both the new and old race
+
 v1.2.0
 - Implemented module system
 

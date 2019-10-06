@@ -147,6 +147,11 @@ public class RaceExecutor extends RaceCommandExecutor {
         }
 
         racePlayer.setActiveRace(event.getNewRace());
+
+        // This needs to be called again for the new race as well
+        plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change");
+        plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change " + event.getNewRace().getName());
+
         sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-active-race", "%prefix% Successfully set %player_name%'s race to %race%!")));
         return true;
     }
