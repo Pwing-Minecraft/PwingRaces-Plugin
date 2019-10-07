@@ -8,8 +8,11 @@ import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,6 +24,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -254,5 +258,28 @@ public class RaceTriggerListener implements Listener {
         Player player = event.getPlayer();
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "element-buy " + event.getPurchasedElement().getInternalName());
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "death");
+
+        EntityDamageEvent lastDamageCause = player.getLastDamageCause();
+        if (!(lastDamageCause instanceof EntityDamageByEntityEvent))
+            return;
+
+        Entity damager = ((EntityDamageByEntityEvent) lastDamageCause).getDamager();
+        triggerManager.runTriggers(player, "killed-by " + damager.getType().name().toLowerCase());
+        if (!(damager instanceof Player))
+               return;
+
+        RacePlayer targetRacePlayer = plugin.getRaceManager().getRacePlayer((Player) damager);
+        Race targetRace = targetRacePlayer.getActiveRace();
+        if (targetRace == null)
+            return;
+
+        triggerManager.runTriggers(player, "killed-by" + targetRace.getName());
     }
 }
