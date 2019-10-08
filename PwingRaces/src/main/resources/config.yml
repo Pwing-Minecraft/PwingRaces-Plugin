@@ -7,7 +7,7 @@ settings:
     require-race: true # Controls if a player can be raceless
     default-race: Human
     set-default-race-first-join: true
-    allow-player-race-changes: false # Allow players to change their race on their own
+    allow-player-race-changes: true # Allow players to change their race on their own
     race-change-cost: 25000
     race-unlocks: true
     race-unlock-uses-cost: false # If true, a player must have the value set above to change races
