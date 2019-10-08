@@ -127,7 +127,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             }
         }
 
-        toRemove.forEach(removed -> abilities.remove(removed));
+        toRemove.forEach(abilities::remove);
         return abilities.values();
     }
 
@@ -156,7 +156,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
     }
 
     public void setCooldown(Player player, String ability, double amt) {
-        Map<UUID, Long> cooldownMap = new HashMap<UUID, Long>();
+        Map<UUID, Long> cooldownMap = new HashMap<>();
 
         if (cooldown.containsKey(ability))
             cooldownMap = cooldown.get(ability);
@@ -169,7 +169,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
 
     public RaceAbility getAbility(String key, String requirement, String configPath, FileConfiguration config) {
         String abilityClassName = config.getString(configPath + ".ability", "DummyAbility");
-        Class<? extends RaceAbility> abilityClass = null;
+        Class<? extends RaceAbility> abilityClass;
 
         try {
             abilityClass = Class.forName("net.pwing.races.race.ability.abilities." + abilityClassName).asSubclass(RaceAbility.class);

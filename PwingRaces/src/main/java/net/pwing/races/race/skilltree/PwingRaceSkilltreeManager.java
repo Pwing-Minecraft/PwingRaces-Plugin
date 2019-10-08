@@ -15,7 +15,7 @@ public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
     private List<RaceSkilltree> skilltrees;
 
     public PwingRaceSkilltreeManager(File dir) {
-        skilltrees = new ArrayList<RaceSkilltree>();
+        skilltrees = new ArrayList<>();
         initSkilltrees(dir);
     }
 

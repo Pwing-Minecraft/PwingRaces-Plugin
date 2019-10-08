@@ -127,15 +127,15 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         RaceManager raceManager = plugin.getRaceManager();
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
         if (racePlayer == null)
-            return new ArrayList<RaceTrigger>();
+            return new ArrayList<>();
 
         Race race = racePlayer.getActiveRace();
         if (race == null)
-            return new ArrayList<RaceTrigger>();
+            return new ArrayList<>();
 
         RaceData data = raceManager.getPlayerData(player, race);
 
-        Map<String, RaceTrigger> triggers = new HashMap<String, RaceTrigger>();
+        Map<String, RaceTrigger> triggers = new HashMap<>();
         for (String key : race.getRaceTriggersMap().keySet()) {
             List<RaceTrigger> definedTriggers = race.getRaceTriggersMap().get(key);
 
@@ -163,7 +163,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         }
 
         // Remove triggers that may be overridden
-        List<String> toRemove = new ArrayList<String>();
+        List<String> toRemove = new ArrayList<>();
         for (String str : triggers.keySet()) {
             RaceTrigger raceTrigger = triggers.get(str);
 
@@ -172,7 +172,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             }
         }
 
-        toRemove.forEach(removed -> triggers.remove(removed));
+        toRemove.forEach(triggers::remove);
         return triggers.values();
     }
 
@@ -180,15 +180,15 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         RaceManager raceManager = plugin.getRaceManager();
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
         if (racePlayer == null)
-            return new ArrayList<RaceTrigger>();
+            return new ArrayList<>();
 
         Race race = racePlayer.getActiveRace();
         if (race == null)
-            return new ArrayList<RaceTrigger>();
+            return new ArrayList<>();
 
         RaceData data = raceManager.getPlayerData(player, race);
 
-        Map<String, RaceTrigger> triggers = new HashMap<String, RaceTrigger>();
+        Map<String, RaceTrigger> triggers = new HashMap<>();
         for (String key : race.getRaceTriggersMap().keySet()) {
             List<RaceTrigger> definedTriggers = race.getRaceTriggersMap().get(key);
 
@@ -216,7 +216,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         }
 
         // Remove triggers that may be overridden
-        List<String> toRemove = new ArrayList<String>();
+        List<String> toRemove = new ArrayList<>();
         for (String str : triggers.keySet()) {
             RaceTrigger raceTrigger = triggers.get(str);
 
@@ -225,7 +225,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             }
         }
 
-        toRemove.forEach(removed -> triggers.remove(removed));
+        toRemove.forEach(triggers::remove);
         return triggers.values();
     }
 
@@ -258,7 +258,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     }
 
     public void setDelay(Player player, String trigger, int amt) {
-        Map<UUID, Long> delayMap = new HashMap<UUID, Long>();
+        Map<UUID, Long> delayMap = new HashMap<>();
 
         if (delay.containsKey(trigger))
             delayMap = delay.get(trigger);

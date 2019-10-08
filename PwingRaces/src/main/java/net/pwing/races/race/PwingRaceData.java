@@ -39,7 +39,7 @@ public class PwingRaceData implements RaceData {
 		this.experience = config.getInt(configPath + "." + raceName + ".exp");
 		this.usedSkillpoints = config.getInt(configPath + "." + raceName + ".used-skillpoints");
 		this.unusedSkillpoints = config.getInt(configPath + "." + raceName + ".unused-skillpoints");
-		this.purchasedElementsMap = new HashMap<String, List<String>>();
+		this.purchasedElementsMap = new HashMap<>();
 
 		if (config.contains(configPath + "." + raceName + ".purchased-elements")) {
 			for (String str : config.getConfigurationSection(configPath + "." + raceName + ".purchased-elements").getKeys(false)) {
@@ -109,8 +109,7 @@ public class PwingRaceData implements RaceData {
 
 	public void removePurchasedElement(String skillTree, String name) {
 		List<String> purchased = getPurchasedElements(skillTree);
-		if (purchased.contains(name))
-			purchased.remove(name);
+		purchased.remove(name);
 
 		purchasedElementsMap.put(skillTree, purchased);
 	}

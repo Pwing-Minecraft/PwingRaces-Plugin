@@ -22,7 +22,6 @@ import net.pwing.races.api.events.RaceReclaimSkillpointsEvent;
 import net.pwing.races.hooks.VaultAPIHook;
 import net.pwing.races.menu.ConfirmationMenu;
 import net.pwing.races.menu.IConfirmationHandler;
-import net.pwing.races.menu.IMenuClickHandler;
 import net.pwing.races.race.skilltree.PwingRaceSkilltreeMenu;
 import net.pwing.races.utilities.ItemUtil;
 import net.pwing.races.utilities.MessageUtil;
@@ -53,7 +52,7 @@ public class PwingRaceMenu implements RaceMenu {
         this.slots = slots;
         this.glassFilled = glassFilled;
 
-        this.cachedIcons = new HashMap<String, RaceIconData>();
+        this.cachedIcons = new HashMap<>();
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             for (Race race : plugin.getRaceManager().getRaces()) {
                 cachedIcons.put(race.getName(), race.getIconData());
@@ -91,15 +90,11 @@ public class PwingRaceMenu implements RaceMenu {
                 raceItem = iconData.getSelectedIcon();
 
             if (iconData.getIconSlot() >= 0) {
-                builder.setItem(raceItem, iconData.getIconSlot()).addClickEvent(iconData.getIconSlot(), new IMenuClickHandler() {
-
-                    @Override
-                    public void onClick(Player player, ClickType action, ItemStack item) {
-                        if (data.isUnlocked())
-                            openRaceMenu(player, race);
-                        else
-                            MessageUtil.sendMessage(player, "locked-race", "%prefix% &cYou have not unlocked this race yet!");
-                    }
+                builder.setItem(raceItem, iconData.getIconSlot()).addClickEvent(iconData.getIconSlot(), (player1, action, item) -> {
+                    if (data.isUnlocked())
+                        openRaceMenu(player1, race);
+                    else
+                        MessageUtil.sendMessage(player1, "locked-race", "%prefix% &cYou have not unlocked this race yet!");
                 });
             }
         }
@@ -149,169 +144,151 @@ public class PwingRaceMenu implements RaceMenu {
             if (skilltree == null)
                 continue;
 
-            builder.setItem(skilltree.getIcon(), slot).addClickEvent(slot, new IMenuClickHandler() {
-
-                @Override
-                public void onClick(Player player, ClickType action, ItemStack item) {
-                    new PwingRaceSkilltreeMenu(plugin, race, skilltree).openMenu(player);
-                }
-            });
+            builder.setItem(skilltree.getIcon(), slot).addClickEvent(slot, (player12, action, item) -> new PwingRaceSkilltreeMenu(plugin, race, skilltree).openMenu(player12));
         }
 
         RaceConfigurationManager configManager = plugin.getConfigManager();
-        builder.setItem(info, 13).addClickEvent(13, new IMenuClickHandler() {
+        builder.setItem(info, 13).addClickEvent(13, (player1, action, item) -> {
+            if (action == ClickType.RIGHT) {
+                openMenu(player1);
+            } else if (action == ClickType.LEFT) {
+                ConfirmationMenu menu = new ConfirmationMenu(plugin, MessageUtil.getMessage("menu-confirmation", "Confirmation"),
+                        MessageUtil.getMessage("menu-confirm", "&aConfirm"), MessageUtil.getMessage("menu-cancel", "&cCancel Purchase"), new IConfirmationHandler() {
 
-            @Override
-            public void onClick(Player player, ClickType action, ItemStack item) {
-                if (action == ClickType.RIGHT) {
-                    openMenu(player);
-                } else if (action == ClickType.LEFT) {
-                    ConfirmationMenu menu = new ConfirmationMenu(plugin, MessageUtil.getMessage("menu-confirmation", "Confirmation"),
-                            MessageUtil.getMessage("menu-confirm", "&aConfirm"), MessageUtil.getMessage("menu-cancel", "&cCancel Purchase"), new IConfirmationHandler() {
-
-                        @Override
-                        public void onConfirm(Player player, ClickType action, ItemStack item) {
-                            if (plugin.getConfigManager().doesRaceUnlockUseCost()) {
-                                if (!plugin.getVaultHook().hasBalance(player, plugin.getConfigManager().getRaceChangeCost())) {
-                                    MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
-                                    player.closeInventory();
-                                    return;
-                                }
-
-                                plugin.getVaultHook().withdrawPlayer(player, plugin.getConfigManager().getRaceChangeCost());
-                            }
-
-                            RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getActiveRace(), race);
-                            Bukkit.getPluginManager().callEvent(event);
-                            if (event.isCancelled()) {
-                                player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
-                                player.closeInventory();
+                    @Override
+                    public void onConfirm(Player player1, ClickType action, ItemStack item) {
+                        if (plugin.getConfigManager().doesRaceUnlockUseCost()) {
+                            if (!plugin.getVaultHook().hasBalance(player1, plugin.getConfigManager().getRaceChangeCost())) {
+                                MessageUtil.sendMessage(player1, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                                player1.closeInventory();
                                 return;
                             }
 
-                            racePlayer.setActiveRace(event.getNewRace());
-
-                            // This needs to be called again for the new race as well
-                            plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change");
-                            plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change " + event.getNewRace().getName());
-
-                            openRaceMenu(player, race);
-                            MessageUtil.sendMessage(player, "set-your-active-race", "%prefix% Successfully set your race to %race%!");
+                            plugin.getVaultHook().withdrawPlayer(player1, plugin.getConfigManager().getRaceChangeCost());
                         }
 
-                        @Override
-                        public void onDeny(Player player, ClickType action, ItemStack item) {
-                            openRaceMenu(player, race);
-                            MessageUtil.sendMessage(player, "cancelled-race-change", "%prefix% &cCancelled race change.");
+                        RaceChangeEvent event = new RaceChangeEvent(player1, racePlayer.getActiveRace(), race);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            player1.sendMessage(MessageUtil.getPlaceholderMessage(player1, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
+                            player1.closeInventory();
+                            return;
                         }
-                    });
 
-                    if (plugin.getConfigManager().isPlayerRaceChangesAllowed() && (racePlayer.getActiveRace() == null || !racePlayer.getActiveRace().equals(race)))
-                        menu.open(player);
-                }
+                        racePlayer.setActiveRace(event.getNewRace());
+
+                        // This needs to be called again for the new race as well
+                        plugin.getRaceManager().getTriggerManager().runTriggers(player1, "race-change");
+                        plugin.getRaceManager().getTriggerManager().runTriggers(player1, "race-change " + event.getNewRace().getName());
+
+                        openRaceMenu(player1, race);
+                        MessageUtil.sendMessage(player1, "set-your-active-race", "%prefix% Successfully set your race to %race%!");
+                    }
+
+                    @Override
+                    public void onDeny(Player player1, ClickType action, ItemStack item) {
+                        openRaceMenu(player1, race);
+                        MessageUtil.sendMessage(player1, "cancelled-race-change", "%prefix% &cCancelled race change.");
+                    }
+                });
+
+                if (plugin.getConfigManager().isPlayerRaceChangesAllowed() && (racePlayer.getActiveRace() == null || !racePlayer.getActiveRace().equals(race)))
+                    menu.open(player1);
             }
         });
 
         if (configManager.isReclaimingSkillpointsAllowed() && racePlayer.getActiveRace() != null && racePlayer.getActiveRace().equals(race)) {
-            builder.setItem(reclaimSkillpoints, 11).addClickEvent(11, new IMenuClickHandler() {
+            builder.setItem(reclaimSkillpoints, 11).addClickEvent(11, (player13, action, item) -> {
+                ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
 
-                @Override
-                public void onClick(Player player, ClickType action, ItemStack item) {
-                    ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
+                    @Override
+                    public void onDeny(Player player13, ClickType action, ItemStack item) {
+                        openRaceMenu(player13, race);
+                        MessageUtil.sendMessage(player13, "cancelled-skillpoint-claim", "%prefix% &cCancelled skillpoint reclaim.");
+                    }
 
-                        @Override
-                        public void onDeny(Player player, ClickType action, ItemStack item) {
-                            openRaceMenu(player, race);
-                            MessageUtil.sendMessage(player, "cancelled-skillpoint-claim", "%prefix% &cCancelled skillpoint reclaim.");
+                    // Add a "reduction" system farther down the line
+                    @Override
+                    public void onConfirm(Player player13, ClickType action, ItemStack item) {
+                        int cost1 = configManager.getReclaimSkillpointCost();
+
+                        // double reduction = configManager.getReclaimSkillpointReduction();
+                        VaultAPIHook vaultHook = plugin.getVaultHook();
+                        if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player13, cost1)) {
+                            MessageUtil.sendMessage(player13, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                            player13.closeInventory();
+                            return;
                         }
 
-                        // Add a "reduction" system farther down the line
-                        @Override
-                        public void onConfirm(Player player, ClickType action, ItemStack item) {
-                            int cost = configManager.getReclaimSkillpointCost();
-
-                            // double reduction = configManager.getReclaimSkillpointReduction();
-                            VaultAPIHook vaultHook = plugin.getVaultHook();
-                            if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost)) {
-                                MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
-                                player.closeInventory();
-                                return;
-                            }
-
-                            if (data.getPurchasedElementsMap().isEmpty()) {
-                                MessageUtil.sendMessage(player, "no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
-                                player.closeInventory();
-                                return;
-                            }
-
-                            // double pointReduction = data.getUsedSkillpoints() * reduction;
-                            int finalReduction = data.getUsedSkillpoints(); // - (int) pointReduction;
-
-                            RaceReclaimSkillpointsEvent event = new RaceReclaimSkillpointsEvent(player, race, data.getUnusedSkillpoints(), data.getUnusedSkillpoints() + finalReduction);
-                            Bukkit.getPluginManager().callEvent(event);
-
-                            if (event.isCancelled())
-                                return;
-
-                            vaultHook.withdrawPlayer(player, cost);
-
-                            data.setUnusedSkillpoints(event.getNewSkillpointCount());
-                            data.setUsedSkillpoints(0);
-
-                            for (String tree : data.getPurchasedElementsMap().keySet())
-                                data.getPurchasedElementsMap().put(tree, new ArrayList<String>());
-
-                            MessageUtil.sendMessage(player, "race-skillpoint-claim", "%prefix% Successfully reclaimed your used skillpoints!");
-                            player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
-                            openRaceMenu(player, race);
+                        if (data.getPurchasedElementsMap().isEmpty()) {
+                            MessageUtil.sendMessage(player13, "no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
+                            player13.closeInventory();
+                            return;
                         }
-                    });
 
-                    menu.open(player);
-                }
+                        // double pointReduction = data.getUsedSkillpoints() * reduction;
+                        int finalReduction = data.getUsedSkillpoints(); // - (int) pointReduction;
+
+                        RaceReclaimSkillpointsEvent event = new RaceReclaimSkillpointsEvent(player13, race, data.getUnusedSkillpoints(), data.getUnusedSkillpoints() + finalReduction);
+                        Bukkit.getPluginManager().callEvent(event);
+
+                        if (event.isCancelled())
+                            return;
+
+                        vaultHook.withdrawPlayer(player13, cost1);
+
+                        data.setUnusedSkillpoints(event.getNewSkillpointCount());
+                        data.setUsedSkillpoints(0);
+
+                        for (String tree : data.getPurchasedElementsMap().keySet())
+                            data.getPurchasedElementsMap().put(tree, new ArrayList<String>());
+
+                        MessageUtil.sendMessage(player13, "race-skillpoint-claim", "%prefix% Successfully reclaimed your used skillpoints!");
+                        player13.playSound(player13.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
+                        openRaceMenu(player13, race);
+                    }
+                });
+
+                menu.open(player13);
             });
         }
 
         if (configManager.isReclaimingItemsAllowed() && racePlayer.getActiveRace() != null && racePlayer.getActiveRace().equals(race)) {
-            builder.setItem(reclaimItems, 15).addClickEvent(15, new IMenuClickHandler() {
+            builder.setItem(reclaimItems, 15).addClickEvent(15, (player14, action, item) -> {
+                ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
 
-                @Override
-                public void onClick(Player player, ClickType action, ItemStack item) {
-                    ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
+                    @Override
+                    public void onDeny(Player player14, ClickType action, ItemStack item) {
+                        openRaceMenu(player14, race);
+                        MessageUtil.sendMessage(player14, "cancelled-item-claim", "%prefix% &cCancelled item reclaim.");
+                    }
 
-                        @Override
-                        public void onDeny(Player player, ClickType action, ItemStack item) {
-                            openRaceMenu(player, race);
-                            MessageUtil.sendMessage(player, "cancelled-item-claim", "%prefix% &cCancelled item reclaim.");
+                    @Override
+                    public void onConfirm(Player player14, ClickType action, ItemStack item) {
+                        int cost12 = configManager.getReclaimItemsCost();
+
+                        VaultAPIHook vaultHook = plugin.getVaultHook();
+                        if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player14, cost12)) {
+                            MessageUtil.sendMessage(player14, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                            player14.closeInventory();
+                            return;
                         }
 
-                        @Override
-                        public void onConfirm(Player player, ClickType action, ItemStack item) {
-                            int cost = configManager.getReclaimItemsCost();
+                        RaceReclaimItemsEvent event = new RaceReclaimItemsEvent(player14, race, race.getRaceItems().values());
+                        Bukkit.getPluginManager().callEvent(event);
 
-                            VaultAPIHook vaultHook = plugin.getVaultHook();
-                            if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost)) {
-                                MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
-                                player.closeInventory();
-                                return;
-                            }
+                        if (event.isCancelled())
+                            return;
 
-                            RaceReclaimItemsEvent event = new RaceReclaimItemsEvent(player, race, race.getRaceItems().values());
-                            Bukkit.getPluginManager().callEvent(event);
+                        vaultHook.withdrawPlayer(player14, cost12);
+                        race.getRaceItems().values().forEach(raceItem -> ItemUtil.addItem(player14, raceItem));
+                        MessageUtil.sendMessage(player14, "race-item-claim", "%prefix% Sucessfully reclaimed your race items!");
+                        player14.playSound(player14.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
+                        openRaceMenu(player14, race);
+                    }
+                });
 
-                            if (event.isCancelled())
-                                return;
-
-                            vaultHook.withdrawPlayer(player, cost);
-                            race.getRaceItems().values().forEach(raceItem -> ItemUtil.addItem(player, raceItem));
-                            MessageUtil.sendMessage(player, "race-item-claim", "%prefix% Sucessfully reclaimed your race items!");
-                            player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
-                            openRaceMenu(player, race);
-                        }
-                    });
-
-                    menu.open(player);
-                }
+                menu.open(player14);
             });
         }
 

@@ -2,6 +2,7 @@ v1.2.1
 - Fixed bug where 'race-change' trigger wasn't ran in both the new and old race
 - Added 'death' trigger
 - Added 'killed-by' trigger, which can work for both races and entities
+- Code cleanups
 
 v1.2.0
 - Implemented module system

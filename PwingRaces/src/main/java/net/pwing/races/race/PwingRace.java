@@ -73,9 +73,9 @@ public class PwingRace implements Race {
         this.spawnLocation = LocationUtil.fromString(raceConfig.getString("race.spawn-location", ""));
 
         this.requireUnlock = raceConfig.getBoolean("race.require-unlock", false);
-        this.raceSkilltreeMap = new HashMap<Integer, String>();
+        this.raceSkilltreeMap = new HashMap<>();
 
-        this.raceItems = new HashMap<String, ItemStack>();
+        this.raceItems = new HashMap<>();
         if (raceConfig.contains("race.items")) {
             for (String str : raceConfig.getConfigurationSection("race.items").getKeys(false)) {
                 ItemStack stack = ItemUtil.readItemFromConfig("race.items." + str, raceConfig);
@@ -97,8 +97,8 @@ public class PwingRace implements Race {
             raceSkilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.getInternalName());
         }
 
-        this.raceLevelMap = new HashMap<Integer, Integer>();
-        this.raceSkillpointMap = new HashMap<Integer, Integer>();
+        this.raceLevelMap = new HashMap<>();
+        this.raceSkillpointMap = new HashMap<>();
 
         if (raceConfig.contains("race.levels")) {
             for (String str : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
@@ -107,7 +107,7 @@ public class PwingRace implements Race {
             }
         }
 
-        this.raceTriggersMap = new HashMap<String, List<RaceTrigger>>();
+        this.raceTriggersMap = new HashMap<>();
 
         // Get triggers defined in the triggers section
         if (raceConfig.contains("race.triggers")) {
@@ -118,7 +118,7 @@ public class PwingRace implements Race {
             }
         }
 
-        this.raceAttributesMap = new HashMap<String, List<RaceAttribute>>();
+        this.raceAttributesMap = new HashMap<>();
 
         // Get attributes defined in the attributes section
         if (raceConfig.contains("race.attributes")) {
@@ -129,7 +129,7 @@ public class PwingRace implements Race {
             }
         }
 
-        this.racePermissionsMap = new HashMap<String, List<RacePermission>>();
+        this.racePermissionsMap = new HashMap<>();
 
         // Get permissions defined in the permissions section
         if (raceConfig.contains("race.permissions")) {
@@ -140,7 +140,7 @@ public class PwingRace implements Race {
             }
         }
 
-        this.raceAbilitiesMap = new HashMap<String, List<RaceAbility>>();
+        this.raceAbilitiesMap = new HashMap<>();
         RaceAbilityManager abilityManager = raceManager.getAbilityManager();
 
         // Get abilities defined in the abilities section

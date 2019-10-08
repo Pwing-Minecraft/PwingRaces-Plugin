@@ -58,8 +58,4 @@ public abstract class PluginHook {
 	}
 
 	public abstract void enableHook(PwingRaces owningPlugin, Plugin hook);
-
-	public Plugin getOwningPlugin() {
-		return owningPlugin;
-	}
 }

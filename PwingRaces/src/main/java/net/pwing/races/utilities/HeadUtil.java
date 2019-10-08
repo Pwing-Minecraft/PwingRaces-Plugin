@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class HeadUtil {
 
-    private static Map<String, String> cachedHeads = new HashMap<String, String>();
+    private static Map<String, String> cachedHeads = new HashMap<>();
 
     public static ItemStack getPlayerHead(ItemStack item, String player) {
         ItemBuilder head = new ItemBuilder(item);

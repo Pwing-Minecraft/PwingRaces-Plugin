@@ -63,8 +63,8 @@ public class PwingRaceManager implements RaceManager {
     public void initRaces() {
         Bukkit.getServer().getPluginManager().registerEvents(new RaceListener(plugin), plugin);
 
-        races = new HashSet<Race>();
-        racePlayers = new HashMap<UUID, RacePlayer>();
+        races = new HashSet<>();
+        racePlayers = new HashMap<>();
 
         triggerManager = new PwingRaceTriggerManager(plugin);
         attributeManager = new PwingRaceAttributeManager(plugin);
