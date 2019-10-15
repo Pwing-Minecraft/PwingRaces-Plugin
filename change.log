@@ -1,7 +1,8 @@
 v1.2.1
-- Fixed bug where 'race-change' trigger wasn't ran in both the new and old race
 - Added 'death' trigger
 - Added 'killed-by' trigger, which can work for both races and entities
+- Add support for multiple race change cost types (experience and money)
+- Fixed bug where 'race-change' trigger wasn't ran in both the new and old race
 - Code cleanups
 
 v1.2.0

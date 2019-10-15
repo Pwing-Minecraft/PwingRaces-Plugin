@@ -158,13 +158,25 @@ public class PwingRaceMenu implements RaceMenu {
                     @Override
                     public void onConfirm(Player player1, ClickType action, ItemStack item) {
                         if (plugin.getConfigManager().doesRaceUnlockUseCost()) {
-                            if (!plugin.getVaultHook().hasBalance(player1, plugin.getConfigManager().getRaceChangeCost())) {
-                                MessageUtil.sendMessage(player1, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
-                                player1.closeInventory();
-                                return;
+                            if (plugin.getConfigManager().getRaceChangeCostType().equalsIgnoreCase("money")) {
+                                if (!plugin.getVaultHook().hasBalance(player1, plugin.getConfigManager().getRaceChangeCost())) {
+                                    MessageUtil.sendMessage(player1, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
+                                    player1.closeInventory();
+                                    return;
+                                } else {
+                                    plugin.getVaultHook().withdrawPlayer(player1, plugin.getConfigManager().getRaceChangeCost());
+                                }
                             }
 
-                            plugin.getVaultHook().withdrawPlayer(player1, plugin.getConfigManager().getRaceChangeCost());
+                            if (plugin.getConfigManager().getRaceChangeCostType().equalsIgnoreCase("exp")) {
+                                if (player.getTotalExperience() < plugin.getConfigManager().getRaceChangeCost()) {
+                                    MessageUtil.sendMessage(player1, "not-enough-exp", "%prefix% &cYou do not have enough experience for this transaction!");
+                                    player1.closeInventory();
+                                    return;
+                                } else {
+                                    player.setTotalExperience(player.getTotalExperience() - plugin.getConfigManager().getRaceChangeCost());
+                                }
+                            }
                         }
 
                         RaceChangeEvent event = new RaceChangeEvent(player1, racePlayer.getActiveRace(), race);

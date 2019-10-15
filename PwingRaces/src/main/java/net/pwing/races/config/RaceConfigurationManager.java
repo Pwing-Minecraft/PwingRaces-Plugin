@@ -21,6 +21,7 @@ public class RaceConfigurationManager {
 	private String defaultRace;
 	private boolean allowPlayerRaceChanges;
 	private int raceChangeCost;
+	private String raceChangeCostType;
 	private boolean raceUnlocks;
 	private boolean raceUnlockUsesCost;
 	private boolean giveItemsOnRaceChange;
@@ -56,6 +57,7 @@ public class RaceConfigurationManager {
 		defaultRaceOnJoin = fileConfiguration.getBoolean(configPath + ".set-default-race-first-join", true);
 		allowPlayerRaceChanges = fileConfiguration.getBoolean(configPath + ".allow-player-race-changes", false);
 		raceChangeCost = fileConfiguration.getInt(configPath + ".race-change-cost", 25000);
+		raceChangeCostType = fileConfiguration.getString(configPath + ".race-change-cost-type", "money");
 		raceUnlocks = fileConfiguration.getBoolean(configPath + ".race-unlocks", true);
 		raceUnlockUsesCost = fileConfiguration.getBoolean(configPath + ".race-unlock-uses-cost", false);
 		giveItemsOnRaceChange = fileConfiguration.getBoolean(configPath + ".give-items-on-race-change", true);
@@ -139,6 +141,10 @@ public class RaceConfigurationManager {
 
 	public int getRaceChangeCost() {
 		return raceChangeCost;
+	}
+
+	public String getRaceChangeCostType() {
+		return raceChangeCostType;
 	}
 
 	public boolean isRaceUnlocksEnabled() {

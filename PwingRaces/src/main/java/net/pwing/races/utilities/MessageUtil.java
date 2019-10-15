@@ -49,6 +49,9 @@ public class MessageUtil {
         config.addDefault(configPath + ".menu-experience", "&7Experience: &3");
         config.addDefault(configPath + ".menu-remaining-skillpoints", "&7Remaining Skillpoints: &3");
 
+        // Adding default from version 1.2.1
+        config.addDefault(configPath + ".not-enough-exp", "%prefix% &cYou do not have enough experience for this transaction!");
+
         config.options().copyDefaults(true);
         configManager.getMessageConfig().saveConfig();
 

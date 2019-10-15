@@ -9,6 +9,7 @@ settings:
     set-default-race-first-join: true
     allow-player-race-changes: true # Allow players to change their race on their own
     race-change-cost: 25000
+    race-change-cost-type: money # Can be money or exp
     race-unlocks: true
     race-unlock-uses-cost: false # If true, a player must have the value set above to change races
     give-items-on-race-change: true # Sets if the player get the race items when they change races
