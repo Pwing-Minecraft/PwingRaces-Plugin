@@ -22,13 +22,6 @@ public class MessageUtil {
         messages = new HashMap<>();
 
         FileConfiguration config = configManager.getMessageConfig().getConfig();
-        // Adding default from version 1.0.9
-        config.addDefault(configPath + ".set-skillpoint-message", "%prefix% &aYou have set %player_name%'s skillpoints to %skillpoints%.");
-        config.addDefault(configPath + ".set-level-message", "%prefix% &aYou have set %player_name%'s level to %level%.");
-        config.addDefault(configPath + ".set-exp-message", "%prefix% &aYou have set %player_name%'s race exp to %exp%.");
-
-        // Adding default from version 1.1.4
-        config.addDefault(configPath + ".no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
 
         // Adding default from version 1.1.8
         config.addDefault(configPath + ".menu-confirmation", "Confirmation");
