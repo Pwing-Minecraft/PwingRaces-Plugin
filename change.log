@@ -1,3 +1,6 @@
+v1.2.2
+- Fixed visual glitch with experience subtraction
+
 v1.2.1
 - Added 'death' trigger
 - Added 'killed-by' trigger, which can work for both races and entities

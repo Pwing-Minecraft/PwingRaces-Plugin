@@ -171,10 +171,14 @@ public class PwingRaceMenu implements RaceMenu {
                             if (plugin.getConfigManager().getRaceChangeCostType().equalsIgnoreCase("exp")) {
                                 if (player.getTotalExperience() < plugin.getConfigManager().getRaceChangeCost()) {
                                     MessageUtil.sendMessage(player1, "not-enough-exp", "%prefix% &cYou do not have enough experience for this transaction!");
-                                    player1.closeInventory();
+                                    player.closeInventory();
                                     return;
                                 } else {
-                                    player.setTotalExperience(player.getTotalExperience() - plugin.getConfigManager().getRaceChangeCost());
+                                    float cost = player.getTotalExperience() - plugin.getConfigManager().getRaceChangeCost();
+                                    player.giveExpLevels(-100000);
+                                    player.setExp(0.0f);
+                                    player.setTotalExperience(0);
+                                    player.giveExp((int) cost);
                                 }
                             }
                         }
