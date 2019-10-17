@@ -17,15 +17,7 @@ public interface ICompatCodeHandler {
 	void setColor(ItemStack item, Color color);
 	void setCustomModelData(ItemStack item, int data);
 
-	double getMaxHealth(Player player);
-	void setMaxHealth(Player player, double maxHealth);
-	ItemStack getItemInMainHand(Player player);
-
-	boolean isBukkitAttribute(String name);
-	String getAttributeName(String name);
-	double getAttributeValue(Player player, String attribute);
 	double getDefaultAttributeValue(Player player, String attribute);
-	void setAttributeValue(Player player, String attribute, double amount);
 
 	double getDamage(Arrow arrow);
 

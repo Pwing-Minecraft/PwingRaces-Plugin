@@ -44,7 +44,6 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 		}
 	}
 
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setUnbreakable(ItemStack item, boolean unbreakable) {
@@ -52,7 +51,6 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 		meta.spigot().setUnbreakable(true);
 		item.setItemMeta(meta);
 	}
-
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -70,46 +68,9 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public double getMaxHealth(Player player) {
-		return player.getMaxHealth();
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void setMaxHealth(Player player, double maxHealth) {
-		player.setMaxHealth(maxHealth);
-	}
-
-	@Override
-	public ItemStack getItemInMainHand(Player player) {
-		return player.getItemInHand();
-	}
-
-	@Override // no attribute support
-	public boolean isBukkitAttribute(String name) {
-		return false;
-	}
-
-	@Override // no attribute support
-	public String getAttributeName(String name) {
-		return name;
-	}
-
-	@Override // no attribute support
-	public double getAttributeValue(Player player, String attribute) {
-		return 0;
-	}
-
-	@Override // no attribute support
+	@Override // some versions need handlers for this still
 	public double getDefaultAttributeValue(Player player, String attribute) {
 		return 0;
-	}
-
-	@Override // no attribute support
-	public void setAttributeValue(Player player, String attribute, double amount) {
-
 	}
 
 	@Override

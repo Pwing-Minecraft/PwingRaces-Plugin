@@ -47,9 +47,7 @@ public class RaceAttributeListener implements Listener {
 
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer());
-        }, 20);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer()), 20);
     }
 
     @EventHandler
@@ -135,7 +133,7 @@ public class RaceAttributeListener implements Listener {
 
         double bonus = raceManager.getAttributeManager().getAttributeBonus(player, "melee-damage");
 
-        ItemStack hand = plugin.getCompatCodeHandler().getItemInMainHand(player);
+        ItemStack hand = player.getInventory().getItemInMainHand();
         if (hand != null && hand.getType().name().contains("SWORD")) {
             bonus += raceManager.getAttributeManager().getAttributeBonus(player, "swords-damage");
         }

@@ -1,7 +1,6 @@
 package net.pwing.races.race.ability;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.ability.RaceAbility;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -78,7 +77,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
     // Override the methods in RaceAbility as we have our own version code to check this already
     @Override
     public boolean canRun(Player player, ItemStack stack) {
-        ItemStack hand = plugin.getCompatCodeHandler().getItemInMainHand(player);
+        ItemStack hand = player.getInventory().getItemInMainHand();
         if (hand == null)
             return false;
 

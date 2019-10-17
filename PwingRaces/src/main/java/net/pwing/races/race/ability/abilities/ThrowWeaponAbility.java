@@ -64,7 +64,7 @@ public class ThrowWeaponAbility extends PwingRaceAbility {
     @Override
     public boolean runAbility(Player player) {
         if (takeItemOnThrow) {
-            ItemStack item = plugin.getCompatCodeHandler().getItemInMainHand(player);
+            ItemStack item = player.getInventory().getItemInMainHand();
             // Don't worry about support here, because if this is set and the user
             // is using 1.8, they will get an error in console regardless
             if (useOffhandItem)

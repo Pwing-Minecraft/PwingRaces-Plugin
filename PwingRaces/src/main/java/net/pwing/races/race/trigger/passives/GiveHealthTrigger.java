@@ -4,16 +4,13 @@ import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.NumberUtil;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 public class GiveHealthTrigger extends RaceTriggerPassive {
 
-    private PwingRaces plugin;
-
     public GiveHealthTrigger(PwingRaces plugin, String name) {
         super(name);
-
-        this.plugin = plugin;
     }
 
     @Override
@@ -26,7 +23,7 @@ public class GiveHealthTrigger extends RaceTriggerPassive {
         else if (NumberUtil.isRangedDouble(split[1]))
             health = NumberUtil.getRangedDouble(split[1]);
 
-        if (player.getHealth() + health <= plugin.getCompatCodeHandler().getMaxHealth(player))
+        if (player.getHealth() + health <= player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue())
             player.setHealth(player.getHealth() + health);
     }
 }
