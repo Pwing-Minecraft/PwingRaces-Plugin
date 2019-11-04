@@ -1,5 +1,6 @@
 v1.2.2
 - Fixed visual glitch with experience subtraction
+- Fixed bug where internal skilltree name was shown in unlock text
 
 v1.2.1
 - Added 'death' trigger

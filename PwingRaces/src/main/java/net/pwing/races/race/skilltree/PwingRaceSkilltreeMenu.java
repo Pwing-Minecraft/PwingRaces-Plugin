@@ -138,7 +138,7 @@ public class PwingRaceSkilltreeMenu {
         }
 
         int parentsPurchased = 0;
-        List<String> parents = new ArrayList<String>(element.getParentElements());
+        List<String> parents = new ArrayList<>(element.getParentElements());
         for (String parent : element.getParentElements()) {
             if (parent.contains(":")) {
                 String[] split = parent.split(":");
@@ -170,7 +170,7 @@ public class PwingRaceSkilltreeMenu {
         // If for some reason the required amount of elements is higher than the skilltree parent amount
         String purchaseString = "the previous skill";
         if (parents.size() >= 1)
-            purchaseString = parents.get(0);
+            purchaseString = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(parents.get(0)).getName();
 
         String unlock = MessageUtil.getMessage("menu-skilltree-unlock", "&cYou must unlock %element% before \n&cpurchasing this upgrade.")
                 .replace("%element%", purchaseString);
