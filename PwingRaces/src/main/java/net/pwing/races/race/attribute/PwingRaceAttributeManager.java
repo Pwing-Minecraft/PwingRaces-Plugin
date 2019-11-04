@@ -16,6 +16,7 @@ import net.pwing.races.api.race.attribute.RaceAttributeEffect;
 import net.pwing.races.api.race.attribute.RaceAttributeManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
+import net.pwing.races.race.attribute.attributes.NotSoGenericMovementSpeedAttribute;
 import net.pwing.races.utilities.AttributeUtil;
 
 import org.bukkit.Bukkit;
@@ -36,6 +37,7 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
 
     public void initAttributeEffects() {
         attributeEffects.put("max-mana", new ManaAttribute(plugin, "max-mana"));
+        attributeEffects.put("not-so-generic-movement-speed", new NotSoGenericMovementSpeedAttribute("not-so-generic-movement-speed"));
     }
 
     @Override
