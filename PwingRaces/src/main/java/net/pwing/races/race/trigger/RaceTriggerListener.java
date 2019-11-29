@@ -8,7 +8,6 @@ import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
-import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
@@ -134,9 +133,6 @@ public class RaceTriggerListener implements Listener {
     @EventHandler
     public void onKillEntity(EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null)
-            return;
-
-        if (!(event.getEntity().getKiller() instanceof Player))
             return;
 
         Player player = event.getEntity().getKiller();

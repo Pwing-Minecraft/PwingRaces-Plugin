@@ -1,7 +1,9 @@
 v1.2.2
 - Updated and improved API
+- Added action bar message trigger passive
 - Fixed visual glitch with experience subtraction
 - Fixed bug where internal skilltree name was shown in unlock text
+- Removed 1.8 support
 
 v1.2.1
 - Added 'death' trigger
