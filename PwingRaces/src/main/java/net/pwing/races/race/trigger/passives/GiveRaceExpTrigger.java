@@ -3,6 +3,7 @@ package net.pwing.races.race.trigger.passives;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.NumberUtil;
 
@@ -29,7 +30,11 @@ public class GiveRaceExpTrigger extends RaceTriggerPassive {
             exp = NumberUtil.getRangedInteger(split[1]);
 
         RaceManager raceManager = plugin.getRaceManager();
-        Race race = raceManager.getRacePlayer(player).getActiveRace();
+        RacePlayer racePlayer = raceManager.getRacePlayer(player);
+        if (!racePlayer.getRace().isPresent())
+            return;
+
+        Race race = racePlayer.getRace().get();
         raceManager.getLevelManager().setExperience(player, race, raceManager.getPlayerData(player, race).getExperience() + exp);
     }
 }

@@ -36,10 +36,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (player == null)
             return "";
 
-        Race race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
-        if (race == null)
+        if (!plugin.getRaceManager().getRacePlayer(player).getRace().isPresent())
             return "";
 
+        Race race = plugin.getRaceManager().getRacePlayer(player).getRace().get();
         RaceData data = plugin.getRaceManager().getPlayerData(player, race);
         if (data == null)
             return "";

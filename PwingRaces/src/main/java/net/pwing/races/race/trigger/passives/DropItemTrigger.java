@@ -2,6 +2,7 @@ package net.pwing.races.race.trigger.passives;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.utilities.ItemUtil;
 
@@ -22,7 +23,11 @@ public class DropItemTrigger extends RaceTriggerPassive {
     public void runTriggerPassive(Player player, String trigger) {
         String itemKey = trigger.replace(name + " ", "");
 
-        Race race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (!racePlayer.getRace().isPresent())
+            return;
+
+        Race race = racePlayer.getRace().get();
         ItemStack item = race.getRaceItems().get(itemKey);
         if (item == null) {
             item = ItemUtil.fromString(itemKey);

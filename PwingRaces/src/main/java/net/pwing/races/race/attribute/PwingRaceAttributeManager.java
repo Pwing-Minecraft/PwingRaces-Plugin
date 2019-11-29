@@ -99,10 +99,10 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
         if (racePlayer == null)
             return new ArrayList<>();
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return new ArrayList<>();
 
+        Race race = racePlayer.getRace().get();
         RaceData data = raceManager.getPlayerData(player, race);
         List<RaceAttribute> attributes = new ArrayList<>();
         for (String key : race.getRaceAttributesMap().keySet()) {

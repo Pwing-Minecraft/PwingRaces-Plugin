@@ -57,10 +57,10 @@ public class PwingRacePermissionManager implements RacePermissionManager {
         if (racePlayer == null)
             return new ArrayList<>();
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return new ArrayList<>();
 
+        Race race = racePlayer.getRace().get();
         RaceData data = racePlayer.getRaceData(race);
 
         List<RacePermission> permissions = new ArrayList<>();

@@ -27,9 +27,10 @@ public class RaceLevelReward extends CustomReward {
         int amount = (int) data.get("Amount");
 
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return;
+
+        Race race = racePlayer.getRace().get();
 
         RaceData raceData = racePlayer.getRaceData(race);
         raceManager.getLevelManager().setExperience(player, race, raceData.getExperience() + amount);

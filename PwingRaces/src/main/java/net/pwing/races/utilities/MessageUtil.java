@@ -85,8 +85,8 @@ public class MessageUtil {
             message = message.replace("%player_name%", player.getName());
 
             RacePlayer racePlayer = PwingRaces.getInstance().getRaceManager().getRacePlayer(player);
-            if (racePlayer != null && racePlayer.getActiveRace() != null)
-                message = message.replace("%race%", racePlayer.getActiveRace().getName());
+            if (racePlayer != null && racePlayer.getRace().isPresent())
+                message = message.replace("%race%", racePlayer.getRace().get().getName());
         }
 
         return getReplacementMessage(message);

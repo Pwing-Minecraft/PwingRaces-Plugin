@@ -38,10 +38,10 @@ public class RaceAbilityListener implements Listener {
         if (racePlayer == null)
             return;
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
+        Race race = racePlayer.getRace().get();
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
@@ -78,10 +78,10 @@ public class RaceAbilityListener implements Listener {
         if (racePlayer == null)
             return;
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
+        Race race = racePlayer.getRace().get();
         RaceConfigurationManager configManager = plugin.getConfigManager();
         if (!configManager.useProjectileEvent() && isProjectile(event.getEntityType().name(), configManager.getProjectileTypes()))
             return;
@@ -109,10 +109,10 @@ public class RaceAbilityListener implements Listener {
         if (racePlayer == null)
             return;
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
+        Race race = racePlayer.getRace().get();
         if (event.getAction() != Action.LEFT_CLICK_AIR && event.getAction() != Action.LEFT_CLICK_BLOCK)
             return;
 
@@ -142,10 +142,10 @@ public class RaceAbilityListener implements Listener {
         if (racePlayer == null)
             return;
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
+        Race race = racePlayer.getRace().get();
         for (RaceAbility ability : raceManager.getAbilityManager().getApplicableAbilities(player, race)) {
             for (ItemStack stack : ability.getConsumeAbilityItems()) {
                 if (!ability.canRun(player, stack))

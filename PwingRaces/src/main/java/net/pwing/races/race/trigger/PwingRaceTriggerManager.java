@@ -129,10 +129,10 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         if (racePlayer == null)
             return new ArrayList<>();
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return new ArrayList<>();
 
+        Race race = racePlayer.getRace().get();
         RaceData data = raceManager.getPlayerData(player, race);
 
         Map<String, RaceTrigger> triggers = new HashMap<>();
@@ -182,10 +182,10 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         if (racePlayer == null)
             return new ArrayList<>();
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return new ArrayList<>();
 
+        Race race = racePlayer.getRace().get();
         RaceData data = raceManager.getPlayerData(player, race);
 
         Map<String, RaceTrigger> triggers = new HashMap<>();

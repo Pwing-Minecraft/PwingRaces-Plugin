@@ -55,7 +55,7 @@
         <dependency>
             <groupId>LibsDisguises</groupId>
             <artifactId>LibsDisguises</artifactId>
-            <version>7.9.8-SNAPSHOT</version>
+            <version>9.8.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -81,21 +81,21 @@
             <artifactId>LoreAttributesRecoded</artifactId>
             <version>4.38</version>
             <scope>system</scope>
-            <systemPath>C:/Users/Redned/Plugins/PwingRaces-Private/lib/com/pr0totype2/LoreAttributesRecoded/4.38/LoreAttributesRecoded-4.38.jar</systemPath>
+            <systemPath>${project.basedir}/lib/com/pr0totype2/LoreAttributesRecoded/4.38/LoreAttributesRecoded-4.38.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.blackvein</groupId>
             <artifactId>Quests</artifactId>
             <version>3.6.5</version>
             <scope>system</scope>
-            <systemPath>C:/Users/Redned/Plugins/PwingRaces-Private/lib/me/blackvein/Quests/3.6.5/Quests-3.6.5.jar</systemPath>
+            <systemPath>${project.basedir}/lib/me/blackvein/Quests/3.6.5/Quests-3.6.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>io.lumine.xikage</groupId>
             <artifactId>MythicMobs</artifactId>
             <version>4.5.9</version>
             <scope>system</scope>
-            <systemPath>C:/Users/Redned/Plugins/PwingRaces-Private/lib/io/lumine/xikage/MythicMobs/4.5.9/MythicMobs-4.5.9.jar</systemPath>
+            <systemPath>${project.basedir}/lib/io/lumine/xikage/MythicMobs/4.5.9/MythicMobs-4.5.9.jar</systemPath>
         </dependency>
     </dependencies>
     <build>

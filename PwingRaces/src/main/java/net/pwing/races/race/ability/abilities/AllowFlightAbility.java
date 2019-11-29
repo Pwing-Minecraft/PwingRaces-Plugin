@@ -3,10 +3,10 @@ package net.pwing.races.race.ability.abilities;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class AllowFlightAbility extends PwingRaceAbility {
 
@@ -25,14 +25,7 @@ public class AllowFlightAbility extends PwingRaceAbility {
             return false;
 
         player.setAllowFlight(!toggled);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                player.setAllowFlight(toggled);
-            }
-        }.runTaskLater(plugin, duration);
-
+        Bukkit.getScheduler().runTaskLater(plugin, () -> player.setAllowFlight(toggled), duration);
         return true;
     }
 }

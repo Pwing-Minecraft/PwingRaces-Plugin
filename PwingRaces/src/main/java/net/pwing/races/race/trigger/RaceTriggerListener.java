@@ -276,10 +276,9 @@ public class RaceTriggerListener implements Listener {
                return;
 
         RacePlayer targetRacePlayer = plugin.getRaceManager().getRacePlayer((Player) damager);
-        Race targetRace = targetRacePlayer.getActiveRace();
-        if (targetRace == null)
+        if (!targetRacePlayer.getRace().isPresent())
             return;
 
-        triggerManager.runTriggers(player, "killed-by" + targetRace.getName());
+        triggerManager.runTriggers(player, "killed-by" + targetRacePlayer.getRace().get().getName());
     }
 }

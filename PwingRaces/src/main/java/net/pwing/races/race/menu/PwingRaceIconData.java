@@ -3,6 +3,8 @@ package net.pwing.races.race.menu;
 import net.pwing.races.api.race.menu.RaceIconData;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Optional;
+
 public class PwingRaceIconData implements RaceIconData {
 
     private ItemStack unlockedIcon;
@@ -26,16 +28,16 @@ public class PwingRaceIconData implements RaceIconData {
         this.unlockedIcon = unlockedIcon;
     }
 
-    public ItemStack getLockedIcon() {
-        return lockedIcon;
+    public Optional<ItemStack> getLockedIcon() {
+        return Optional.ofNullable(lockedIcon);
     }
 
     public void setLockedIcon(ItemStack lockedIcon) {
         this.lockedIcon = lockedIcon;
     }
 
-    public ItemStack getSelectedIcon() {
-        return selectedIcon;
+    public Optional<ItemStack> getSelectedIcon() {
+        return Optional.ofNullable(selectedIcon);
     }
 
     public void setSelectedIcon(ItemStack selectedIcon) {

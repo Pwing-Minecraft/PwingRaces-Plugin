@@ -79,7 +79,7 @@ public class RaceAttributeListener implements Listener {
         if (racePlayer == null)
             return;
 
-        if (racePlayer.getActiveRace() == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
         event.setAmount(event.getAmount() + raceManager.getAttributeManager().getAttributeBonus(player, "health-regen"));
@@ -104,7 +104,7 @@ public class RaceAttributeListener implements Listener {
         if (racePlayer == null)
             return;
 
-        if (racePlayer.getActiveRace() == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
         double bonus = raceManager.getAttributeManager().getAttributeBonus(player, "arrow-damage");
@@ -125,7 +125,7 @@ public class RaceAttributeListener implements Listener {
         if (racePlayer == null)
             return;
 
-        if (racePlayer.getActiveRace() == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK)

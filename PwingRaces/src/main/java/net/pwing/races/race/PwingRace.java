@@ -1,9 +1,6 @@
 package net.pwing.races.race;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
@@ -87,14 +84,14 @@ public class PwingRace implements Race {
         }
 
         for (String str : raceConfig.getStringList("race.skilltrees")) {
-            RaceSkilltree skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(str.split(" ")[0]);
+            Optional<RaceSkilltree> skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(str.split(" ")[0]);
 
-            if (skilltree == null) {
+            if (!skilltree.isPresent()) {
                 Bukkit.getLogger().warning("[PwingRaces] " + "Could not find skilltree " + str + " for race " + name + "!");
                 continue;
             }
 
-            raceSkilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.getInternalName());
+            raceSkilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.get().getInternalName());
         }
 
         this.raceLevelMap = new HashMap<>();
@@ -112,7 +109,7 @@ public class PwingRace implements Race {
         // Get triggers defined in the triggers section
         if (raceConfig.contains("race.triggers")) {
             for (String str : raceConfig.getConfigurationSection("race.triggers").getKeys(false)) {
-                List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(str, new ArrayList<RaceTrigger>());
+                List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(str, new ArrayList<>());
                 raceTriggers.add(new RaceTrigger(str, "race.triggers." + str, raceConfig, "none"));
                 raceTriggersMap.put(str, raceTriggers);
             }
@@ -123,7 +120,7 @@ public class PwingRace implements Race {
         // Get attributes defined in the attributes section
         if (raceConfig.contains("race.attributes")) {
             for (String str : raceConfig.getConfigurationSection("race.attributes").getKeys(false)) {
-                List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(str, new ArrayList<RaceAttribute>());
+                List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(str, new ArrayList<>());
                 raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(str), raceConfig.getDouble("race.attributes." + str), "none"));
                 raceAttributesMap.put(str, raceAttributes);
             }
@@ -134,7 +131,7 @@ public class PwingRace implements Race {
         // Get permissions defined in the permissions section
         if (raceConfig.contains("race.permissions")) {
             for (String str : raceConfig.getStringList("race.permissions")) {
-                List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(str, new ArrayList<RacePermission>());
+                List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(str, new ArrayList<>());
                 racePermissions.add(new PwingRacePermission(str, "none"));
                 racePermissionsMap.put(str, racePermissions);
             }
@@ -146,10 +143,9 @@ public class PwingRace implements Race {
         // Get abilities defined in the abilities section
         if (raceConfig.contains("race.abilities")) {
             for (String str : raceConfig.getConfigurationSection("race.abilities").getKeys(false)) {
-                List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(str, new ArrayList<RaceAbility>());
-                RaceAbility raceAbility = abilityManager.getAbility(str, "none", "race.abilities." + str, raceConfig);
-                if (raceAbility != null)
-                    raceAbilities.add(raceAbility);
+                List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(str, new ArrayList<>());
+                abilityManager.getAbility(str, "none", "race.abilities." + str, raceConfig)
+                        .ifPresent(raceAbilities::add);
 
                 raceAbilitiesMap.put(str, raceAbilities);
             }
@@ -162,10 +158,9 @@ public class PwingRace implements Race {
                 ConfigurationSection elementSection = section.getConfigurationSection(elem);
                 if (elementSection.contains("abilities")) {
                     for (String ability : elementSection.getConfigurationSection("abilities").getKeys(false)) {
-                        List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<RaceAbility>());
-                        RaceAbility raceAbility = abilityManager.getAbility(ability, elem, "race.elements." + elem + ".abilities." + ability, raceConfig);
-                        if (raceAbility != null)
-                            raceAbilities.add(raceAbility);
+                        List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<>());
+                        abilityManager.getAbility(ability, elem, "race.elements." + elem + ".abilities." + ability, raceConfig)
+                                .ifPresent(raceAbilities::add);
 
                         raceAbilitiesMap.put(ability, raceAbilities);
                     }
@@ -173,7 +168,7 @@ public class PwingRace implements Race {
 
                 if (elementSection.contains("permissions")) {
                     for (String permission : elementSection.getStringList("permissions")) {
-                        List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
+                        List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<>());
                         racePermissions.add(new PwingRacePermission(permission, elem));
                         racePermissionsMap.put(permission, racePermissions);
                     }
@@ -181,7 +176,7 @@ public class PwingRace implements Race {
 
                 if (elementSection.contains("attributes")) {
                     for (String attribute : elementSection.getConfigurationSection("attributes").getKeys(false)) {
-                        List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
+                        List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
                         raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), elementSection.getDouble("attributes." + attribute), elem));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
@@ -189,7 +184,7 @@ public class PwingRace implements Race {
 
                 if (elementSection.contains("triggers")) {
                     for (String trigger : elementSection.getConfigurationSection("triggers").getKeys(false)) {
-                        List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
+                        List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<>());
                         raceTriggers.add(new RaceTrigger(trigger, "race.elements." + elem + ".triggers." + trigger, raceConfig, elem));
                         raceTriggersMap.put(trigger, raceTriggers);
                     }
@@ -204,10 +199,9 @@ public class PwingRace implements Race {
                 ConfigurationSection levelSection = section.getConfigurationSection(level);
                 if (levelSection.contains("abilities")) {
                     for (String ability : levelSection.getConfigurationSection("abilities").getKeys(false)) {
-                        List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<RaceAbility>());
-                        RaceAbility raceAbility = abilityManager.getAbility(ability, level, "race.levels." + level + ".abilities." + ability, raceConfig);
-                        if (raceAbility != null)
-                            raceAbilities.add(raceAbility);
+                        List<RaceAbility> raceAbilities = raceAbilitiesMap.getOrDefault(ability, new ArrayList<>());
+                        abilityManager.getAbility(ability, level, "race.levels." + level + ".abilities." + ability, raceConfig)
+                                .ifPresent(raceAbilities::add);
 
                         raceAbilitiesMap.put(ability, raceAbilities);
                     }
@@ -215,7 +209,7 @@ public class PwingRace implements Race {
 
                 if (levelSection.contains("permissions")) {
                     for (String permission : levelSection.getStringList("permissions")) {
-                        List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<RacePermission>());
+                        List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<>());
                         racePermissions.add(new PwingRacePermission(permission, "level" + level));
                         racePermissionsMap.put(permission, racePermissions);
                     }
@@ -223,7 +217,7 @@ public class PwingRace implements Race {
 
                 if (levelSection.contains("attributes")) {
                     for (String attribute : levelSection.getConfigurationSection("attributes").getKeys(false)) {
-                        List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<RaceAttribute>());
+                        List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
                         raceAttributes.add(new PwingRaceAttribute(AttributeUtil.getAttributeName(attribute), levelSection.getDouble("attributes." + attribute), "level" + level));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
@@ -285,12 +279,8 @@ public class PwingRace implements Race {
         this.maxLevel = maxLevel;
     }
 
-    public boolean hasSpawnLocation() {
-        return spawnLocation != null;
-    }
-
-    public Location getSpawnLocation() {
-        return spawnLocation;
+    public Optional<Location> getSpawnLocation() {
+        return Optional.ofNullable(spawnLocation);
     }
 
     public void setSpawnLocation(Location spawnLocation) {

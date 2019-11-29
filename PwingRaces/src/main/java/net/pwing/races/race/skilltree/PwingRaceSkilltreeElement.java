@@ -1,6 +1,7 @@
 package net.pwing.races.race.skilltree;
 
 import java.util.List;
+import java.util.Optional;
 
 import net.pwing.races.api.race.skilltree.RaceSkilltreeElement;
 import net.pwing.races.utilities.ItemUtil;
@@ -86,16 +87,16 @@ public class PwingRaceSkilltreeElement implements RaceSkilltreeElement {
         this.iconUnlocked = iconUnlocked;
     }
 
-    public ItemStack getPurchasedIcon() {
-        return iconPurchased;
+    public Optional<ItemStack> getPurchasedIcon() {
+        return Optional.ofNullable(iconPurchased);
     }
 
     public void setPurchasedIcon(ItemStack iconPurchased) {
         this.iconPurchased = iconPurchased;
     }
 
-    public ItemStack getLockedIcon() {
-        return iconLocked;
+    public Optional<ItemStack> getLockedIcon() {
+        return Optional.ofNullable(iconLocked);
     }
 
     public void setLockedIcon(ItemStack iconLocked) {
@@ -125,5 +126,4 @@ public class PwingRaceSkilltreeElement implements RaceSkilltreeElement {
     public void setCost(int cost) {
         this.cost = cost;
     }
-
 }

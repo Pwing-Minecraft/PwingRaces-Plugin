@@ -18,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +46,10 @@ public class RaceExecutor extends RaceCommandExecutor {
             return true;
         }
 
-        Race race = racePlayer.getActiveRace();
+        if (!racePlayer.getRace().isPresent())
+            return false;
+
+        Race race = racePlayer.getRace().get();
         RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
 
         player.sendMessage(MessageUtil.getHeader());
@@ -56,7 +60,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Used Skillpoints: " + ChatColor.WHITE + raceData.getUsedSkillpoints());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Unused Skillpoints: " + ChatColor.WHITE + raceData.getUnusedSkillpoints());
         for (String str : race.getSkilltreeMap().values()) {
-            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str);
+            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str).get();
             player.sendMessage(ChatColor.WHITE + skilltree.getName() + " Skilltree: ");
 
             for (RaceSkilltreeElement elem : skilltree.getElements()) {
@@ -83,7 +87,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Used Skillpoints: " + ChatColor.WHITE + raceData.getUsedSkillpoints());
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Unused Skillpoints: " + ChatColor.WHITE + raceData.getUnusedSkillpoints());
         for (String str : race.getSkilltreeMap().values()) {
-            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str);
+            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str).get();
             player.sendMessage(ChatColor.WHITE + skilltree.getName() + " Skilltree: ");
 
             for (RaceSkilltreeElement elem : skilltree.getElements()) {
@@ -116,7 +120,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Used Skillpoints: " + ChatColor.WHITE + raceData.getUsedSkillpoints());
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Unused Skillpoints: " + ChatColor.WHITE + raceData.getUnusedSkillpoints());
         for (String str : race.getSkilltreeMap().values()) {
-            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str);
+            RaceSkilltree skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(str).get();
             sender.sendMessage(ChatColor.WHITE + skilltree.getName() + " Skilltree: ");
 
             for (RaceSkilltreeElement elem : skilltree.getElements()) {
@@ -139,7 +143,7 @@ public class RaceExecutor extends RaceCommandExecutor {
             return true;
         }
 
-        RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getActiveRace(), race);
+        RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getRace().get(), race);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
@@ -336,8 +340,8 @@ public class RaceExecutor extends RaceCommandExecutor {
     @Override
     protected Object verifyArgument(CommandSender sender, String arg, Class<?> parameter) {
         if (parameter.getSimpleName().equalsIgnoreCase("race")) {
-            Race race = plugin.getRaceManager().getRaceFromName(arg);
-            if (race == null)
+            Optional<Race> race = plugin.getRaceManager().getRaceFromName(arg);
+            if (!race.isPresent())
                 throw new RaceCommandException("invalid-race");
 
             return race;

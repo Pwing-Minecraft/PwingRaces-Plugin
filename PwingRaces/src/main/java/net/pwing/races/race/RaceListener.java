@@ -66,19 +66,19 @@ public class RaceListener implements Listener {
             return;
         }
 
-        Race race = racePlayer.getActiveRace();
-        if (race == null)
+        if (!racePlayer.getRace().isPresent())
             return;
 
+        Race race = racePlayer.getRace().get();
         if (!race.hasSpawnLocation())
             return;
 
-        RaceRespawnEvent respawnEvent = new RaceRespawnEvent(player, race, race.getSpawnLocation());
+        RaceRespawnEvent respawnEvent = new RaceRespawnEvent(player, race, race.getSpawnLocation().get());
         Bukkit.getPluginManager().callEvent(respawnEvent);
         if (respawnEvent.isCancelled())
             return;
 
-        event.setRespawnLocation(race.getSpawnLocation());
+        event.setRespawnLocation(race.getSpawnLocation().get());
     }
 
     @EventHandler
@@ -104,10 +104,10 @@ public class RaceListener implements Listener {
                 return;
             }
 
-            Race race = racePlayer.getActiveRace();
-            if (race == null)
+            if (!racePlayer.getRace().isPresent())
                 return;
 
+            Race race = racePlayer.getRace().get();
             RaceData raceData = plugin.getRaceManager().getRacePlayer(player).getRaceData(race);
             if (plugin.getConfigManager().sendSkillpointMessageOnJoin()) {
                 player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("skillpoint-amount-message", "%prefix% &aYou have %skillpoints% unused skillpoints.").replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints()))));

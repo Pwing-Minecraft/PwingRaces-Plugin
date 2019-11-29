@@ -2,17 +2,13 @@ package net.pwing.races.race.ability;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
@@ -36,10 +32,11 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
     }
 
     public void runAbilities(Player player) {
-        Race race = plugin.getRaceManager().getRacePlayer(player).getActiveRace();
-        if (race == null)
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (!racePlayer.getRace().isPresent())
             return;
 
+        Race race = racePlayer.getRace().get();
         Collection<RaceAbility> raceAbilities = getApplicableAbilities(player, race);
         if (raceAbilities == null || raceAbilities.isEmpty())
             return;
@@ -103,8 +100,11 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
                     abilities.put(definedAbility.getInternalName(), definedAbility);
                 } else {
                     for (String str : race.getSkilltreeMap().values()) {
-                        RaceSkilltree skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(str);
-                        if (data.hasPurchasedElement(skilltree.getInternalName(), req)) {
+                        Optional<RaceSkilltree> skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(str);
+                        if (!skilltree.isPresent())
+                            continue;
+
+                        if (data.hasPurchasedElement(skilltree.get().getInternalName(), req)) {
                             abilities.put(definedAbility.getInternalName(), definedAbility);
                         }
                     }
@@ -167,7 +167,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         cooldown.put(ability, cooldownMap);
     }
 
-    public RaceAbility getAbility(String key, String requirement, String configPath, FileConfiguration config) {
+    public Optional<RaceAbility> getAbility(String key, String requirement, String configPath, FileConfiguration config) {
         String abilityClassName = config.getString(configPath + ".ability", "DummyAbility");
         Class<? extends RaceAbility> abilityClass;
 
@@ -178,7 +178,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
                 // Assume it's a custom ability and the path is defined
                 if (abilityClassName == null || abilityClassName.isEmpty()) {
                     plugin.getLogger().warning("Attempted to find ability with name " + abilityClassName + ", but nothing was found.");
-                    return null;
+                    return Optional.empty();
                 }
                 plugin.getLogger().info("Loading custom ability " + abilityClassName);
                 abilityClass = Class.forName(abilityClassName).asSubclass(RaceAbility.class);
@@ -186,7 +186,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
                 plugin.getLogger().info("Successfully loaded custom ability module " + abilityClassName + "!");
             } catch (ClassNotFoundException ex2) {
                 plugin.getLogger().warning("Attempted to find custom ability with class path " + abilityClassName + ", but nothing was found.");
-                return null;
+                return Optional.empty();
             }
         }
 
@@ -197,12 +197,12 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             RaceAbility ability = abilityConstructor.newInstance(plugin, key, configPath, config, requirement);
             // RaceAbility implements listener, so no need to check if its assignable
             plugin.getServer().getPluginManager().registerEvents(ability, plugin);
-            return ability;
+            return Optional.of(ability);
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             plugin.getLogger().warning("Could not load ability " + abilityClassName + ", please make sure everything in your config is correct.");
             ex.printStackTrace();
         }
 
-        return null;
+        return Optional.empty();
     }
 }

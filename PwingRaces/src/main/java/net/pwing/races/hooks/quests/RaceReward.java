@@ -30,10 +30,10 @@ public class RaceReward extends CustomReward {
         if (raceStr == null)
             return;
 
-        Race race = raceManager.getRaceFromName(raceStr);
-        if (race == null)
+        if (!raceManager.getRaceFromName(raceStr).isPresent())
             return;
 
+        Race race = raceManager.getRaceFromName(raceStr).get();
         RaceUnlockEvent event = new RaceUnlockEvent(player, race);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {

@@ -1,4 +1,5 @@
 v1.2.2
+- Updated and improved API
 - Fixed visual glitch with experience subtraction
 - Fixed bug where internal skilltree name was shown in unlock text
 

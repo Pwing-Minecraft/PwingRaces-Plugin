@@ -35,15 +35,6 @@ public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
         skilltrees.add(new PwingRaceSkilltree(regName, config));
     }
 
-    public RaceSkilltree getSkilltreeFromName(String name) {
-        for (RaceSkilltree skilltree : skilltrees) {
-            if (skilltree.getName().equalsIgnoreCase(name) || skilltree.getInternalName().equalsIgnoreCase(name))
-                return skilltree;
-        }
-
-        return null;
-    }
-
     public List<RaceSkilltree> getSkilltrees() {
         return skilltrees;
     }

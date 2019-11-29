@@ -1,13 +1,7 @@
 package net.pwing.races.race;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
@@ -91,15 +85,16 @@ public class PwingRaceManager implements RaceManager {
         if (raceName == null || raceName.isEmpty())
             raceName = plugin.getConfigManager().getDefaultRace();
 
-        Map<String, RaceData> raceDataMap = new HashMap<String, RaceData>();
+        Map<String, RaceData> raceDataMap = new HashMap<>();
         for (Race race : races)
             raceDataMap.put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
 
-        Race activeRace = getRaceFromName(raceName);
-        if (activeRace == null && plugin.getConfigManager().doesRequireRace()) {
+        if (!getRaceFromName(raceName).isPresent() && plugin.getConfigManager().doesRequireRace()) {
             plugin.getLogger().severe("Could not find race " + raceName + ", please check the data config for " + player.getName() + "!");
+            return false;
         }
 
+        Race activeRace = getRaceFromName(raceName).get();
         racePlayers.put(player.getUniqueId(), new PwingRacePlayer(player, activeRace, raceDataMap));
         return true;
     }
@@ -114,11 +109,7 @@ public class PwingRaceManager implements RaceManager {
         RaceConfiguration playerConfig = plugin.getConfigManager().getPlayerDataConfig(player.getUniqueId());
 
         FileConfiguration config = playerConfig.getConfig();
-        String raceName = plugin.getConfigManager().getDefaultRace();
-        Race activeRace = racePlayer.getActiveRace();
-        if (activeRace != null) {
-            raceName = activeRace.getName();
-        }
+        String raceName = racePlayer.getRace().isPresent() ? racePlayer.getRace().get().getName() : plugin.getConfigManager().getDefaultRace();
         config.set("active-race", raceName);
         for (Race race : races) {
             RaceData data = racePlayer.getRaceData(race);
@@ -137,27 +128,6 @@ public class PwingRaceManager implements RaceManager {
         playerConfig.saveConfig();
     }
 
-    public Race getRaceFromName(String name) {
-        for (Race race : races) {
-            if (race.getName().equalsIgnoreCase(name))
-                return race;
-        }
-
-        return null;
-    }
-
-    public RacePlayer getRacePlayer(OfflinePlayer player) {
-        return racePlayers.get(player.getUniqueId());
-    }
-
-    public RaceData getPlayerData(OfflinePlayer player, Race race) {
-        return racePlayers.get(player.getUniqueId()).getRaceData(race);
-    }
-
-    public void registerPlayer(Player player) {
-        registerPlayer(player, false);
-    }
-
     public void registerPlayer(Player player, boolean override) {
         RaceConfiguration playerConfig = plugin.getConfigManager().getPlayerDataConfig(player.getUniqueId());
 
@@ -166,19 +136,18 @@ public class PwingRaceManager implements RaceManager {
             boolean hasDefaultRace = plugin.getConfigManager().hasDefaultRaceOnJoin();
 
             if (hasDefaultRace) {
-                Race defaultRace = getRaceFromName(plugin.getConfigManager().getDefaultRace());
-                if (defaultRace == null) {
+                Optional<Race> defaultRace = getRaceFromName(plugin.getConfigManager().getDefaultRace());
+                if (!defaultRace.isPresent()) {
                     plugin.getLogger().severe("Could not find default race " + plugin.getConfigManager().getDefaultRace() + "! Please make sure your config is correct!");
                 } else {
                     config.set("active-race", plugin.getConfigManager().getDefaultRace());
-                    defaultRace.getRaceItems().values().forEach(item -> ItemUtil.addItem(player, item));
+                    defaultRace.get().getRaceItems().values().forEach(item -> ItemUtil.addItem(player, item));
                 }
             }
         }
 
         for (Race race : races) {
             String racePath = "data." + race.getName();
-
             if (!config.contains(racePath) || override) {
                 config.set(racePath + ".level", 1);
                 config.set(racePath + ".unused-skillpoints", race.getSkillpointsForLevel(1));

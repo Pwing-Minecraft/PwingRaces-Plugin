@@ -106,18 +106,4 @@ public class PwingRaceSkilltree implements RaceSkilltree {
     public void setElements(List<RaceSkilltreeElement> elements) {
         this.elements = elements;
     }
-
-    public RaceSkilltreeElement getElementFromName(String name) {
-        for (RaceSkilltreeElement element : elements) {
-            if (element.getInternalName().equals(name))
-                return element;
-
-            if (element.getTitle() != null && element.getTitle().isEmpty()) {
-                if (element.getTitle().equals(name))
-                    return element;
-            }
-        }
-
-        return null;
-    }
 }

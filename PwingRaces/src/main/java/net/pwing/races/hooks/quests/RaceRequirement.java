@@ -24,14 +24,14 @@ public class RaceRequirement extends CustomRequirement {
     public boolean testRequirement(Player player, Map<String, Object> data) {
         String raceStr = (String) data.get("Race");
 
-        Race race = raceManager.getRaceFromName(raceStr);
-        if (race == null)
+        if (!raceManager.getRaceFromName(raceStr).isPresent())
             return false;
 
+        Race race = raceManager.getRaceFromName(raceStr).get();
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
-        if (racePlayer.getActiveRace().getName().equals(race.getName()))
-            return true;
+        if (!racePlayer.getRace().isPresent())
+            return false;
 
-        return false;
+        return racePlayer.getRace().get().getName().equals(race.getName());
     }
 }
