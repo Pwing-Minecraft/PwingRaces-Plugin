@@ -3,6 +3,7 @@ v1.2.2
 - Added action bar message trigger passive
 - Fixed visual glitch with experience subtraction
 - Fixed bug where internal skilltree name was shown in unlock text
+- Created a wrapper around Bukkit's player head API to prevent lagging the whole server when opening a menu
 - Removed 1.8 support
 
 v1.2.1

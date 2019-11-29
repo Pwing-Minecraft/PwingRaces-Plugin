@@ -6,6 +6,8 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface ICompatCodeHandler {
 
 	Enchantment getEnchantment(String name);
@@ -24,5 +26,5 @@ public interface ICompatCodeHandler {
 	void setPickupStatus(Arrow arrow, String status);
 	void setDamage(Arrow arrow, double damage);
 
-	String getHeadURL(String player);
+	CompletableFuture<String> getHeadURL(String player);
 }

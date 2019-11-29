@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class CompatCodeHandler_v1_10_R1 extends CompatCodeHandlerDisabled {
 
@@ -50,10 +51,11 @@ public class CompatCodeHandler_v1_10_R1 extends CompatCodeHandlerDisabled {
 	}
 
 	@Override
-	public String getHeadURL(String player) {
+	public CompletableFuture<String> getHeadURL(String player) {
 		String url = null;
+		CompletableFuture<String> future = new CompletableFuture<>();
 		if (HeadUtil.getCachedHeads().containsKey(player)) {
-			return HeadUtil.getCachedHeads().get(player);
+			return CompletableFuture.completedFuture(HeadUtil.getCachedHeads().get(player));
 		} else {
 			try {
 				GameProfile gameProfile = new GameProfile(UUIDFetcher.getUUIDOf(player), player);
@@ -66,10 +68,11 @@ public class CompatCodeHandler_v1_10_R1 extends CompatCodeHandlerDisabled {
 					HeadUtil.getCachedHeads().put(player, url);
 				}
 			} catch (Exception ex) {
-				return null;
+				return CompletableFuture.completedFuture(null);
 			}
 		}
 
-		return url;
+		future.complete(url);
+		return future;
 	}
 }

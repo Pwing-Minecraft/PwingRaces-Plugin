@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -127,8 +128,7 @@ public class ItemUtil {
                     else
                         color = fromHex(config.getString(configPath + "." + str));
 
-                    if (color != null)
-                        builder.setColor(color);
+                    builder.setColor(color);
                     break;
                 case "item-flags":
                     for (String flag : config.getStringList(configPath + "." + str)) {

@@ -11,6 +11,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import net.pwing.races.PwingRaces;
 
+import java.util.concurrent.CompletableFuture;
+
 public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 
 	private PwingRaces plugin;
@@ -34,7 +36,6 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 		item.setDurability((short) damage);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void setOwner(ItemStack item, String owner) {
 		if (item.getItemMeta() instanceof SkullMeta) {
@@ -44,15 +45,14 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void setUnbreakable(ItemStack item, boolean unbreakable) {
 		ItemMeta meta = item.getItemMeta();
+		// noinspection deprecation
 		meta.spigot().setUnbreakable(true);
 		item.setItemMeta(meta);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void setColor(ItemStack item, Color color) {
 		if (item.getItemMeta() instanceof LeatherArmorMeta) {
@@ -89,7 +89,7 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 	}
 
 	@Override
-	public String getHeadURL(String player) {
+	public CompletableFuture<String> getHeadURL(String player) {
 		return null;
 	}
 }
