@@ -1,3 +1,6 @@
+v1.2.3
+- Fixed race parameter in command bug
+
 v1.2.2
 - Updated and improved API
 - Added action bar message trigger passive

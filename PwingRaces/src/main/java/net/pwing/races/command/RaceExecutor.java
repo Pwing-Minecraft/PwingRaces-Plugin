@@ -344,7 +344,7 @@ public class RaceExecutor extends RaceCommandExecutor {
             if (!race.isPresent())
                 throw new RaceCommandException("invalid-race");
 
-            return race;
+            return race.get();
         }
 
         return super.verifyArgument(sender, arg, parameter);
@@ -353,7 +353,7 @@ public class RaceExecutor extends RaceCommandExecutor {
     @Override
     protected List<String> verifyTabComplete(String arg, Class<?> parameter) {
         if (parameter.getSimpleName().equalsIgnoreCase("race")) {
-            Race[] races = plugin.getRaceManager().getRaces().toArray(new Race[plugin.getRaceManager().getRaces().size()]);
+            Race[] races = plugin.getRaceManager().getRaces().toArray(new Race[0]);
             return Stream.of(races).map(Race::getName).collect(Collectors.toList());
         }
 
