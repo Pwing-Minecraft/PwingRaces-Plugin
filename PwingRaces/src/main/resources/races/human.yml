@@ -106,7 +106,7 @@ race:
                 generic-max-health: 29
                 generic-armor-toughness: 5
         10:
-            x: 1250
+            xp: 1250
             attributes:
                 generic-attack-speed: 8
                 generic-max-health: 30

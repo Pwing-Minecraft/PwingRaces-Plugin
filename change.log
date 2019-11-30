@@ -1,5 +1,6 @@
 v1.2.3
 - Fixed race parameter in command bug
+- Fixed xp amount on level 10 of human race
 
 v1.2.2
 - Updated and improved API
