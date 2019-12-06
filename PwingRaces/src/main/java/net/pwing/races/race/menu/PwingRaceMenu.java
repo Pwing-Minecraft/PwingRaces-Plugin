@@ -210,7 +210,7 @@ public class PwingRaceMenu implements RaceMenu {
             }
         });
 
-        if (configManager.isReclaimingSkillpointsAllowed() && racePlayer.getRace().isPresent() && racePlayer.getRace().equals(race)) {
+        if (configManager.isReclaimingSkillpointsAllowed() && racePlayer.getRace().isPresent() && racePlayer.getRace().get().equals(race)) {
             builder.setItem(reclaimSkillpoints, 11).addClickEvent(11, (clickedPlayer, action, item) -> {
                 ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
 
