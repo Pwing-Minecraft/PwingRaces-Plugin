@@ -3,7 +3,6 @@ package net.pwing.races.race.skilltree;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
@@ -157,14 +156,16 @@ public class PwingRaceSkilltreeMenu {
             return element.getLockedIcon().get();
 
         // If for some reason the required amount of elements is higher than the skilltree parent amount
-        AtomicReference<String> purchaseString = new AtomicReference<>("the previous skill");
+        String purchaseString = "the previous skill";
         if (parents.size() >= 1) {
-            Optional<RaceSkilltree> skilltree = plugin.getRaceManager().getSkilltreeManager().getSkilltreeFromName(parents.get(0));
-            skilltree.ifPresent(skill -> purchaseString.set(skill.getName()));
+            Optional<RaceSkilltreeElement> skilltreeElement = skilltree.getElementFromName(parents.get(0));
+            if (skilltreeElement.isPresent())
+                purchaseString = skilltreeElement.get().getTitle();
+
         }
 
         String unlock = MessageUtil.getMessage("menu-skilltree-unlock", "&cYou must unlock %element% before \n&cpurchasing this upgrade.")
-                .replace("%element%", purchaseString.get());
+                .replace("%element%", purchaseString);
 
         lore.add(unlock);
 

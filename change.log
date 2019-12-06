@@ -2,6 +2,7 @@ v1.2.3
 - Fixed race parameter in command bug
 - Fixed xp amount on level 10 of human race
 - Fixed incompatible equal type when checking if skillpoint reclaim was allowed
+- Fixed a value not being shown when a skilltree element was not purchased
 
 v1.2.2
 - Updated and improved API
