@@ -1,5 +1,6 @@
 package net.pwing.races.race.permission;
 
+import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.race.permission.RacePermissionManager;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
@@ -36,5 +37,10 @@ public class RacePermissionListener implements Listener {
     @EventHandler
     public void onRaceElementPurchase(RaceElementPurchaseEvent event) {
         permissionManager.applyPermissions(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onRaceChange(RaceChangeEvent event) {
+        permissionManager.removePermissions(event.getPlayer());
     }
 }

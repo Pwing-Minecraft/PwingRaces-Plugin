@@ -1,3 +1,6 @@
+v1.2.4
+- Added configuration for if transient permission management should be used or not
+
 v1.2.3
 - Fixed race parameter in command bug
 - Fixed xp amount on level 10 of human race

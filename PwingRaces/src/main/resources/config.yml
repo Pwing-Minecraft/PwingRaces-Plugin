@@ -4,6 +4,7 @@ menu:
     glass-filled: false
 settings:
     autosave: 6000
+    use-transient-permissions: true # If a "temporary" permission system should be used, generally more safe with permission plugins
     require-race: true # Controls if a player can be raceless
     default-race: Human
     set-default-race-first-join: true

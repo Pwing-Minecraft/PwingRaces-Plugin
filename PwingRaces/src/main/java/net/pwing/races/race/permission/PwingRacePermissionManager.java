@@ -52,6 +52,32 @@ public class PwingRacePermissionManager implements RacePermissionManager {
         }
     }
 
+    public void removePermissions(Player player) {
+        VaultAPIHook vaultHook = plugin.getVaultHook();
+        if (!plugin.getRaceManager().isRacesEnabledInWorld(player.getWorld())) {
+            for (RacePermission perm : getApplicablePermissions(player)) {
+                if (vaultHook.playerHasPermission(player, perm.getNode()))
+                    continue;
+
+                vaultHook.addPermission(player, perm.getNode());
+            }
+
+            return;
+        }
+
+        Collection<RacePermission> racePermissions = getApplicablePermissions(player);
+        if (racePermissions == null || racePermissions.isEmpty())
+            return;
+
+        for (RacePermission perm : racePermissions) {
+            if (perm.getNode().startsWith("^"))
+                vaultHook.addPermission(player, perm.getNode().replace("^", ""));
+            else
+                vaultHook.removePermission(player, perm.getNode());
+
+        }
+    }
+
     public Collection<RacePermission> getApplicablePermissions(Player player) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer == null)

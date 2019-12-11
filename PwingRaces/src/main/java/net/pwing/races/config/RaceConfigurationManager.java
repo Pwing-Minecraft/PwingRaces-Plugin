@@ -16,6 +16,7 @@ public class RaceConfigurationManager {
 	private PwingRaces plugin;
 
 	private long autosave;
+	private boolean useTransientPermissions;
 	private boolean requireRace;
 	private boolean defaultRaceOnJoin;
 	private String defaultRace;
@@ -44,7 +45,7 @@ public class RaceConfigurationManager {
 	public RaceConfigurationManager(PwingRaces plugin) {
 		this.plugin = plugin;
 
-		raceConfigs = new ArrayList<RaceConfiguration>();
+		raceConfigs = new ArrayList<>();
 		initConfigs();
 
 		loadDataFromConfig("settings", plugin.getConfig());
@@ -52,6 +53,7 @@ public class RaceConfigurationManager {
 
 	public void loadDataFromConfig(String configPath, FileConfiguration fileConfiguration) {
 		autosave = fileConfiguration.getLong(configPath + ".autosave", 6000);
+		useTransientPermissions = fileConfiguration.getBoolean(configPath + ".use-transient-permissions", true);
 		requireRace = fileConfiguration.getBoolean(configPath + ".require-race", true);
 		defaultRace = fileConfiguration.getString(configPath + ".default-race");
 		defaultRaceOnJoin = fileConfiguration.getBoolean(configPath + ".set-default-race-first-join", true);
@@ -121,6 +123,10 @@ public class RaceConfigurationManager {
 
 	public long getAutosave() {
 		return autosave;
+	}
+
+	public boolean doesUseTransientPermissions() {
+		return useTransientPermissions;
 	}
 
 	public boolean doesRequireRace() {
