@@ -39,6 +39,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
 
     public void initTriggerPassives() {
         passives.put("add-potion-effect", new AddPotionEffectTrigger(plugin, "add-potion-effect"));
+        passives.put("allow-flight", new AllowFlightTrigger(plugin, "allow-flight"));
         passives.put("burn", new BurnTrigger(plugin, "burn"));
         passives.put("damage", new DamageTrigger(plugin, "damage"));
         passives.put("disguise", new DisguiseTrigger(plugin, "disguise"));
