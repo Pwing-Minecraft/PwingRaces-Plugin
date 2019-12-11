@@ -1,4 +1,5 @@
 v1.2.4
+- Full 1.15 support
 - Added configuration for if transient permission management should be used or not
 
 v1.2.3
