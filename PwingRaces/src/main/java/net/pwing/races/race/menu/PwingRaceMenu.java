@@ -149,6 +149,9 @@ public class PwingRaceMenu implements RaceMenu {
             if (action == ClickType.RIGHT) {
                 openMenu(clickedPlayer);
             } else if (action == ClickType.LEFT) {
+                if (racePlayer.getRace().isPresent() && racePlayer.getRace().get().equals(race))
+                    return;
+
                 ConfirmationMenu menu = new ConfirmationMenu(plugin, MessageUtil.getMessage("menu-confirmation", "Confirmation"),
                         MessageUtil.getMessage("menu-confirm", "&aConfirm"), MessageUtil.getMessage("menu-cancel", "&cCancel Purchase"), new IConfirmationHandler() {
 
@@ -220,7 +223,7 @@ public class PwingRaceMenu implements RaceMenu {
                         MessageUtil.sendMessage(player, "cancelled-skillpoint-claim", "%prefix% &cCancelled skillpoint reclaim.");
                     }
 
-                    // Add a "reduction" system farther down the line
+                    // TODO: Add a "reduction" system farther down the line
                     @Override
                     public void onConfirm(Player player, ClickType action, ItemStack item) {
                         int cost1 = configManager.getReclaimSkillpointCost();

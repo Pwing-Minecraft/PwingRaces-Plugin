@@ -1,5 +1,6 @@
 v1.2.5
 - Fixed bug with custom attributes
+- Fixed bug allowing players to set their race to the one they already have selected
 
 v1.2.4
 - Full 1.15 support
