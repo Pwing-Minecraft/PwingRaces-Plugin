@@ -3,9 +3,9 @@ package net.pwing.races.race.attribute.attributes;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
 import org.bukkit.entity.Player;
 
-public class NotSoGenericMovementSpeedAttribute extends RaceAttributeEffect {
+public class WalkSpeedAttribute extends RaceAttributeEffect {
 
-    public NotSoGenericMovementSpeedAttribute(String name) {
+    public WalkSpeedAttribute(String name) {
         super(name);
     }
 
