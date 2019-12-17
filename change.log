@@ -1,4 +1,6 @@
 v1.2.5
+- Added 'fly-speed' attribute
+- Added 'walk-speed' attribute
 - Fixed bug with custom attributes
 - Fixed bug allowing players to set their race to the one they already have selected
 

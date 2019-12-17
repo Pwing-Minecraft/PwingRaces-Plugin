@@ -15,6 +15,7 @@ import net.pwing.races.api.race.attribute.RaceAttribute;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
 import net.pwing.races.api.race.attribute.RaceAttributeManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
+import net.pwing.races.race.attribute.attributes.FlySpeedAttribute;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.race.attribute.attributes.WalkSpeedAttribute;
 import net.pwing.races.utilities.AttributeUtil;
@@ -26,7 +27,7 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
 
     private PwingRaces plugin;
 
-    private Map<String, RaceAttributeEffect> attributeEffects = new HashMap<String, RaceAttributeEffect>();
+    private Map<String, RaceAttributeEffect> attributeEffects = new HashMap<>();
 
     public PwingRaceAttributeManager(PwingRaces plugin) {
         this.plugin = plugin;
@@ -36,6 +37,7 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
     }
 
     public void initAttributeEffects() {
+        attributeEffects.put("fly-speed", new FlySpeedAttribute("fly-speed"));
         attributeEffects.put("max-mana", new ManaAttribute(plugin, "max-mana"));
         attributeEffects.put("walk-speed", new WalkSpeedAttribute("walk-speed"));
     }
