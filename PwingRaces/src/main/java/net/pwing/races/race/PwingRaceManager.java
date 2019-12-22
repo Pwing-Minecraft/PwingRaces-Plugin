@@ -1,7 +1,6 @@
 package net.pwing.races.race;
 
-import java.io.File;
-import java.util.*;
+import lombok.Getter;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
@@ -16,7 +15,6 @@ import net.pwing.races.api.race.permission.RacePermissionManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 import net.pwing.races.config.RaceConfiguration;
-import net.pwing.races.config.RaceConfigurationManager;
 import net.pwing.races.race.ability.PwingRaceAbilityManager;
 import net.pwing.races.race.attribute.PwingRaceAttributeManager;
 import net.pwing.races.race.leveling.PwingRaceLevelManager;
@@ -32,6 +30,17 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+@Getter
 public class PwingRaceManager implements RaceManager {
 
     private PwingRaces plugin;
@@ -67,7 +76,7 @@ public class PwingRaceManager implements RaceManager {
         abilityManager = new PwingRaceAbilityManager(plugin);
         skilltreeManager = new PwingRaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
 
-        for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigurations())
+        for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
             races.add(new PwingRace(this, config.getConfig()));
 
         FileConfiguration config = plugin.getConfig();
@@ -89,7 +98,7 @@ public class PwingRaceManager implements RaceManager {
         for (Race race : races)
             raceDataMap.put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
 
-        if (!getRaceFromName(raceName).isPresent() && plugin.getConfigManager().doesRequireRace()) {
+        if (!getRaceFromName(raceName).isPresent() && plugin.getConfigManager().isRequireRace()) {
             plugin.getLogger().severe("Could not find race " + raceName + ", please check the data config for " + player.getName() + "!");
             return false;
         }
@@ -133,7 +142,7 @@ public class PwingRaceManager implements RaceManager {
 
         FileConfiguration config = playerConfig.getConfig();
         if (!config.contains("active-race") || override) {
-            boolean hasDefaultRace = plugin.getConfigManager().hasDefaultRaceOnJoin();
+            boolean hasDefaultRace = plugin.getConfigManager().isDefaultRaceOnJoin();
 
             if (hasDefaultRace) {
                 Optional<Race> defaultRace = getRaceFromName(plugin.getConfigManager().getDefaultRace());
@@ -166,44 +175,8 @@ public class PwingRaceManager implements RaceManager {
         playerConfig.saveConfig();
     }
 
-    public RaceTriggerManager getTriggerManager() {
-        return triggerManager;
-    }
-
-    public RaceAttributeManager getAttributeManager() {
-        return attributeManager;
-    }
-
-    public RacePermissionManager getPermissionManager() {
-        return permissionManager;
-    }
-
-    public RaceLevelManager getLevelManager() {
-        return levelManager;
-    }
-
-    public RaceAbilityManager getAbilityManager() {
-        return abilityManager;
-    }
-
-    public RaceSkilltreeManager getSkilltreeManager() {
-        return skilltreeManager;
-    }
-
-    public RaceMenu getRaceMenu() {
-        return raceMenu;
-    }
-
     public boolean isRacesEnabledInWorld(World world) {
-        RaceConfigurationManager configManager = plugin.getConfigManager();
-        if (configManager.getDisabledWorlds().contains(world.getName()))
-            return false;
-
-        return true;
-    }
-
-    public Set<Race> getRaces() {
-        return races;
+        return !plugin.getConfigManager().getDisabledWorlds().contains(world.getName());
     }
 
     public Map<UUID, RacePlayer> getRacePlayerMap() {

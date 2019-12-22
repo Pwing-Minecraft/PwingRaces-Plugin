@@ -1,5 +1,7 @@
 package net.pwing.races.race.leveling;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
@@ -12,13 +14,10 @@ import net.pwing.races.utilities.RaceSound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+@AllArgsConstructor
 public class PwingRaceLevelManager implements RaceLevelManager {
 
     private PwingRaces plugin;
-
-    public PwingRaceLevelManager(PwingRaces plugin) {
-        this.plugin = plugin;
-    }
 
     public void setExperience(Player player, Race race, int amount) {
         RaceData data = plugin.getRaceManager().getPlayerData(player, race);

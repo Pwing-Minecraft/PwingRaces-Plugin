@@ -1,17 +1,16 @@
 package net.pwing.races.module;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.api.module.RaceModule;
 import net.pwing.races.api.module.RaceModuleManager;
 
 import java.util.Map;
 
+@AllArgsConstructor
 public class PwingRaceModuleManager implements RaceModuleManager {
 
     private PwingRaceModuleLoader loader;
-
-    public PwingRaceModuleManager(PwingRaceModuleLoader loader) {
-        this.loader = loader;
-    }
 
     @Override
     public void enableModule(RaceModule module) {

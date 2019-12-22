@@ -1,8 +1,6 @@
 package net.pwing.races;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import lombok.Getter;
 
 import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.module.RaceModuleManager;
@@ -35,6 +33,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+@Getter
 public class PwingRaces extends JavaPlugin {
 
     private static PwingRaces instance;
@@ -55,7 +58,7 @@ public class PwingRaces extends JavaPlugin {
     private WorldGuardHook worldGuardHook;
 
     private boolean placeholderAPILoaded = false;
-    private boolean isEnabled;
+    private boolean pluginEnabled;
 
     @Override
     public void onEnable() {
@@ -119,7 +122,7 @@ public class PwingRaces extends JavaPlugin {
         if (autosave > 0)
             getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceSaveTask(raceManager), autosave, autosave);
 
-        isEnabled = true;
+        pluginEnabled = true;
 
         new Metrics(this);
     }
@@ -136,13 +139,14 @@ public class PwingRaces extends JavaPlugin {
     }
 
     public boolean reloadPlugin(){
-        if (isEnabled) {
+        if (pluginEnabled) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 raceManager.savePlayer(player);
+                raceManager.getAttributeManager().removeAttributeBonuses(player);
             }
         }
 
-        isEnabled = false;
+        pluginEnabled = false;
         try {
             raceManager.getRacePlayerMap().clear();
             configManager = null;
@@ -159,15 +163,16 @@ public class PwingRaces extends JavaPlugin {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 raceManager.registerPlayer(player);
                 raceManager.setupPlayer(player);
+                raceManager.getAttributeManager().applyAttributeBonuses(player);
             }
 
-            isEnabled = true;
+            pluginEnabled = true;
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
         // This is here so console isn't spammed when trying to find the stacktrace
-        if (!isEnabled) {
+        if (!pluginEnabled) {
             HandlerList.unregisterAll(this);
             return false;
         }
@@ -250,68 +255,12 @@ public class PwingRaces extends JavaPlugin {
        return new PlaceholderAPIHook(this).register();
     }
 
-    public VaultAPIHook getVaultHook() {
-        return vaultHook;
-    }
-
-    public MagicSpellsHook getMagicSpellsHook() {
-        return magicSpellsHook;
-    }
-
-    public MythicMobsHook getMythicMobsHook() {
-        return mythicMobsHook;
-    }
-
-    public QuestsHook getQuestsHook() {
-        return questsHook;
-    }
-
-    public LoreAttributesHook getLoreAttributesHook() {
-        return loreAttributesHook;
-    }
-
-    public LibsDisguisesHook getLibsDisguisesHook() {
-        return libsDisguisesHook;
-    }
-
-    public WorldEditHook getWorldEditHook() {
-        return worldEditHook;
-    }
-
-    public WorldGuardHook getWorldGuardHook() {
-        return worldGuardHook;
-    }
-
-    public RaceManager getRaceManager() {
-        return raceManager;
-    }
-
-    public RaceConfigurationManager getConfigManager() {
-        return configManager;
-    }
-
-    public RaceModuleManager getModuleManager() {
-        return moduleManager;
-    }
-
-    public boolean isPlaceholderAPILoaded() {
-        return placeholderAPILoaded;
-    }
-
     public ClassLoader getPluginClassLoader() {
         return super.getClassLoader();
     }
 
     public File getModuleFolder() {
         return new File(getDataFolder(), "modules");
-    }
-
-    public ICompatCodeHandler getCompatCodeHandler() {
-        return compatCodeHandler;
-    }
-
-    public boolean isPluginEnabled() {
-        return isEnabled;
     }
 
     public static PwingRaces getInstance() {

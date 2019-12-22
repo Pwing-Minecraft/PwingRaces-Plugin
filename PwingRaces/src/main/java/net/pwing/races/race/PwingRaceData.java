@@ -1,17 +1,22 @@
 package net.pwing.races.race;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.config.RaceConfiguration;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Getter
+@Setter
 public class PwingRaceData implements RaceData {
 
-	private String raceName;
+    private String raceName;
 
 	private boolean unlocked;
 
@@ -49,46 +54,6 @@ public class PwingRaceData implements RaceData {
 		}
 	}
 
-	public boolean isUnlocked() {
-		return unlocked;
-	}
-
-	public void setUnlocked(boolean unlocked) {
-		this.unlocked = unlocked;
-	}
-
-	public int getExperience() {
-		return experience;
-	}
-
-	public void setExperience(int experience) {
-		this.experience = experience;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getUnusedSkillpoints() {
-		return unusedSkillpoints;
-	}
-
-	public void setUnusedSkillpoints(int unusedSkillpoints) {
-		this.unusedSkillpoints = unusedSkillpoints;
-	}
-
-	public int getUsedSkillpoints() {
-		return usedSkillpoints;
-	}
-
-	public void setUsedSkillpoints(int usedSkillpoints) {
-		this.usedSkillpoints = usedSkillpoints;
-	}
-
 	public boolean hasPurchasedElement(String skillTree, String name) {
 		if (name.equals(raceName.toLowerCase()))
 			return true;
@@ -116,9 +81,5 @@ public class PwingRaceData implements RaceData {
 
 	public List<String> getPurchasedElements(String skillTree) {
 		return purchasedElementsMap.get(skillTree);
-	}
-
-	public Map<String, List<String>> getPurchasedElementsMap() {
-		return purchasedElementsMap;
 	}
 }

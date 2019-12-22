@@ -19,7 +19,6 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
 import org.bukkit.inventory.ItemStack;
 
 public class RaceAttributeListener implements Listener {

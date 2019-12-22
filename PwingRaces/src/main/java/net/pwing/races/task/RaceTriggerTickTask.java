@@ -1,5 +1,7 @@
 package net.pwing.races.task;
 
+import lombok.RequiredArgsConstructor;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
@@ -8,14 +10,11 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
+@RequiredArgsConstructor
 public class RaceTriggerTickTask implements Runnable {
 
-    private PwingRaces plugin;
+    private final PwingRaces plugin;
     private static int tick = 0;
-
-    public RaceTriggerTickTask(PwingRaces plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public void run() {

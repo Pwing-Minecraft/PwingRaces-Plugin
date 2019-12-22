@@ -1,12 +1,16 @@
 package net.pwing.races.race;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
+import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceRespawnEvent;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.utilities.MessageUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,17 +19,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import net.pwing.races.api.events.RaceChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+@AllArgsConstructor
 public class RaceListener implements Listener {
 
     private PwingRaces plugin;
-
-    public RaceListener(PwingRaces plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
@@ -89,10 +88,10 @@ public class RaceListener implements Listener {
 
     @EventHandler
     public void onRaceChange(RaceChangeEvent event) {
-        if (!plugin.getConfigManager().isGiveItemsOnRaceChangeEnabled())
+        if (!plugin.getConfigManager().isGiveItemsOnRaceChange())
             return;
 
-        event.getNewRace().getRaceItems().values().forEach(item -> event.getPlayer().getInventory().addItem(item));
+        event.getNewRace().getRaceItems().values().forEach(event.getPlayer().getInventory()::addItem);
         plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
     }
 
@@ -109,7 +108,7 @@ public class RaceListener implements Listener {
 
             Race race = racePlayer.getRace().get();
             RaceData raceData = plugin.getRaceManager().getRacePlayer(player).getRaceData(race);
-            if (plugin.getConfigManager().sendSkillpointMessageOnJoin()) {
+            if (plugin.getConfigManager().isSendSkillpointMessageOnJoin()) {
                 player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("skillpoint-amount-message", "%prefix% &aYou have %skillpoints% unused skillpoints.").replace("%skillpoints%", String.valueOf(raceData.getUnusedSkillpoints()))));
             }
         }, 20);

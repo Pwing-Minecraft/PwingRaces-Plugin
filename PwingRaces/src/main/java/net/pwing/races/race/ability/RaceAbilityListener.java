@@ -1,6 +1,6 @@
 package net.pwing.races.race.ability;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
@@ -18,13 +18,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
+@AllArgsConstructor
 public class RaceAbilityListener implements Listener {
 
     private PwingRaces plugin;
-
-    public RaceAbilityListener(PwingRaces plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
@@ -51,7 +50,7 @@ public class RaceAbilityListener implements Listener {
                 if (!ability.canRun(player, stack))
                     continue;
 
-                if (configManager.useProjectileEvent() && isProjectileLauncher(stack.getType().name(), configManager.getProjectileLaunchers()))
+                if (configManager.isUseProjectileEvent() && isProjectileLauncher(stack.getType().name(), configManager.getProjectileLaunchers()))
                     continue;
 
                 if (raceManager.getAbilityManager().runAbility(player, ability)) {
@@ -83,7 +82,7 @@ public class RaceAbilityListener implements Listener {
 
         Race race = racePlayer.getRace().get();
         RaceConfigurationManager configManager = plugin.getConfigManager();
-        if (!configManager.useProjectileEvent() && isProjectile(event.getEntityType().name(), configManager.getProjectileTypes()))
+        if (!configManager.isUseProjectileEvent() && isProjectile(event.getEntityType().name(), configManager.getProjectileTypes()))
             return;
 
         for (RaceAbility ability : raceManager.getAbilityManager().getApplicableAbilities(player, race)) {
@@ -172,7 +171,7 @@ public class RaceAbilityListener implements Listener {
 
     private boolean isProjectileLauncher(String item, List<String> projectileLaunchers) {
         for (String str : projectileLaunchers) {
-            if (str.replace("_", "").equalsIgnoreCase(str.replace("_", "")))
+            if (str.replace("_", "").equalsIgnoreCase(item.replace("_", "")))
                 return true;
         }
 

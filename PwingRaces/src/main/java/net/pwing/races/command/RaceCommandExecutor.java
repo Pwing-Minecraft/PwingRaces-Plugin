@@ -1,5 +1,19 @@
 package net.pwing.races.command;
 
+import net.pwing.races.PwingRaces;
+import net.pwing.races.utilities.ItemUtil;
+import net.pwing.races.utilities.MessageUtil;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.InvocationTargetException;
@@ -12,27 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import net.pwing.races.utilities.MessageUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
-
-import net.pwing.races.PwingRaces;
-import net.pwing.races.utilities.ItemUtil;
 
 public class RaceCommandExecutor implements TabExecutor {
 
     protected PwingRaces plugin;
 
-    private Map<String, Set<CommandWrapper>> commandMethods = new HashMap<String, Set<CommandWrapper>>();
+    private Map<String, Set<CommandWrapper>> commandMethods = new HashMap<>();
     protected String parentCommand;
 
     public RaceCommandExecutor(PwingRaces plugin, String parentCommand) {
@@ -132,7 +131,7 @@ public class RaceCommandExecutor implements TabExecutor {
 
                 CommandWrapper wrapper = new CommandWrapper(method, getUsage(method));
                 for (String cmd : raceCommand.commands()) {
-                    Set<CommandWrapper> wrappers = commandMethods.getOrDefault(cmd, new HashSet<CommandWrapper>());
+                    Set<CommandWrapper> wrappers = commandMethods.getOrDefault(cmd, new HashSet<>());
                     wrappers.add(wrapper);
 
                     commandMethods.put(cmd, wrappers);
@@ -240,7 +239,7 @@ public class RaceCommandExecutor implements TabExecutor {
     }
 
     public List<CommandWrapper> getCommandWrappers(String command, String subCommand) {
-        List<CommandWrapper> wrappers = new ArrayList<CommandWrapper>();
+        List<CommandWrapper> wrappers = new ArrayList<>();
 
         for (String cmd : commandMethods.keySet()) {
             for (CommandWrapper wrapper : commandMethods.get(cmd)) {
@@ -304,23 +303,20 @@ public class RaceCommandExecutor implements TabExecutor {
         }
     }
 
-    @SuppressWarnings("deprecation")
     protected List<String> verifyTabComplete(String arg, Class<?> parameter) {
-        List<String> completions = new ArrayList<String>();
+        List<String> completions = new ArrayList<>();
         switch (parameter.getSimpleName().toLowerCase()) {
             case "material":
-                completions = Stream.of(Material.values()).map(Material::name).collect(Collectors.toList());
+                completions = Arrays.stream(Material.values()).map(Material::name).collect(Collectors.toList());
                 break;
             case "player":
-                Player[] players = Bukkit.getOnlinePlayers().toArray(new Player[Bukkit.getOnlinePlayers().size()]);
-                completions = Stream.of(players).map(Player::getName).collect(Collectors.toList());
+                completions = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 break;
             case "offlineplayer":
-                completions = Stream.of(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
+                completions = Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
                 break;
             case "world":
-                World[] worlds = Bukkit.getWorlds().toArray(new World[Bukkit.getWorlds().size()]);
-                completions = Stream.of(worlds).map(World::getName).collect(Collectors.toList());
+                completions = Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList());
                 break;
         }
 
@@ -355,14 +351,10 @@ public class RaceCommandExecutor implements TabExecutor {
 
     private String getUsageString(Class<?> parameter) {
         switch (parameter.getSimpleName().toLowerCase()) {
-            case "string":
-                return "<string> ";
             case "string[]":
                 return "[string...] ";
             case "int":
-                return "<number> ";
             case "double":
-                return "<number> ";
             case "float":
                 return "<number> ";
             case "boolean":
@@ -383,7 +375,7 @@ public class RaceCommandExecutor implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        List<String> completions = new ArrayList<String>();
+        List<String> completions = new ArrayList<>();
 
         try {
             if (args.length == 1) {
@@ -412,32 +404,6 @@ public class RaceCommandExecutor implements TabExecutor {
             if (args.length == 2) {
                 if (!commandMethods.containsKey(args[0]))
                     return null;
-
-                /*
-                for (CommandWrapper wrapper : commandMethods.get(args[0])) {
-                    RaceCommand raceCommand = wrapper.getCommand();
-
-                    if (!raceCommand.permissionNode().isEmpty() && !plugin.getVaultHook().hasPermission(sender, "pwingraces.command." + raceCommand.permissionNode()))
-                        continue;
-
-                    if (raceCommand.requiresOp() && !sender.isOp())
-                        continue;
-
-                    if (raceCommand.subCommands().length == 0)
-                        continue;
-
-                    for (String sub : raceCommand.subCommands())
-                        completions.add(sub);
-                }
-
-                for (int i = 0; i < completions.size(); i++) {
-                    String completion = completions.get(i);
-                    if (!completion.toLowerCase().startsWith(args[1].toLowerCase())) {
-                        completions.remove(completion);
-                        i--;
-                    }
-                }
-                */
             }
 
             if (args.length > 1) {

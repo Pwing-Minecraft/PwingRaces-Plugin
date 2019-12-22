@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.Getter;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pwing.races.PwingRaces;
 
+@Getter
 public class RaceConfigurationManager {
 
 	private PwingRaces plugin;
@@ -111,105 +114,5 @@ public class RaceConfigurationManager {
 		}
 
 		return new RaceConfiguration(file, YamlConfiguration.loadConfiguration(file));
-	}
-
-	public List<RaceConfiguration> getRaceConfigurations() {
-		return raceConfigs;
-	}
-
-	public RaceConfiguration getMessageConfig() {
-		return messageConfig;
-	}
-
-	public long getAutosave() {
-		return autosave;
-	}
-
-	public boolean doesUseTransientPermissions() {
-		return useTransientPermissions;
-	}
-
-	public boolean doesRequireRace() {
-		return requireRace;
-	}
-
-	public boolean hasDefaultRaceOnJoin() {
-		return defaultRaceOnJoin;
-	}
-
-	public String getDefaultRace() {
-		return defaultRace;
-	}
-
-	public boolean isPlayerRaceChangesAllowed() {
-		return allowPlayerRaceChanges;
-	}
-
-	public int getRaceChangeCost() {
-		return raceChangeCost;
-	}
-
-	public String getRaceChangeCostType() {
-		return raceChangeCostType;
-	}
-
-	public boolean isRaceUnlocksEnabled() {
-		return raceUnlocks;
-	}
-
-	public boolean doesRaceUnlockUseCost() {
-		return raceUnlockUsesCost;
-	}
-
-	public boolean isGiveItemsOnRaceChangeEnabled() {
-		return giveItemsOnRaceChange;
-	}
-
-	public boolean isReclaimingItemsAllowed() {
-		return allowReclaimingItems;
-	}
-
-	public int getReclaimItemsCost() {
-		return reclaimItemsCost;
-	}
-
-	public boolean isReclaimingSkillpointsAllowed() {
-		return allowReclaimingSkillpoints;
-	}
-
-	public int getReclaimSkillpointCost() {
-		return reclaimSkillpointCost;
-	}
-
-	public boolean doesReclaimingSkillpointsReduce() {
-		return reclaimSkillpointReduces;
-	}
-
-	public double getReclaimSkillpointReduction() {
-		return reclaimSkillpointReduction;
-	}
-
-	public boolean sendSkillpointMessageOnJoin() {
-		return sendSkillpointMessageOnJoin;
-	}
-
-	public boolean useProjectileEvent() {
-		return useProjectileEvent;
-	}
-	
-	public List<String> getProjectileLaunchers() {
-		return projectileLaunchers;
-	}
-	
-	public List<String> getProjectileTypes() {
-		return projectileTypes;
-	}
-	
-	public List<String> getDisabledWorlds() {
-		return disabledWorlds;
-	}
-	
-	public List<RaceConfiguration> getRaceConfigs() {
-		return raceConfigs;
 	}
 }

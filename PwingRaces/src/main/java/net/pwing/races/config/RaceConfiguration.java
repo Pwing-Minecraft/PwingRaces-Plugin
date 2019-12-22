@@ -3,18 +3,16 @@ package net.pwing.races.config;
 import java.io.File;
 import java.io.IOException;
 
+import lombok.AllArgsConstructor;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+@AllArgsConstructor
 public class RaceConfiguration {
 
 	private File configFile;
 	private FileConfiguration config;
-
-	public RaceConfiguration(File configFile, FileConfiguration config) {
-		this.configFile = configFile;
-		this.config = config;
-	}
 
 	public void reloadConfig() {
 		config = YamlConfiguration.loadConfiguration(configFile);

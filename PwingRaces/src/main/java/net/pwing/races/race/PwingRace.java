@@ -1,6 +1,7 @@
 package net.pwing.races.race;
 
-import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
@@ -14,7 +15,6 @@ import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.race.attribute.PwingRaceAttribute;
 import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
-import net.pwing.races.utilities.AttributeUtil;
 import net.pwing.races.utilities.ItemUtil;
 import net.pwing.races.utilities.LocationUtil;
 
@@ -25,6 +25,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@Getter
+@Setter
 public class PwingRace implements Race {
 
     private String name;
@@ -34,7 +42,7 @@ public class PwingRace implements Race {
 
     private Location spawnLocation;
 
-    private boolean requireUnlock = false;
+    private boolean requiresUnlock = false;
 
     private FileConfiguration raceConfig;
 
@@ -42,11 +50,11 @@ public class PwingRace implements Race {
 
     private Map<String, ItemStack> raceItems;
 
-    private Map<Integer, String> raceSkilltreeMap;
+    private Map<Integer, String> skilltreeMap;
     private Map<String, List<RacePermission>> racePermissionsMap;
     private Map<String, List<RaceAttribute>> raceAttributesMap;
     private Map<Integer, Integer> raceLevelMap;
-    private Map<Integer, Integer> raceSkillpointMap;
+    private Map<Integer, Integer> raceSkillpointsMap;
 
     private Map<String, List<RaceTrigger>> raceTriggersMap;
     private Map<String, List<RaceAbility>> raceAbilitiesMap;
@@ -69,8 +77,8 @@ public class PwingRace implements Race {
 
         this.spawnLocation = LocationUtil.fromString(raceConfig.getString("race.spawn-location", ""));
 
-        this.requireUnlock = raceConfig.getBoolean("race.require-unlock", false);
-        this.raceSkilltreeMap = new HashMap<>();
+        this.requiresUnlock = raceConfig.getBoolean("race.require-unlock", false);
+        this.skilltreeMap = new HashMap<>();
 
         this.raceItems = new HashMap<>();
         if (raceConfig.contains("race.items")) {
@@ -91,16 +99,16 @@ public class PwingRace implements Race {
                 continue;
             }
 
-            raceSkilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.get().getInternalName());
+            skilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.get().getInternalName());
         }
 
         this.raceLevelMap = new HashMap<>();
-        this.raceSkillpointMap = new HashMap<>();
+        this.raceSkillpointsMap = new HashMap<>();
 
         if (raceConfig.contains("race.levels")) {
             for (String str : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
                 raceLevelMap.put(Integer.parseInt(str), raceConfig.getInt("race.levels." + str + ".xp", 0));
-                raceSkillpointMap.put(Integer.parseInt(str), raceConfig.getInt("race.levels." + str + ".skillpoints", 0));
+                raceSkillpointsMap.put(Integer.parseInt(str), raceConfig.getInt("race.levels." + str + ".skillpoints", 0));
             }
         }
 
@@ -225,7 +233,7 @@ public class PwingRace implements Race {
 
                 if (levelSection.contains("triggers")) {
                     for (String trigger : levelSection.getConfigurationSection("triggers").getKeys(false)) {
-                        List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<RaceTrigger>());
+                        List<RaceTrigger> raceTriggers = raceTriggersMap.getOrDefault(trigger, new ArrayList<>());
                         raceTriggers.add(new RaceTrigger(trigger, "race.levels." + level + ".triggers." + trigger, raceConfig, "level" + level));
                         raceTriggersMap.put(trigger, raceTriggers);
                     }
@@ -251,122 +259,19 @@ public class PwingRace implements Race {
         this.iconData = new PwingRaceIconData(iconUnlocked, iconLocked, iconSelected, iconSlot);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
     public boolean doesRequireUnlock() {
-        return requireUnlock;
-    }
-
-    public void setRequiresUnlock(boolean requireUnlock) {
-        this.requireUnlock = requireUnlock;
-    }
-
-    public int getMaxLevel() {
-        return maxLevel;
-    }
-
-    public void setMaxLevel(int maxLevel) {
-        this.maxLevel = maxLevel;
+        return requiresUnlock;
     }
 
     public Optional<Location> getSpawnLocation() {
         return Optional.ofNullable(spawnLocation);
     }
 
-    public void setSpawnLocation(Location spawnLocation) {
-        this.spawnLocation = spawnLocation;
-    }
-
-    public Map<Integer, String> getSkilltreeMap() {
-        return raceSkilltreeMap;
-    }
-
-    public void setSkilltreeMap(Map<Integer, String> raceSkilltreeMap) {
-        this.raceSkilltreeMap = raceSkilltreeMap;
-    }
-
-    public Map<String, ItemStack> getRaceItems() {
-        return raceItems;
-    }
-
-    public void setRaceItems(Map<String, ItemStack> raceItems) {
-        this.raceItems = raceItems;
-    }
-
-    public RaceIconData getIconData() {
-        return iconData;
-    }
-
-    public void setIconData(RaceIconData iconData) {
-        this.iconData = iconData;
-    }
-
-    public Map<String, List<RacePermission>> getRacePermissionsMap() {
-        return racePermissionsMap;
-    }
-
-    public void setRacePermissionsMap(Map<String, List<RacePermission>> racePermissionsMap) {
-        this.racePermissionsMap = racePermissionsMap;
-    }
-
-    public Map<String, List<RaceAttribute>> getRaceAttributesMap() {
-        return raceAttributesMap;
-    }
-
-    public void setRaceAttributesMap(Map<String, List<RaceAttribute>> raceAttributesMap) {
-        this.raceAttributesMap = raceAttributesMap;
-    }
-
-    public Map<Integer, Integer> getRaceLevelMap() {
-        return raceLevelMap;
-    }
-
-    public void setRaceLevelMap(Map<Integer, Integer> raceLevelMap) {
-        this.raceLevelMap = raceLevelMap;
-    }
-
-    public Map<Integer, Integer> getRaceSkillpointsMap() {
-        return raceSkillpointMap;
-    }
-
-    public void setRaceSkillpointsMap(Map<Integer, Integer> raceSkillpointsMap) {
-        this.raceSkillpointMap = raceSkillpointsMap;
-    }
-
-    public Map<String, List<RaceTrigger>> getRaceTriggersMap() {
-        return raceTriggersMap;
-    }
-
-    public void setRaceTriggersMap(Map<String, List<RaceTrigger>> raceTriggersMap) {
-        this.raceTriggersMap = raceTriggersMap;
-    }
-
-    public Map<String, List<RaceAbility>> getRaceAbilitiesMap() {
-        return raceAbilitiesMap;
-    }
-
-    public void setRaceAbilitiesMap(Map<String, List<RaceAbility>> raceAbilitiesMap) {
-        this.raceAbilitiesMap = raceAbilitiesMap;
-    }
-
     public boolean isMaxLevel(int level) {
         if (raceLevelMap.isEmpty())
             return true;
 
-        if (raceLevelMap.size() < level)
-            return true;
-
-        return false;
+        return raceLevelMap.size() < level;
     }
 
     public int getRequiredExperience(int level) {
@@ -377,8 +282,8 @@ public class PwingRace implements Race {
     }
 
     public int getSkillpointsForLevel(int level) {
-        if (raceSkillpointMap.containsKey(level))
-            return raceSkillpointMap.get(level);
+        if (raceSkillpointsMap.containsKey(level))
+            return raceSkillpointsMap.get(level);
 
         return 0;
     }
@@ -390,8 +295,4 @@ public class PwingRace implements Race {
     // public void setExecutor(RaceCommandExecutor executor) {
     //	this.executor = executor;
     // }
-
-    public FileConfiguration getConfig() {
-        return raceConfig;
-    }
 }

@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 public class PwingRaceAbilityManager implements RaceAbilityManager {
 
     private PwingRaces plugin;
-    private Map<String, Map<UUID, Long>> cooldown = new HashMap<String, Map<UUID, Long>>();
+    private Map<String, Map<UUID, Long>> cooldown = new HashMap<>();
 
     public PwingRaceAbilityManager(PwingRaces plugin) {
         this.plugin = plugin;
@@ -81,7 +81,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         RaceManager raceManager = plugin.getRaceManager();
         RaceData data = raceManager.getPlayerData(player, race);
 
-        Map<String, RaceAbility> abilities = new HashMap<String, RaceAbility>();
+        Map<String, RaceAbility> abilities = new HashMap<>();
         for (String key : race.getRaceAbilitiesMap().keySet()) {
             List<RaceAbility> definedAbilities = race.getRaceAbilitiesMap().get(key);
 
@@ -112,7 +112,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             }
         }
 
-        List<String> toRemove = new ArrayList<String>();
+        List<String> toRemove = new ArrayList<>();
         for (String str : abilities.keySet()) {
             RaceAbility raceAbility = abilities.get(str);
 
@@ -138,10 +138,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         if (!cooldown.get(ability).containsKey(player.getUniqueId()))
             return false;
 
-        if (cooldown.get(ability).get(player.getUniqueId()) < System.currentTimeMillis())
-            return false;
-
-        return true;
+        return cooldown.get(ability).get(player.getUniqueId()) >= System.currentTimeMillis();
     }
 
     public int getCooldown(Player player, String ability) {
@@ -151,8 +148,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         if (!cooldown.get(ability).containsKey(player.getUniqueId()))
             return 0;
 
-        int remainingTime = Math.round(cooldown.get(ability).get(player.getUniqueId()) - System.currentTimeMillis()) / 1000;
-        return remainingTime;
+        return Math.round(cooldown.get(ability).get(player.getUniqueId()) - System.currentTimeMillis()) / 1000;
     }
 
     public void setCooldown(Player player, String ability, double amt) {

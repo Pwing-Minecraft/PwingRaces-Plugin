@@ -1,5 +1,7 @@
 package net.pwing.races.race.permission;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.race.permission.RacePermissionManager;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
@@ -11,13 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+@AllArgsConstructor
 public class RacePermissionListener implements Listener {
 
     private RacePermissionManager permissionManager;
-
-    public RacePermissionListener(RacePermissionManager permissionManager) {
-        this.permissionManager = permissionManager;
-    }
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {

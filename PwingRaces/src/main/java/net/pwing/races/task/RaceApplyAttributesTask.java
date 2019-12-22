@@ -1,16 +1,15 @@
 package net.pwing.races.task;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.api.race.attribute.RaceAttributeManager;
 
 import org.bukkit.Bukkit;
 
+@AllArgsConstructor
 public class RaceApplyAttributesTask implements Runnable {
 
     private RaceAttributeManager attributeManager;
-
-    public RaceApplyAttributesTask(RaceAttributeManager attributeManager) {
-        this.attributeManager = attributeManager;
-    }
 
     @Override
     public void run() {

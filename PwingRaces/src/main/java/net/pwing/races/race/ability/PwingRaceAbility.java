@@ -94,8 +94,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
             if (!hand.getItemMeta().hasDisplayName())
                 return false;
 
-            if (!hand.getItemMeta().getDisplayName().equals(stack.getItemMeta().getDisplayName()))
-                return false;
+            return hand.getItemMeta().getDisplayName().equals(stack.getItemMeta().getDisplayName());
         }
 
         return true;

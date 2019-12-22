@@ -1,7 +1,5 @@
 package net.pwing.races.race.menu;
 
-import java.util.*;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.race.Race;
@@ -31,6 +29,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class PwingRaceMenu implements RaceMenu {
 
@@ -107,7 +111,7 @@ public class PwingRaceMenu implements RaceMenu {
 
         ItemBuilder info = new ItemBuilder(cachedIcons.get(race.getName()).getUnlockedIcon().clone());
 
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         String level = MessageUtil.getMessage("menu-level", "&7Level: &3") + data.getLevel();
         String experience = MessageUtil.getMessage("menu-experience", "&7Experience: &3") + MessageUtil.getMessage("menu-max-level", "Max Level");
         if (race.getRaceLevelMap().containsKey(data.getLevel()))
@@ -127,7 +131,7 @@ public class PwingRaceMenu implements RaceMenu {
                 MessageUtil.getMessage("menu-reclaim-skillpoints-lore", "&7Reclaim all your spent skillpoints. \n&cResets all your purchased skills.") +
                 "\n" + MessageUtil.getMessage("menu-cost-display", "&7Cost: &a") + pointCost + " " + plugin.getVaultHook().getCurrencyName(pointCost));
 
-        boolean allowReclaim = plugin.getConfigManager().isReclaimingSkillpointsAllowed();
+        boolean allowReclaim = plugin.getConfigManager().isAllowReclaimingSkillpoints();
         int cost = plugin.getConfigManager().getReclaimItemsCost();
 
         if (allowReclaim && cost > 0) {
@@ -157,7 +161,7 @@ public class PwingRaceMenu implements RaceMenu {
 
                     @Override
                     public void onConfirm(Player player, ClickType action, ItemStack item) {
-                        if (plugin.getConfigManager().doesRaceUnlockUseCost()) {
+                        if (plugin.getConfigManager().isRaceUnlockUsesCost()) {
                             if (plugin.getConfigManager().getRaceChangeCostType().equalsIgnoreCase("money")) {
                                 if (!plugin.getVaultHook().hasBalance(player, plugin.getConfigManager().getRaceChangeCost())) {
                                     MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
@@ -208,12 +212,12 @@ public class PwingRaceMenu implements RaceMenu {
                     }
                 });
 
-                if (plugin.getConfigManager().isPlayerRaceChangesAllowed() && (racePlayer.getRace().isPresent() || !racePlayer.getRace().get().equals(race)))
+                if (plugin.getConfigManager().isAllowPlayerRaceChanges() && (racePlayer.getRace().isPresent() || !racePlayer.getRace().get().equals(race)))
                     menu.open(clickedPlayer);
             }
         });
 
-        if (configManager.isReclaimingSkillpointsAllowed() && racePlayer.getRace().isPresent() && racePlayer.getRace().get().equals(race)) {
+        if (configManager.isAllowReclaimingSkillpoints() && racePlayer.getRace().isPresent() && racePlayer.getRace().get().equals(race)) {
             builder.setItem(reclaimSkillpoints, 11).addClickEvent(11, (clickedPlayer, action, item) -> {
                 ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
 
@@ -257,7 +261,7 @@ public class PwingRaceMenu implements RaceMenu {
                         data.setUsedSkillpoints(0);
 
                         for (String tree : data.getPurchasedElementsMap().keySet())
-                            data.getPurchasedElementsMap().put(tree, new ArrayList<String>());
+                            data.getPurchasedElementsMap().put(tree, new ArrayList<>());
 
                         MessageUtil.sendMessage(player, "race-skillpoint-claim", "%prefix% Successfully reclaimed your used skillpoints!");
                         player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
@@ -269,7 +273,7 @@ public class PwingRaceMenu implements RaceMenu {
             });
         }
 
-        if (configManager.isReclaimingItemsAllowed() && racePlayer.getRace().isPresent() && racePlayer.getRace().get().equals(race)) {
+        if (configManager.isAllowReclaimingItems() && racePlayer.getRace().isPresent() && racePlayer.getRace().get().equals(race)) {
             builder.setItem(reclaimItems, 15).addClickEvent(15, (clickedPlayer, action, item) -> {
                 ConfirmationMenu menu = new ConfirmationMenu(plugin, new IConfirmationHandler() {
 

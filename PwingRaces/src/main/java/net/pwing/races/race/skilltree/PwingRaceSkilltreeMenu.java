@@ -1,8 +1,6 @@
 package net.pwing.races.race.skilltree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
@@ -26,17 +24,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@AllArgsConstructor
 public class PwingRaceSkilltreeMenu {
 
     private PwingRaces plugin;
     private Race race;
     private RaceSkilltree skilltree;
-
-    public PwingRaceSkilltreeMenu(PwingRaces plugin, Race race, RaceSkilltree skilltree) {
-        this.plugin = plugin;
-        this.race = race;
-        this.skilltree = skilltree;
-    }
 
     public void openMenu(Player player) {
         RaceManager raceManager = plugin.getRaceManager();

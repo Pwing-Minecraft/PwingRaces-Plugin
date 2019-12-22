@@ -1,16 +1,15 @@
 package net.pwing.races.task;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.api.race.RaceManager;
 
 import org.bukkit.Bukkit;
 
+@AllArgsConstructor
 public class RaceSaveTask implements Runnable {
 
 	private RaceManager raceManager;
-
-	public RaceSaveTask(RaceManager raceManager) {
-		this.raceManager = raceManager;
-	}
 
 	@Override
 	public void run() {

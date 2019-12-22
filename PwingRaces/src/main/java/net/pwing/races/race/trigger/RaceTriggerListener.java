@@ -3,6 +3,8 @@ package net.pwing.races.race.trigger;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 
+import lombok.AllArgsConstructor;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
@@ -31,13 +33,10 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+@AllArgsConstructor
 public class RaceTriggerListener implements Listener {
 
     private PwingRaces plugin;
-
-    public RaceTriggerListener(PwingRaces plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {

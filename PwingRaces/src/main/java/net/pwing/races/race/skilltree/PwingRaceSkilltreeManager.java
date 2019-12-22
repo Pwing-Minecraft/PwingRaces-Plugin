@@ -1,8 +1,6 @@
 package net.pwing.races.race.skilltree;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
 
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
@@ -10,6 +8,11 @@ import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
 public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
 
     private List<RaceSkilltree> skilltrees;
@@ -33,9 +36,5 @@ public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
 
     public void initSkilltree(String regName, FileConfiguration config) {
         skilltrees.add(new PwingRaceSkilltree(regName, config));
-    }
-
-    public List<RaceSkilltree> getSkilltrees() {
-        return skilltrees;
     }
 }

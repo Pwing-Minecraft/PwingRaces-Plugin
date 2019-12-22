@@ -1,9 +1,5 @@
 package net.pwing.races.race.permission;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
@@ -15,6 +11,10 @@ import net.pwing.races.hooks.VaultAPIHook;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class PwingRacePermissionManager implements RacePermissionManager {
 

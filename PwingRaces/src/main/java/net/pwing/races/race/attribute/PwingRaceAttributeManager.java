@@ -44,22 +44,6 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
 
     @Override
     public void applyAttributeBonuses(Player player) {
-        /*
-            if (!plugin.getRaceManager().isRacesEnabledInWorld(player.getWorld())) {
-                for (RaceAttribute definedAttribute : getApplicableAttributes(player)) {
-                    if (AttributeUtil.isBukkitAttribute(definedAttribute.getAttribute())) {
-                        double def = AttributeUtil.getDefaultAttributeValue(player, definedAttribute.getAttribute());
-                        AttributeUtil.setAttributeValue(player, definedAttribute.getAttribute(), def);
-                    }
-
-                    if (attributeEffects.containsKey(definedAttribute.getAttribute()))
-                        attributeEffects.get(definedAttribute.getAttribute()).onAttributeLose(player);
-                }
-
-                return;
-            }
-        */
-
         for (RaceAttribute definedAttribute : getApplicableAttributes(player)) {
             if (AttributeUtil.isBukkitAttribute(definedAttribute.getAttribute()))
                 AttributeUtil.setAttributeValue(player, definedAttribute.getAttribute(), definedAttribute.getValue());

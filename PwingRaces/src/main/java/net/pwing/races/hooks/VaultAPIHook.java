@@ -152,7 +152,7 @@ public class VaultAPIHook extends PluginHook {
     	if (!hasPermissions())
     		return false;
 
-    	if (owningPlugin.getConfigManager().doesUseTransientPermissions())
+    	if (owningPlugin.getConfigManager().isUseTransientPermissions())
     		return perms.playerAddTransient(player, permission);
     	else
     		return perms.playerAdd(player, permission);
@@ -162,7 +162,7 @@ public class VaultAPIHook extends PluginHook {
     	if (!hasPermissions())
     		return false;
 
-		if (owningPlugin.getConfigManager().doesUseTransientPermissions())
+		if (owningPlugin.getConfigManager().isUseTransientPermissions())
     		return perms.playerRemoveTransient(player, permission);
 		else
 			return perms.playerRemove(player, permission);

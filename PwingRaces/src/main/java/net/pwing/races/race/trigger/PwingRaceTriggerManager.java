@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import lombok.Getter;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
@@ -27,8 +28,10 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
 
     private PwingRaces plugin;
 
-    private Map<String, Map<UUID, Long>> delay = new HashMap<String, Map<UUID, Long>>();
-    private Map<String, RaceTriggerPassive> passives = new HashMap<String, RaceTriggerPassive>();
+    private Map<String, Map<UUID, Long>> delay = new HashMap<>();
+
+    @Getter
+    private Map<String, RaceTriggerPassive> triggerPassives = new HashMap<>();
 
     public PwingRaceTriggerManager(PwingRaces plugin) {
         this.plugin = plugin;
@@ -38,23 +41,23 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     }
 
     public void initTriggerPassives() {
-        passives.put("add-potion-effect", new AddPotionEffectTrigger(plugin, "add-potion-effect"));
-        passives.put("allow-flight", new AllowFlightTrigger(plugin, "allow-flight"));
-        passives.put("burn", new BurnTrigger(plugin, "burn"));
-        passives.put("damage", new DamageTrigger(plugin, "damage"));
-        passives.put("disguise", new DisguiseTrigger(plugin, "disguise"));
-        passives.put("drop-item", new DropItemTrigger(plugin, "drop-item"));
-        passives.put("give-exp", new GiveExpTrigger(plugin, "give-exp"));
-        passives.put("give-health", new GiveHealthTrigger(plugin, "give-health"));
-        passives.put("give-race-exp", new GiveRaceExpTrigger(plugin, "give-race-exp"));
-        passives.put("give-saturation", new GiveSaturationTrigger(plugin, "give-saturation"));
-        passives.put("remove-potion-effect", new RemovePotionEffectTrigger(plugin, "remove-potion-effect"));
-        passives.put("run-command", new RunCommandTrigger(plugin, "run-command"));
-        passives.put("send-actionbar-message", new SendActionBarMessageTrigger("send-action-bar-message"));
-        passives.put("send-message", new SendMessageTrigger(plugin, "send-message"));
-        passives.put("set-default-attributes", new SetDefaultAttributesTrigger(plugin, "set-default-attributes"));
-        passives.put("toggle-fly", new ToggleFlyTrigger(plugin, "toggle-fly"));
-        passives.put("undisguise", new UndisguiseTrigger(plugin, "undisguise"));
+        triggerPassives.put("add-potion-effect", new AddPotionEffectTrigger(plugin, "add-potion-effect"));
+        triggerPassives.put("allow-flight", new AllowFlightTrigger(plugin, "allow-flight"));
+        triggerPassives.put("burn", new BurnTrigger(plugin, "burn"));
+        triggerPassives.put("damage", new DamageTrigger(plugin, "damage"));
+        triggerPassives.put("disguise", new DisguiseTrigger(plugin, "disguise"));
+        triggerPassives.put("drop-item", new DropItemTrigger(plugin, "drop-item"));
+        triggerPassives.put("give-exp", new GiveExpTrigger(plugin, "give-exp"));
+        triggerPassives.put("give-health", new GiveHealthTrigger(plugin, "give-health"));
+        triggerPassives.put("give-race-exp", new GiveRaceExpTrigger(plugin, "give-race-exp"));
+        triggerPassives.put("give-saturation", new GiveSaturationTrigger(plugin, "give-saturation"));
+        triggerPassives.put("remove-potion-effect", new RemovePotionEffectTrigger(plugin, "remove-potion-effect"));
+        triggerPassives.put("run-command", new RunCommandTrigger(plugin, "run-command"));
+        triggerPassives.put("send-actionbar-message", new SendActionBarMessageTrigger("send-action-bar-message"));
+        triggerPassives.put("send-message", new SendMessageTrigger(plugin, "send-message"));
+        triggerPassives.put("set-default-attributes", new SetDefaultAttributesTrigger(plugin, "set-default-attributes"));
+        triggerPassives.put("toggle-fly", new ToggleFlyTrigger(plugin, "toggle-fly"));
+        triggerPassives.put("undisguise", new UndisguiseTrigger(plugin, "undisguise"));
     }
 
     public void runTriggers(Player player, String trigger) {
@@ -105,9 +108,8 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                 if ((random.nextFloat() * 100) > raceTrigger.getChance())
                     continue;
 
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    runTriggerPassives(player, raceTrigger);
-                });
+                Bukkit.getScheduler().runTask(plugin, () ->
+                        runTriggerPassives(player, raceTrigger));
             }
         }
     }
@@ -225,7 +227,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     public void runTriggerPassives(Player player, List<String> triggers) {
         for (String effect : triggers) {
             String name = effect.split(" ")[0];
-            RaceTriggerPassive racePassive = passives.get(name);
+            RaceTriggerPassive racePassive = triggerPassives.get(name);
             if (racePassive == null)
                 continue;
 
@@ -240,10 +242,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         if (!delay.get(trigger).containsKey(player.getUniqueId()))
             return false;
 
-        if (delay.get(trigger).get(player.getUniqueId()) < System.currentTimeMillis())
-            return false;
-
-        return true;
+        return delay.get(trigger).get(player.getUniqueId()) >= System.currentTimeMillis();
     }
 
     public void setDelay(Player player, String trigger, int amt) {
@@ -256,9 +255,5 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
 
         delayMap.put(player.getUniqueId(), time);
         delay.put(trigger, delayMap);
-    }
-
-    public Map<String, RaceTriggerPassive> getTriggerPassives() {
-        return passives;
     }
 }

@@ -1,7 +1,7 @@
 package net.pwing.races.race.skilltree;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeElement;
@@ -11,6 +11,11 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 public class PwingRaceSkilltree implements RaceSkilltree {
 
     private String internalName;
@@ -29,7 +34,7 @@ public class PwingRaceSkilltree implements RaceSkilltree {
         loadDataFromConfig(config);
     }
 
-    public void loadDataFromConfig(FileConfiguration config) {
+    private void loadDataFromConfig(FileConfiguration config) {
         this.name = config.getString("name");
         this.icon = ItemUtil.readItemFromConfig("icon", config);
         if (icon == null)
@@ -42,68 +47,12 @@ public class PwingRaceSkilltree implements RaceSkilltree {
         this.menuSlot = config.getInt("menu-slot", -1);
         this.menuSize = config.getInt("menu-size", 54);
 
-        List<RaceSkilltreeElement> elements = new ArrayList<RaceSkilltreeElement>();
+        List<RaceSkilltreeElement> elements = new ArrayList<>();
         if (config.contains("elements")) {
             for (String elem : config.getConfigurationSection("elements").getKeys(false))
                 elements.add(new PwingRaceSkilltreeElement(elem, "elements." + elem, config));
         }
 
-        this.elements = elements;
-    }
-
-    public String getInternalName() {
-        return internalName;
-    }
-
-    public void setInternalName(String internalName) {
-        this.internalName = internalName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ItemStack getIcon() {
-        return icon;
-    }
-
-    public void setIcon(ItemStack icon) {
-        this.icon = icon;
-    }
-
-    public ItemStack getMenuIcon() {
-        return menuIcon;
-    }
-
-    public void setMenuIcon(ItemStack menuIcon) {
-        this.menuIcon = menuIcon;
-    }
-
-    public int getMenuSlot() {
-        return menuSlot;
-    }
-
-    public void setMenuSlot(int menuSlot) {
-        this.menuSlot = menuSlot;
-    }
-
-    public int getMenuSize() {
-        return menuSize;
-    }
-
-    public void setMenuSize(int menuSize) {
-        this.menuSize = menuSize;
-    }
-
-    public List<RaceSkilltreeElement> getElements() {
-        return elements;
-    }
-
-    public void setElements(List<RaceSkilltreeElement> elements) {
         this.elements = elements;
     }
 }
