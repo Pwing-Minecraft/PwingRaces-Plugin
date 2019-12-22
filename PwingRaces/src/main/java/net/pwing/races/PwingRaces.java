@@ -23,6 +23,7 @@ import net.pwing.races.hooks.WorldGuardHook;
 import net.pwing.races.module.PwingRaceModuleLoader;
 import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
+import net.pwing.races.task.RaceApplyAttributesTask;
 import net.pwing.races.task.RaceSaveTask;
 import net.pwing.races.task.RaceTriggerTickTask;
 import net.pwing.races.utilities.MessageUtil;
@@ -112,6 +113,7 @@ public class PwingRaces extends JavaPlugin {
         }
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceTriggerTickTask(this), 1, 1);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceApplyAttributesTask(raceManager.getAttributeManager()), 20, 20);
 
         long autosave = configManager.getAutosave();
         if (autosave > 0)

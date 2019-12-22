@@ -52,6 +52,13 @@ public class RaceTriggerTickTask implements Runnable {
 
             for (World world : Bukkit.getWorlds())
                 triggerManager.runTriggers(player, "in-world " + world.getName());
+
+            if (plugin.getWorldGuardHook().isHooked()) {
+                if (plugin.getWorldGuardHook().isInRegion(player.getLocation())) {
+                    plugin.getWorldGuardHook().getRegions(player.getLocation()).forEach(region ->
+                            triggerManager.runTriggers(player, "in-region " + region));
+                }
+            }
         }
     }
 }

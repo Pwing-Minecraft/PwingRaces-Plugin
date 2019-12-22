@@ -8,13 +8,18 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import org.bukkit.Location;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WorldGuardHandler_v6 implements IWorldGuardHandler {
 
     @Override
     public boolean isInRegion(Location loc) {
-        return WGBukkit.getRegionManager(loc.getWorld()).getApplicableRegions(loc) != null;
+        return WGBukkit.getRegionManager(loc.getWorld()).getApplicableRegions(loc).getRegions().size() > 0;
     }
 
     @Override
@@ -25,12 +30,14 @@ public class WorldGuardHandler_v6 implements IWorldGuardHandler {
         RegionManager regionManager = WGBukkit.getRegionManager(loc.getWorld());
         Vector vec = BukkitUtil.toVector(loc);
         ApplicableRegionSet regionSet = regionManager.getApplicableRegions(vec);
-        if (regionSet.queryState(null, getFlagFromString(flag)) == StateFlag.State.ALLOW)
-            return true;
-
-        return false;
+        return regionSet.queryState(null, getFlagFromString(flag)) == StateFlag.State.ALLOW;
     }
 
+    @Override
+    public List<String> getRegions(Location loc) {
+        return WGBukkit.getRegionManager(loc.getWorld()).getApplicableRegions(loc).getRegions()
+                .stream().map(ProtectedRegion::getId).collect(Collectors.toList());
+    }
 
     private StateFlag getFlagFromString(String flagString) {
         for (Flag<?> flag : DefaultFlag.getFlags()) {

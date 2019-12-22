@@ -52,6 +52,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         passives.put("run-command", new RunCommandTrigger(plugin, "run-command"));
         passives.put("send-actionbar-message", new SendActionBarMessageTrigger("send-action-bar-message"));
         passives.put("send-message", new SendMessageTrigger(plugin, "send-message"));
+        passives.put("set-default-attributes", new SetDefaultAttributesTrigger(plugin, "set-default-attributes"));
         passives.put("toggle-fly", new ToggleFlyTrigger(plugin, "toggle-fly"));
         passives.put("undisguise", new UndisguiseTrigger(plugin, "undisguise"));
     }
@@ -76,9 +77,8 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                 continue;
 
             // Run task synchronously
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                runTriggerPassives(player, raceTrigger);
-            });
+            Bukkit.getScheduler().runTask(plugin, () ->
+                    runTriggerPassives(player, raceTrigger));
         }
     }
 

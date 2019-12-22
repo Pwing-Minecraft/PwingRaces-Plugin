@@ -1,8 +1,8 @@
 package net.pwing.races.task;
 
 import net.pwing.races.api.race.RaceManager;
+
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class RaceSaveTask implements Runnable {
 
@@ -14,7 +14,6 @@ public class RaceSaveTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Player player : Bukkit.getOnlinePlayers())
-			raceManager.savePlayer(player);
+		Bukkit.getOnlinePlayers().forEach(raceManager::savePlayer);
 	}
 }

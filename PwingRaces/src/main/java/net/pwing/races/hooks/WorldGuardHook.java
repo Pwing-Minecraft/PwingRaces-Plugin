@@ -2,12 +2,12 @@ package net.pwing.races.hooks;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.pwing.races.PwingRaces;
-import net.pwing.races.hooks.worldedit.IWorldEditHandler;
 import net.pwing.races.hooks.worldguard.IWorldGuardHandler;
 import net.pwing.races.hooks.worldguard.WorldGuardHandlerDisabled;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 public class WorldGuardHook extends PluginHook {
 
@@ -35,13 +35,17 @@ public class WorldGuardHook extends PluginHook {
             worldGuardHandler = (IWorldGuardHandler) clazz.newInstance();
             owningPlugin.getLogger().info("Hooking into WorldGuard version " + hook.getDescription().getVersion());
         } catch (Exception ex) {
-            owningPlugin.getLogger().warning("Could not properly hook into WorldGuard. Version " + hook.getDescription().getVersion() + " was detected, however PwingRaces requires WorldGuard v6 for 1.8 - 1.12 or WorldGuard v7 for 1.13+.");
+            owningPlugin.getLogger().warning("Could not properly hook into WorldGuard. Version " + hook.getDescription().getVersion() + " was detected, however PwingRaces requires WorldGuard v6 for 1.12 or WorldGuard v7 for 1.13+.");
             ex.printStackTrace();
         }
     }
 
     public boolean isInRegion(Location loc) {
         return worldGuardHandler.isInRegion(loc);
+    }
+
+    public List<String> getRegions(Location loc) {
+        return worldGuardHandler.getRegions(loc);
     }
 
     public boolean hasFlag(String flag, Location loc) {
