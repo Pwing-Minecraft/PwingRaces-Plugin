@@ -133,12 +133,10 @@ public class PwingRaces extends JavaPlugin {
     @Override
     public void onDisable() {
         // Just incase players are online during reload/restart
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            raceManager.savePlayer(player);
-        }
+        Bukkit.getOnlinePlayers().forEach(raceManager::savePlayer);
 
         getLogger().info("Disabling modules...");
-        moduleManager.getModules().values().forEach(module -> moduleManager.disableModule(module));
+        moduleManager.getModules().values().forEach(moduleManager::disableModule);
     }
 
     public boolean reloadPlugin(){

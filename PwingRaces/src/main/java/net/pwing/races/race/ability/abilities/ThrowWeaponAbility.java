@@ -52,11 +52,9 @@ public class ThrowWeaponAbility extends PwingRaceAbility {
         damagePlayers = config.getBoolean(configPath + ".damage-players", false);
         checkPlugins = config.getBoolean(configPath + ".check-plugins", true);
 
-        ignoredEntities = new ArrayList<EntityType>();
+        ignoredEntities = new ArrayList<>();
         List<String> entityList = config.getStringList(configPath + ".ignored-entites");
-        entityList.forEach(entityStr -> {
-            ignoredEntities.add(EntityType.valueOf(entityStr.toUpperCase().replace(" ", "_")));
-        });
+        entityList.forEach(entityStr -> ignoredEntities.add(EntityType.valueOf(entityStr.toUpperCase().replace(" ", "_"))));
 
         yOffset = config.getInt(configPath + ".y-offset", 0);
     }

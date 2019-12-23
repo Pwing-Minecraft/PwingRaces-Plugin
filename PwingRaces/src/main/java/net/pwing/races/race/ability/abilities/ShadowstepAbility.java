@@ -45,11 +45,9 @@ public class ShadowstepAbility extends PwingRaceAbility {
         checkPlugins = config.getBoolean(configPath + ".check-plugins", true);
         damageEntitiesInPath = config.getBoolean(configPath + ".damage-entities-in-path", false);
 
-        ignoredEntities = new ArrayList<EntityType>();
+        ignoredEntities = new ArrayList<>();
         List<String> entityList = config.getStringList(configPath + ".ignored-entites");
-        entityList.forEach(entityStr -> {
-            ignoredEntities.add(EntityType.valueOf(entityStr.toUpperCase().replace(" ", "_")));
-        });
+        entityList.forEach(entityStr -> ignoredEntities.add(EntityType.valueOf(entityStr.toUpperCase().replace(" ", "_"))));
     }
 
     @Override
@@ -79,7 +77,7 @@ public class ShadowstepAbility extends PwingRaceAbility {
         shadowstepping.add(player.getUniqueId());
 
         List<Entity> entities = getEntitiesInLineOfSight(player);
-        if (entities != null && !entities.isEmpty() && damageEntitiesInPath) {
+        if (!entities.isEmpty() && damageEntitiesInPath) {
             for (Entity entity : entities) {
                 if (entity.equals(target))
                     continue;
@@ -135,7 +133,7 @@ public class ShadowstepAbility extends PwingRaceAbility {
     }
 
     private List<Entity> getEntitiesInLineOfSight(Player player) {
-        List<Entity> entities = new ArrayList<Entity>();
+        List<Entity> entities = new ArrayList<>();
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (player.hasLineOfSight(entity))
                 entities.add(entity);

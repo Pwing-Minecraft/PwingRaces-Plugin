@@ -80,7 +80,7 @@ public class ItemBuilder {
 	public ItemBuilder setLore(List<String> lore) {
 		ItemMeta im = stack.getItemMeta();
 
-		List<String> newLore = new ArrayList<String>();
+		List<String> newLore = new ArrayList<>();
 		lore.forEach(loreStr -> newLore.add(ChatColor.translateAlternateColorCodes('&', loreStr)));
 		im.setLore(newLore);
 

@@ -80,8 +80,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                 continue;
 
             // Run task synchronously
-            Bukkit.getScheduler().runTask(plugin, () ->
-                    runTriggerPassives(player, raceTrigger));
+            Bukkit.getScheduler().runTask(plugin, () -> runTriggerPassives(player, raceTrigger));
         }
     }
 
@@ -108,8 +107,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                 if ((random.nextFloat() * 100) > raceTrigger.getChance())
                     continue;
 
-                Bukkit.getScheduler().runTask(plugin, () ->
-                        runTriggerPassives(player, raceTrigger));
+                Bukkit.getScheduler().runTask(plugin, () -> runTriggerPassives(player, raceTrigger));
             }
         }
     }
