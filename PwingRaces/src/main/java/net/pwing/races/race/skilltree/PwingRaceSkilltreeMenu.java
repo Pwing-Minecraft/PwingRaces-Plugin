@@ -131,7 +131,6 @@ public class PwingRaceSkilltreeMenu {
                     parents.remove(parent);
                     parentsPurchased += 1;
                 }
-
             } else {
                 if (data.hasPurchasedElement(skilltree.getInternalName(), parent)) {
                     parents.remove(parent);
@@ -140,7 +139,7 @@ public class PwingRaceSkilltreeMenu {
             }
         }
 
-        if (parentsPurchased >= element.getRequiredParentAmount()) {
+        if (parentsPurchased >= element.getRequiredParentAmount() || parents.size() == 1 && parents.get(0).equalsIgnoreCase("none")) {
             if (element.getIcon() != null)
                 return element.getIcon();
 
