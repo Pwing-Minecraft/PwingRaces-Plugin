@@ -23,6 +23,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,10 +117,15 @@ public class PwingRaceSkilltreeMenu {
 
         List<String> lore = new ArrayList<>(element.getDescription());
         if (data.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName())) {
-            if (element.getPurchasedIcon().isPresent())
-                return element.getPurchasedIcon().get();
+            ItemStack purchasedIcon = new ItemBuilder(RaceMaterial.LIME_STAINED_GLASS_PANE.parseItem())
+                    .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.GREEN + "Purchased")
+                    .setLore(element.getDescription())
+                    .toItemStack();
 
-            return new ItemBuilder(RaceMaterial.LIME_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.GREEN + "Purchased").setLore(element.getDescription()).toItemStack();
+            if (element.getPurchasedIcon().isPresent())
+                return mergeIconWithElementItem(element.getPurchasedIcon().get(), purchasedIcon);
+
+            return purchasedIcon;
         }
 
         int parentsPurchased = 0;
@@ -140,16 +146,18 @@ public class PwingRaceSkilltreeMenu {
         }
 
         if (parentsPurchased >= element.getRequiredParentAmount() || parents.size() == 1 && parents.get(0).equalsIgnoreCase("none")) {
+            ItemStack unlockedIcon = new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem())
+                    .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked")
+                    .setLore(lore)
+                    .toItemStack();
+
             if (element.getIcon() != null)
-                return element.getIcon();
+                return mergeIconWithElementItem(element.getIcon(), unlockedIcon);
 
             lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
             lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
             return new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked").setLore(lore).toItemStack();
         }
-
-        if (element.getLockedIcon().isPresent())
-            return element.getLockedIcon().get();
 
         // If for some reason the required amount of elements is higher than the skilltree parent amount
         String purchaseString = "the previous skill";
@@ -169,7 +177,26 @@ public class PwingRaceSkilltreeMenu {
         for (String str : lore) {
             loreString.append(str).append("\n");
         }
-        ItemBuilder item = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked").setLore(loreString.toString());
-        return item.toItemStack();
+        ItemStack lockedItem = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem())
+                .setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked")
+                .setLore(loreString.toString())
+                .toItemStack();
+
+        if (element.getLockedIcon().isPresent())
+            return mergeIconWithElementItem(element.getLockedIcon().get(), lockedItem);
+
+        return lockedItem;
+    }
+
+    private ItemStack mergeIconWithElementItem(ItemStack icon, ItemStack elementIcon) {
+        ItemMeta meta = icon.getItemMeta();
+        if (!meta.hasDisplayName())
+            meta.setDisplayName(elementIcon.getItemMeta().getDisplayName());
+
+        if (!meta.hasLore())
+            meta.setLore(elementIcon.getItemMeta().getLore());
+
+        icon.setItemMeta(meta);
+        return icon;
     }
 }
