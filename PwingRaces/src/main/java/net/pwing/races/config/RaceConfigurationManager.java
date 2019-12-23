@@ -19,6 +19,7 @@ public class RaceConfigurationManager {
 	private PwingRaces plugin;
 
 	private long autosave;
+	private long attributeRefreshTime;
 	private boolean useTransientPermissions;
 	private boolean requireRace;
 	private boolean defaultRaceOnJoin;
@@ -56,6 +57,7 @@ public class RaceConfigurationManager {
 
 	public void loadDataFromConfig(String configPath, FileConfiguration fileConfiguration) {
 		autosave = fileConfiguration.getLong(configPath + ".autosave", 6000);
+		attributeRefreshTime = fileConfiguration.getLong(configPath + ".attribute-refresh-time", 100);
 		useTransientPermissions = fileConfiguration.getBoolean(configPath + ".use-transient-permissions", true);
 		requireRace = fileConfiguration.getBoolean(configPath + ".require-race", true);
 		defaultRace = fileConfiguration.getString(configPath + ".default-race");
