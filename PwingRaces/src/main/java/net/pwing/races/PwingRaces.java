@@ -21,7 +21,6 @@ import net.pwing.races.hooks.WorldGuardHook;
 import net.pwing.races.module.PwingRaceModuleLoader;
 import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
-import net.pwing.races.task.RaceApplyAttributesTask;
 import net.pwing.races.task.RaceSaveTask;
 import net.pwing.races.task.RaceTriggerTickTask;
 import net.pwing.races.utilities.MessageUtil;
@@ -115,9 +114,9 @@ public class PwingRaces extends JavaPlugin {
             raceManager.setupPlayer(player);
         }
 
-        long attributeRefreshTime = configManager.getAttributeRefreshTime();
-        if (attributeRefreshTime > 0)
-            getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceApplyAttributesTask(raceManager.getAttributeManager()), attributeRefreshTime, attributeRefreshTime);
+        // long attributeRefreshTime = configManager.getAttributeRefreshTime();
+        // if (attributeRefreshTime > 0)
+        //    getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceApplyAttributesTask(raceManager.getAttributeManager()), attributeRefreshTime, attributeRefreshTime);
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceTriggerTickTask(this), 1, 1);
 

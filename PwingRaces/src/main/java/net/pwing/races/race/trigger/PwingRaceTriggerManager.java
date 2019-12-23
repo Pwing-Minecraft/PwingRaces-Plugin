@@ -1,14 +1,7 @@
 package net.pwing.races.race.trigger;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
 import lombok.Getter;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
@@ -23,6 +16,14 @@ import net.pwing.races.utilities.NumberUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class PwingRaceTriggerManager implements RaceTriggerManager {
 
