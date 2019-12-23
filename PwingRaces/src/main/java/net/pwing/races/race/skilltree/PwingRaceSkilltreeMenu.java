@@ -151,12 +151,13 @@ public class PwingRaceSkilltreeMenu {
                     .setLore(lore)
                     .toItemStack();
 
+            lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
+            lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
+
             if (element.getIcon() != null)
                 return mergeIconWithElementItem(element.getIcon(), unlockedIcon);
 
-            lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
-            lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
-            return new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem()).setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked").setLore(lore).toItemStack();
+            return unlockedIcon;
         }
 
         // If for some reason the required amount of elements is higher than the skilltree parent amount
@@ -177,6 +178,7 @@ public class PwingRaceSkilltreeMenu {
         for (String str : lore) {
             loreString.append(str).append("\n");
         }
+
         ItemStack lockedItem = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem())
                 .setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked")
                 .setLore(loreString.toString())
