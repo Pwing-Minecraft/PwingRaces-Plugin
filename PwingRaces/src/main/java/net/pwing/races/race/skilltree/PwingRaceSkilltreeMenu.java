@@ -61,7 +61,7 @@ public class PwingRaceSkilltreeMenu {
                     parentsPurchased += 1;
             }
 
-            if (parentsPurchased < element.getRequiredParentAmount())
+            if (parentsPurchased < element.getRequiredParentAmount() && !element.getParentElements().contains("none"))
                 continue;
 
             if (!racePlayer.getRace().isPresent() || !racePlayer.getRace().get().equals(race))
@@ -145,7 +145,7 @@ public class PwingRaceSkilltreeMenu {
             }
         }
 
-        if (parentsPurchased >= element.getRequiredParentAmount() || parents.size() == 1 && parents.get(0).equalsIgnoreCase("none")) {
+        if (parentsPurchased >= element.getRequiredParentAmount() || parents.size() >= 1 && parents.contains("none")) {
             ItemStack unlockedIcon = new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem())
                     .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked")
                     .setLore(lore)
