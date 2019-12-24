@@ -10,6 +10,8 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class RaceTriggerTickTask implements Runnable {
 
@@ -52,10 +54,18 @@ public class RaceTriggerTickTask implements Runnable {
             for (World world : Bukkit.getWorlds())
                 triggerManager.runTriggers(player, "in-world " + world.getName());
 
-            if (plugin.getWorldGuardHook().isHooked()) {
-                if (plugin.getWorldGuardHook().isInRegion(player.getLocation())) {
+            if (tick % 20 == 0) {
+                if (plugin.getWorldGuardHook().isHooked()) {
                     plugin.getWorldGuardHook().getRegions(player.getLocation()).forEach(region ->
                             triggerManager.runTriggers(player, "in-region " + region));
+
+                    if (plugin.getWorldGuardHook().getLastRegionsCache().containsKey(player.getUniqueId())) {
+                        List<String> leftRegions = plugin.getWorldGuardHook().getLastRegionsCache().get(player.getUniqueId());
+                        leftRegions.removeAll(plugin.getWorldGuardHook().getRegions(player.getLocation()));
+                        leftRegions.forEach(region -> triggerManager.runTriggers(player, "left-region " + region));
+                    }
+
+                    plugin.getWorldGuardHook().getLastRegionsCache().put(player.getUniqueId(), plugin.getWorldGuardHook().getRegions(player.getLocation()));
                 }
             }
         }

@@ -153,13 +153,13 @@ public class PwingRaceSkilltreeMenu {
         }
 
         if (parentsPurchased >= element.getRequiredParentAmount() || parents.size() >= 1 && parents.contains("none")) {
+            lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
+            lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
+
             ItemStack unlockedIcon = new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem())
                     .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked")
                     .setLore(lore)
                     .toItemStack();
-
-            lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
-            lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
 
             if (element.getIcon() != null)
                 return mergeIconWithElementItem(element.getIcon(), unlockedIcon);
@@ -199,11 +199,14 @@ public class PwingRaceSkilltreeMenu {
 
     private ItemStack mergeIconWithElementItem(ItemStack icon, ItemStack elementIcon) {
         ItemMeta meta = icon.getItemMeta();
-        if (!meta.hasDisplayName())
-            meta.setDisplayName(elementIcon.getItemMeta().getDisplayName());
+        if (!meta.hasDisplayName()) {
+            // italic for some reason ingame, so add chatcolor before
+            meta.setDisplayName(ChatColor.WHITE + elementIcon.getItemMeta().getDisplayName());
+        }
 
-        if (!meta.hasLore())
+        if (!meta.hasLore() || meta.getLore().isEmpty()) {
             meta.setLore(elementIcon.getItemMeta().getLore());
+        }
 
         icon.setItemMeta(meta);
         return icon;

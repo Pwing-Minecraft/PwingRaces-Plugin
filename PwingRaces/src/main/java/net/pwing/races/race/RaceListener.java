@@ -51,6 +51,7 @@ public class RaceListener implements Listener {
         plugin.getRaceManager().savePlayer(event.getPlayer());
         plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
         plugin.getRaceManager().getRacePlayerMap().remove(event.getPlayer().getUniqueId());
+        plugin.getWorldGuardHook().getLastRegionsCache().remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -95,7 +96,7 @@ public class RaceListener implements Listener {
         plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
     }
 
-    protected void runSetupTask(Player player) {
+    private void runSetupTask(Player player) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
             if (racePlayer == null) {

@@ -39,7 +39,6 @@ public class WorldGuardHandler_v7 implements IWorldGuardHandler {
                 .collect(Collectors.toList());
     }
 
-
     private StateFlag getFlagFromString(String flagString) {
         Flag<?> flag = WorldGuard.getInstance().getFlagRegistry().get(flagString);
         if (flag instanceof StateFlag)

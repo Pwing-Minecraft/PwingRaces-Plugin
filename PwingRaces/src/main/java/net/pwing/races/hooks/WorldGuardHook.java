@@ -1,17 +1,26 @@
 package net.pwing.races.hooks;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
+import lombok.Getter;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.hooks.worldguard.IWorldGuardHandler;
 import net.pwing.races.hooks.worldguard.WorldGuardHandlerDisabled;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class WorldGuardHook extends PluginHook {
 
     private IWorldGuardHandler worldGuardHandler;
+
+    @Getter
+    private Map<UUID, List<String>> lastRegionsCache = new HashMap<>();
 
     public WorldGuardHook(PwingRaces owningPlugin, String pluginName) {
         super(owningPlugin, pluginName);
