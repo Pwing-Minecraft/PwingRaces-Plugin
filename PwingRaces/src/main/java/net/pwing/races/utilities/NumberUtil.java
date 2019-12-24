@@ -1,6 +1,7 @@
 package net.pwing.races.utilities;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberUtil {
 
@@ -18,10 +19,7 @@ public class NumberUtil {
 			return false;
 
 		String[] split = str.split("-");
-		if (isInteger(split[0]) && isInteger(split[1]))
-			return true;
-
-		return false;
+		return isInteger(split[0]) && isInteger(split[1]);
 	}
 
 	public static int getRangedInteger(String str) {
@@ -32,8 +30,16 @@ public class NumberUtil {
 		if (isInteger(split[0]) && isInteger(split[1]))
 			return 0;
 
-        int randomInt = new Random().nextInt(Integer.parseInt(split[1]) + Integer.parseInt(split[0]));
-		return randomInt;
+		return ThreadLocalRandom.current().nextInt(Integer.parseInt(split[0], Integer.parseInt(split[1])));
+	}
+
+	public static boolean isFloat(String str) {
+		try {
+			Float.parseFloat(str);
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 	}
 
 	public static boolean isDouble(String str) {
@@ -50,10 +56,7 @@ public class NumberUtil {
 			return false;
 
 		String[] split = str.split("-");
-		if (isDouble(split[0]) && isDouble(split[1]))
-			return true;
-
-		return false;
+		return isDouble(split[0]) && isDouble(split[1]);
 	}
 
 	public static double getRangedDouble(String str) {
@@ -67,7 +70,6 @@ public class NumberUtil {
 		double rangeMin = Double.parseDouble(split[0]);
 		double rangeMax = Double.parseDouble(split[1]);
 
-        double randomDouble = rangeMin + (rangeMax - rangeMin) * new Random().nextDouble();
-		return randomDouble;
+		return rangeMin + (rangeMax - rangeMin) * ThreadLocalRandom.current().nextDouble();
 	}
 }

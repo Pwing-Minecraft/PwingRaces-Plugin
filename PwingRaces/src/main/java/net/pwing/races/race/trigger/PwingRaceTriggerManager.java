@@ -57,6 +57,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         triggerPassives.put("run-command", new RunCommandTrigger(plugin, "run-command"));
         triggerPassives.put("send-actionbar-message", new SendActionBarMessageTrigger("send-action-bar-message"));
         triggerPassives.put("send-message", new SendMessageTrigger(plugin, "send-message"));
+        triggerPassives.put("set-attribute", new SetAttributeTrigger(plugin, "set-attribute"));
         triggerPassives.put("set-default-attributes", new SetDefaultAttributesTrigger(plugin, "set-default-attributes"));
         triggerPassives.put("toggle-fly", new ToggleFlyTrigger(plugin, "toggle-fly"));
         triggerPassives.put("undisguise", new UndisguiseTrigger(plugin, "undisguise"));
