@@ -52,6 +52,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         triggerPassives.put("give-health", new GiveHealthTrigger(plugin, "give-health"));
         triggerPassives.put("give-race-exp", new GiveRaceExpTrigger(plugin, "give-race-exp"));
         triggerPassives.put("give-saturation", new GiveSaturationTrigger(plugin, "give-saturation"));
+        triggerPassives.put("reapply-attributes", new ReapplyAttributesTrigger(plugin, "reapply-attributes"));
         triggerPassives.put("remove-potion-effect", new RemovePotionEffectTrigger(plugin, "remove-potion-effect"));
         triggerPassives.put("run-command", new RunCommandTrigger(plugin, "run-command"));
         triggerPassives.put("send-actionbar-message", new SendActionBarMessageTrigger("send-action-bar-message"));

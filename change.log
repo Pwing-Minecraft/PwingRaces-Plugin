@@ -1,4 +1,5 @@
 v1.2.6
+- Added 'reapply-attributes' trigger passive
 - Added 'set-default-attributes' trigger passive
 - Added 'in-region' trigger
 - Added 'left-region' trigger
