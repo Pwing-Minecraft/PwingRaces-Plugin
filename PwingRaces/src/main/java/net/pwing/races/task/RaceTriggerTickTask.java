@@ -62,7 +62,7 @@ public class RaceTriggerTickTask implements Runnable {
                     if (plugin.getWorldGuardHook().getLastRegionsCache().containsKey(player.getUniqueId())) {
                         List<String> leftRegions = plugin.getWorldGuardHook().getLastRegionsCache().get(player.getUniqueId());
                         leftRegions.removeAll(plugin.getWorldGuardHook().getRegions(player.getLocation()));
-                        leftRegions.forEach(region -> triggerManager.runTriggers(player, "left-region " + region));
+                        leftRegions.forEach(region -> triggerManager.runTriggers(player, "leave-region " + region));
                     }
 
                     plugin.getWorldGuardHook().getLastRegionsCache().put(player.getUniqueId(), plugin.getWorldGuardHook().getRegions(player.getLocation()));
