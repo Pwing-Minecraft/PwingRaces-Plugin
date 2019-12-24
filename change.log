@@ -4,6 +4,7 @@ v1.2.6
 - Added a 'none' option for the parent of skilltree elements instead of using the race name
 - Allow for the element icon info to carry over into the item override if specific values aren't present
 - Fixed projectile launcher detection
+- Fixed bug where skilltree menu would not initially be closed when trying to buy a skilltree element without enough points
 - Code cleanups
 - Minor bugfixes
 
