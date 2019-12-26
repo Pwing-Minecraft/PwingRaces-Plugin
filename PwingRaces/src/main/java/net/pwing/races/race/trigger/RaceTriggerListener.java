@@ -13,6 +13,7 @@ import net.pwing.races.api.events.RaceLevelUpEvent;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,12 +27,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
 
 @AllArgsConstructor
 public class RaceTriggerListener implements Listener {
@@ -275,5 +280,30 @@ public class RaceTriggerListener implements Listener {
             return;
 
         triggerManager.runTriggers(player, "killed-by" + targetRacePlayer.getRace().get().getName());
+    }
+
+    @EventHandler
+    public void onUseInventory(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        Inventory inventory = event.getInventory();
+        // Anvil repairs
+        if (inventory instanceof AnvilInventory) {
+            if (event.getSlotType() != InventoryType.SlotType.RESULT) {
+                return;
+            }
+
+            // Ensure nothing is empty
+            if (inventory.getItem(0) == null || inventory.getItem(0).getType() == Material.AIR)
+                return;
+
+            if (inventory.getItem(1) == null || inventory.getItem(1).getType() == Material.AIR)
+                return;
+
+            if (inventory.getItem(2) == null || inventory.getItem(2).getType() == Material.AIR)
+                return;
+
+            RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+            triggerManager.runTriggers(player, "use-anvil");
+        }
     }
 }
