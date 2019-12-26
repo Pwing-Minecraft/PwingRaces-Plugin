@@ -4,7 +4,6 @@ menu:
     glass-filled: false
 settings:
     autosave: 6000
-    attribute-refresh-time: 100 # How often (in ticks) attributes should be refreshed
     use-transient-permissions: true # If a "temporary" permission system should be used, generally more safe with permission plugins
     require-race: true # Controls if a player can be raceless
     default-race: Human

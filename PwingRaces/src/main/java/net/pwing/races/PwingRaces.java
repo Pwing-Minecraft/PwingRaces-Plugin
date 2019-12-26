@@ -114,10 +114,6 @@ public class PwingRaces extends JavaPlugin {
             raceManager.setupPlayer(player);
         }
 
-        // long attributeRefreshTime = configManager.getAttributeRefreshTime();
-        // if (attributeRefreshTime > 0)
-        //    getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceApplyAttributesTask(raceManager.getAttributeManager()), attributeRefreshTime, attributeRefreshTime);
-
         getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceTriggerTickTask(this), 1, 1);
 
         long autosave = configManager.getAutosave();
