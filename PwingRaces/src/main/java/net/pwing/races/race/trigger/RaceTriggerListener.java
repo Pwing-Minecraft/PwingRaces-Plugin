@@ -337,4 +337,15 @@ public class RaceTriggerListener implements Listener {
         triggerManager.runTriggers(player, "tame-animal");
         triggerManager.runTriggers(player, "tame-animal " + event.getEntity().getType().name().toLowerCase());
     }
+
+    @EventHandler
+    public void onBreed(EntityBreedEvent event) {
+        if (!(event.getBreeder() instanceof Player))
+            return;
+
+        Player player = (Player) event.getBreeder();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "breed-animal");
+        triggerManager.runTriggers(player, "breed-animal " + event.getEntity().getType().name().toLowerCase());
+    }
 }
