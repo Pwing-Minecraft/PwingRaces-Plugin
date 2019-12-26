@@ -365,4 +365,18 @@ public class RaceTriggerListener implements Listener {
         triggerManager.runTriggers((Player) event.getWhoClicked(), "craft-item");
         triggerManager.runTriggers((Player) event.getWhoClicked(), "craft-item " + event.getRecipe().getResult().getType().name().toLowerCase());
     }
+
+    @EventHandler
+    public void onThrow(ProjectileLaunchEvent event) {
+        if (event.isCancelled())
+            return;
+
+        if (!(event.getEntity().getShooter() instanceof Player))
+            return;
+
+        Player player = (Player) event.getEntity().getShooter();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "launch-projectile");
+        triggerManager.runTriggers(player, "launch-projectile " + event.getEntity().getType().name().toLowerCase());
+    }
 }
