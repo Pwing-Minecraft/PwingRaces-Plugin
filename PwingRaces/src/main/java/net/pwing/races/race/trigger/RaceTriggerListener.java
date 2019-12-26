@@ -15,6 +15,7 @@ import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,12 +31,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 
@@ -285,6 +281,9 @@ public class RaceTriggerListener implements Listener {
 
     @EventHandler
     public void onUseInventory(InventoryClickEvent event) {
+        if (event.isCancelled())
+            return;
+
         Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getInventory();
         // Anvil repairs
@@ -310,9 +309,26 @@ public class RaceTriggerListener implements Listener {
 
     @EventHandler
     public void onEnchant(EnchantItemEvent event) {
+        if (event.isCancelled())
+            return;
+
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(event.getEnchanter(), "enchant-item");
         triggerManager.runTriggers(event.getEnchanter(), "enchant-item " + event.getItem().getType().name().toLowerCase());
+    }
 
+    @EventHandler
+    public void onFish(PlayerFishEvent event) {
+        if (event.isCancelled())
+            return;
+
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(event.getPlayer(), "fish");
+        triggerManager.runTriggers(event.getPlayer(), "fish " + event.getCaught().getType().name().toLowerCase());
+
+        if (event.getCaught() instanceof Item) {
+            Item item = (Item) event.getCaught();
+            triggerManager.runTriggers(event.getPlayer(), "fish " + item.getItemStack().getType().name().toLowerCase());
+        }
     }
 }
