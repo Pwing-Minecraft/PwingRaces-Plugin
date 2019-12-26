@@ -9,7 +9,7 @@ import net.pwing.races.api.events.RaceRespawnEvent;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
-import net.pwing.races.utilities.MessageUtil;
+import net.pwing.races.util.MessageUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

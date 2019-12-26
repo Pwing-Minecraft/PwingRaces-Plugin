@@ -5,7 +5,7 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
-import net.pwing.races.utilities.NumberUtil;
+import net.pwing.races.util.NumberUtil;
 
 import org.bukkit.entity.Player;
 

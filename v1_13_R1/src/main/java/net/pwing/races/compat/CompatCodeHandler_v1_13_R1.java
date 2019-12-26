@@ -3,10 +3,12 @@ package net.pwing.races.compat;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
+
 import net.pwing.races.PwingRaces;
-import net.pwing.races.utilities.AttributeUtil;
-import net.pwing.races.utilities.HeadUtil;
-import net.pwing.races.utilities.UUIDFetcher;
+import net.pwing.races.util.AttributeUtil;
+import net.pwing.races.util.item.HeadUtil;
+import net.pwing.races.util.UUIDFetcher;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -40,7 +42,7 @@ public class CompatCodeHandler_v1_13_R1 extends CompatCodeHandlerDisabled {
 		if (item.getItemMeta() instanceof Damageable)
 			return ((Damageable) item.getItemMeta()).getDamage();
 
-		return 0;
+        return 0;
 	}
 
 	@Override

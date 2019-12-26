@@ -9,7 +9,7 @@ import net.pwing.races.api.events.RaceUnlockEvent;
 import net.pwing.races.api.race.menu.RaceMenu;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeElement;
-import net.pwing.races.utilities.MessageUtil;
+import net.pwing.races.util.MessageUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

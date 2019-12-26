@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
-import net.pwing.races.utilities.MessageUtil;
+import net.pwing.races.util.MessageUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

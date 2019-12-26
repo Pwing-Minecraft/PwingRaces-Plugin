@@ -1,8 +1,8 @@
 package net.pwing.races.command;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.utilities.ItemUtil;
-import net.pwing.races.utilities.MessageUtil;
+import net.pwing.races.util.item.ItemUtil;
+import net.pwing.races.util.MessageUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

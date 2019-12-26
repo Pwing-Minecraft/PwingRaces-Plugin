@@ -18,7 +18,7 @@ import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.attributes.FlySpeedAttribute;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.race.attribute.attributes.WalkSpeedAttribute;
-import net.pwing.races.utilities.AttributeUtil;
+import net.pwing.races.util.AttributeUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

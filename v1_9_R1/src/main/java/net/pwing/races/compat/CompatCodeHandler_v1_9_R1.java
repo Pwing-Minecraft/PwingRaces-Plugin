@@ -3,10 +3,12 @@ package net.pwing.races.compat;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
+
 import net.pwing.races.PwingRaces;
-import net.pwing.races.utilities.AttributeUtil;
-import net.pwing.races.utilities.HeadUtil;
-import net.pwing.races.utilities.UUIDFetcher;
+import net.pwing.races.util.AttributeUtil;
+import net.pwing.races.util.item.HeadUtil;
+import net.pwing.races.util.UUIDFetcher;
+
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -20,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class CompatCodeHandler_v1_9_R1 extends CompatCodeHandlerDisabled {
 
-	private PwingRaces plugin;
+    private PwingRaces plugin;
 
 	public CompatCodeHandler_v1_9_R1(PwingRaces plugin) {
 		super(plugin);

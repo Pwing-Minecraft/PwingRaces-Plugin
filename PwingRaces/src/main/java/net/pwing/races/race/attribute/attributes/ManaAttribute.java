@@ -2,7 +2,7 @@ package net.pwing.races.race.attribute.attributes;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
-import net.pwing.races.hooks.MagicSpellsHook;
+import net.pwing.races.hook.MagicSpellsHook;
 
 import org.bukkit.entity.Player;
 

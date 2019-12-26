@@ -13,8 +13,8 @@ import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
-import net.pwing.races.utilities.MessageUtil;
-import net.pwing.races.utilities.TimeUtil;
+import net.pwing.races.util.MessageUtil;
+import net.pwing.races.util.TimeUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

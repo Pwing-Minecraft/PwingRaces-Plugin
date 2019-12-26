@@ -22,7 +22,7 @@ import net.pwing.races.race.menu.PwingRaceMenu;
 import net.pwing.races.race.permission.PwingRacePermissionManager;
 import net.pwing.races.race.skilltree.PwingRaceSkilltreeManager;
 import net.pwing.races.race.trigger.PwingRaceTriggerManager;
-import net.pwing.races.utilities.ItemUtil;
+import net.pwing.races.util.item.ItemUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

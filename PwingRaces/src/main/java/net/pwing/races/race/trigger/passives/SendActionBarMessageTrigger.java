@@ -3,7 +3,7 @@ package net.pwing.races.race.trigger.passives;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
-import net.pwing.races.utilities.MessageUtil;
+import net.pwing.races.util.MessageUtil;
 import org.bukkit.entity.Player;
 
 public class SendActionBarMessageTrigger extends RaceTriggerPassive {

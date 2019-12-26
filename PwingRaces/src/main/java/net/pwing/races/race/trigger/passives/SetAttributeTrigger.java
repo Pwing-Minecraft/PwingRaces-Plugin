@@ -3,8 +3,8 @@ package net.pwing.races.race.trigger.passives;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
-import net.pwing.races.utilities.AttributeUtil;
-import net.pwing.races.utilities.NumberUtil;
+import net.pwing.races.util.AttributeUtil;
+import net.pwing.races.util.NumberUtil;
 
 import org.bukkit.entity.Player;
 

@@ -2,12 +2,11 @@ package net.pwing.races.race.ability;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.ability.RaceAbility;
+import net.pwing.races.util.item.ItemUtil;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import net.pwing.races.utilities.ItemUtil;
 
 public abstract class PwingRaceAbility extends RaceAbility {
 

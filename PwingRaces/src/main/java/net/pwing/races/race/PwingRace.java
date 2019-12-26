@@ -15,8 +15,8 @@ import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.race.attribute.PwingRaceAttribute;
 import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
-import net.pwing.races.utilities.ItemUtil;
-import net.pwing.races.utilities.LocationUtil;
+import net.pwing.races.util.item.ItemUtil;
+import net.pwing.races.util.LocationUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

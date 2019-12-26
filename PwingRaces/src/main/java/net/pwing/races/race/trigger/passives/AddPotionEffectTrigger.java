@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import net.pwing.races.utilities.NumberUtil;
+import net.pwing.races.util.NumberUtil;
 
 public class AddPotionEffectTrigger extends RaceTriggerPassive {
 

@@ -1,4 +1,4 @@
-v1.2.6
+v1.3.0
 - Added 'reapply-attributes' trigger passive
 - Added 'set-default-attributes' trigger passive
 - Added 'set-attribute' trigger

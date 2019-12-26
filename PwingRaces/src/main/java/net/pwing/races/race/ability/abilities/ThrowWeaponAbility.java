@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
-import net.pwing.races.utilities.RaceMaterial;
+import net.pwing.races.util.RaceMaterial;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,8 +63,6 @@ public class ThrowWeaponAbility extends PwingRaceAbility {
     public boolean runAbility(Player player) {
         if (takeItemOnThrow) {
             ItemStack item = player.getInventory().getItemInMainHand();
-            // Don't worry about support here, because if this is set and the user
-            // is using 1.8, they will get an error in console regardless
             if (useOffhandItem)
                 item = player.getInventory().getItemInOffHand();
 

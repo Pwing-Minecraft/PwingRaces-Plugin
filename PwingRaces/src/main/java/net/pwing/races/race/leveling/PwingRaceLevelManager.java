@@ -8,8 +8,8 @@ import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
 import net.pwing.races.api.race.level.RaceLevelManager;
-import net.pwing.races.utilities.MessageUtil;
-import net.pwing.races.utilities.RaceSound;
+import net.pwing.races.util.MessageUtil;
+import net.pwing.races.util.RaceSound;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

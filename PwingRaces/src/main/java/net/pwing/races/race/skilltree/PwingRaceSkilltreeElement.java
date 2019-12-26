@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import net.pwing.races.api.race.skilltree.RaceSkilltreeElement;
-import net.pwing.races.utilities.ItemUtil;
+import net.pwing.races.util.item.ItemUtil;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;

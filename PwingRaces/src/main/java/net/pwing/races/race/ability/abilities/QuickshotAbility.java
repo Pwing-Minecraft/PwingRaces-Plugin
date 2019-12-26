@@ -2,7 +2,7 @@ package net.pwing.races.race.ability.abilities;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
-import net.pwing.races.utilities.RaceSound;
+import net.pwing.races.util.RaceSound;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

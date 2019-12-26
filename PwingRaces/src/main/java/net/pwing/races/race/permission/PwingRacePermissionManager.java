@@ -7,7 +7,7 @@ import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.permission.RacePermission;
 import net.pwing.races.api.race.permission.RacePermissionManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
-import net.pwing.races.hooks.VaultAPIHook;
+import net.pwing.races.hook.VaultAPIHook;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

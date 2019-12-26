@@ -4,7 +4,7 @@ import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
-import net.pwing.races.utilities.ItemUtil;
+import net.pwing.races.util.item.ItemUtil;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
