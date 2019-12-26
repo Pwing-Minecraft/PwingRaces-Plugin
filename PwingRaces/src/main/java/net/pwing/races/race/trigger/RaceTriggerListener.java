@@ -379,4 +379,14 @@ public class RaceTriggerListener implements Listener {
         triggerManager.runTriggers(player, "launch-projectile");
         triggerManager.runTriggers(player, "launch-projectile " + event.getEntity().getType().name().toLowerCase());
     }
+
+    @EventHandler
+    public void onEat(PlayerItemConsumeEvent event) {
+        if (event.isCancelled())
+            return;
+
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(event.getPlayer(), "consume-item");
+        triggerManager.runTriggers(event.getPlayer(), "consume-item " + event.getItem().getType().name().toLowerCase());
+    }
 }
