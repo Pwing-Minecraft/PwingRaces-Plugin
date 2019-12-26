@@ -39,7 +39,7 @@ public class WorldGuardHook extends PluginHook {
             if (hook.getDescription().getVersion().startsWith("7")) {
                 clazz = Class.forName("net.pwing.races.hooks.worldguard.WorldGuardHandler_v7");
             } else if (hook.getDescription().getVersion().startsWith("6")) {
-                clazz = Class.forName("net.pwing.races.hooks.worldedit.WorldGuardHandler_v6");
+                clazz = Class.forName("net.pwing.races.hooks.worldguard.WorldGuardHandler_v6");
             }
             worldGuardHandler = (IWorldGuardHandler) clazz.newInstance();
             owningPlugin.getLogger().info("Hooking into WorldGuard version " + hook.getDescription().getVersion());
