@@ -23,12 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -330,5 +325,16 @@ public class RaceTriggerListener implements Listener {
             Item item = (Item) event.getCaught();
             triggerManager.runTriggers(event.getPlayer(), "fish " + item.getItemStack().getType().name().toLowerCase());
         }
+    }
+
+    @EventHandler
+    public void onTame(EntityTameEvent event) {
+        if (!(event.getOwner() instanceof Player))
+            return;
+
+        Player player = (Player) event.getOwner();
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(player, "tame-animal");
+        triggerManager.runTriggers(player, "tame-animal " + event.getEntity().getType().name().toLowerCase());
     }
 }

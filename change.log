@@ -7,6 +7,7 @@ v1.2.6
 - Added 'use-anvil' trigger
 - Added 'enchant-item' trigger
 - Added 'fish' trigger
+- Added 'tame-animal' trigger
 - ~~Added system to refresh attributes every few seconds to ensure they're correct~~
 - Added a 'none' option for the parent of skilltree elements instead of using the race name
 - Allow for the element icon info to carry over into the item override if specific values aren't present
