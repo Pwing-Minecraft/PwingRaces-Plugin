@@ -24,6 +24,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -329,6 +330,9 @@ public class RaceTriggerListener implements Listener {
 
     @EventHandler
     public void onTame(EntityTameEvent event) {
+        if (event.isCancelled())
+            return;
+
         if (!(event.getOwner() instanceof Player))
             return;
 
@@ -340,6 +344,9 @@ public class RaceTriggerListener implements Listener {
 
     @EventHandler
     public void onBreed(EntityBreedEvent event) {
+        if (event.isCancelled())
+            return;
+
         if (!(event.getBreeder() instanceof Player))
             return;
 
@@ -347,5 +354,15 @@ public class RaceTriggerListener implements Listener {
         RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "breed-animal");
         triggerManager.runTriggers(player, "breed-animal " + event.getEntity().getType().name().toLowerCase());
+    }
+
+    @EventHandler
+    public void onCraft(CraftItemEvent event) {
+        if (event.isCancelled())
+            return;
+
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers((Player) event.getWhoClicked(), "craft-item");
+        triggerManager.runTriggers((Player) event.getWhoClicked(), "craft-item " + event.getRecipe().getResult().getType().name().toLowerCase());
     }
 }
