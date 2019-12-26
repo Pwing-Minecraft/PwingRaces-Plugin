@@ -21,6 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -305,5 +306,13 @@ public class RaceTriggerListener implements Listener {
             RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
             triggerManager.runTriggers(player, "use-anvil");
         }
+    }
+
+    @EventHandler
+    public void onEnchant(EnchantItemEvent event) {
+        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
+        triggerManager.runTriggers(event.getEnchanter(), "enchant-item");
+        triggerManager.runTriggers(event.getEnchanter(), "enchant-item " + event.getItem().getType().name().toLowerCase());
+
     }
 }
