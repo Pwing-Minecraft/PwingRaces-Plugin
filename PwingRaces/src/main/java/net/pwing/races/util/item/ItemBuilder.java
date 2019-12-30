@@ -32,6 +32,10 @@ public class ItemBuilder {
 		this.stack = stack;
 	}
 
+	public ItemBuilder(SafeMaterialData data) {
+		this.stack = new ItemStack(data.getMaterial(), 1, (short) data.getData());
+	}
+
 	public ItemBuilder setType(Material material) {
 		stack.setType(material);
 		return this;

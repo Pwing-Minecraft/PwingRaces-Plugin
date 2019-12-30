@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import net.pwing.races.PwingRaces;
 
+import net.pwing.races.util.item.SafeMaterialData;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -1053,22 +1054,25 @@ public enum RaceMaterial {
         return null;
     }
 
-    public static RaceMaterial fromString(String key){
+    public static SafeMaterialData fromString(String key){
     	String matKey = key.replace("minecraft:", "").toUpperCase();
-        RaceMaterial mat = null;
+        RaceMaterial mat;
 
         try {
             mat = RaceMaterial.valueOf(matKey);
-            return mat;
+            return new SafeMaterialData(mat.parseMaterial(), mat.parseItem().getDurability());
         } catch (IllegalArgumentException ex) {
             String[] split = matKey.split(":");
-            if (split.length == 1)
-                mat = requestRaceMaterial(matKey,  0);
-            else
+            if (split.length == 1) {
+                mat = requestRaceMaterial(matKey, 0);
+            } else {
                 mat = requestRaceMaterial(split[0], Integer.parseInt(split[1]));
-
-            return mat;
+            }
+            if (mat != null)
+                return new SafeMaterialData(mat.parseMaterial(), mat.parseItem().getDurability());
         }
+
+        return new SafeMaterialData(Material.matchMaterial(key.toUpperCase()), 0);
     }
 
     public static RaceMaterial requestRaceMaterial(String name, int data){

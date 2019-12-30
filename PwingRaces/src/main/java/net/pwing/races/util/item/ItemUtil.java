@@ -40,7 +40,7 @@ public class ItemUtil {
             return null;
 
         String string = str;
-        RaceMaterial mat;
+        SafeMaterialData mat;
         String name = null;
 
         if (string.contains("|")) {
@@ -51,11 +51,7 @@ public class ItemUtil {
         }
 
         mat = RaceMaterial.fromString(string.toUpperCase());
-
-        if (mat == null)
-            mat = RaceMaterial.STONE;
-
-        ItemBuilder builder = new ItemBuilder(mat.parseItem());
+        ItemBuilder builder = new ItemBuilder(mat);
         if (name != null) {
             builder.setName(name);
         }
@@ -74,7 +70,7 @@ public class ItemUtil {
                 case "type":
                 case "material":
                 case "item":
-                    builder = new ItemBuilder(RaceMaterial.fromString(config.getString(configPath + "." + str).toUpperCase()).parseItem());
+                    builder = new ItemBuilder(RaceMaterial.fromString(config.getString(configPath + "." + str).toUpperCase()));
                     break;
                 case "durability":
                 case "data":
