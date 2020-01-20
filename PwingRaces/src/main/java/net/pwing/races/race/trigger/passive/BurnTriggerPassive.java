@@ -1,15 +1,16 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
+import net.pwing.races.util.NumberUtil;
 
 import org.bukkit.entity.Player;
 
-public class ToggleFlyTrigger extends RaceTriggerPassive {
+public class BurnTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public ToggleFlyTrigger(PwingRaces plugin, String name) {
+    public BurnTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;
@@ -21,9 +22,10 @@ public class ToggleFlyTrigger extends RaceTriggerPassive {
         if (split.length < 2)
             return;
 
-        if (Boolean.parseBoolean(split[1]))
-            player.setFlying(true);
-        else
-            player.setFlying(false);
+        int ticks = 60;
+        if (NumberUtil.isInteger(split[1]))
+            ticks = Integer.parseInt(split[1]);
+
+        player.setFireTicks(ticks);
     }
 }

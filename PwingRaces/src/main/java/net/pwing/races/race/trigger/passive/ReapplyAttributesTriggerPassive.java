@@ -1,4 +1,4 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.RacePlayer;
@@ -6,11 +6,11 @@ import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 
 import org.bukkit.entity.Player;
 
-public class ReapplyAttributesTrigger extends RaceTriggerPassive {
+public class ReapplyAttributesTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public ReapplyAttributesTrigger(PwingRaces plugin, String name) {
+    public ReapplyAttributesTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;

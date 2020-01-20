@@ -1,15 +1,15 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 
 import org.bukkit.entity.Player;
 
-public class UndisguiseTrigger extends RaceTriggerPassive {
+public class UndisguiseTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public UndisguiseTrigger(PwingRaces plugin, String name) {
+    public UndisguiseTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;

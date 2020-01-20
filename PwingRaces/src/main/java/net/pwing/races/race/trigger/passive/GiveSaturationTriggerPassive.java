@@ -1,4 +1,4 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
@@ -6,11 +6,11 @@ import net.pwing.races.util.NumberUtil;
 
 import org.bukkit.entity.Player;
 
-public class GiveSaturationTrigger extends RaceTriggerPassive {
+public class GiveSaturationTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public GiveSaturationTrigger(PwingRaces plugin, String name) {
+    public GiveSaturationTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;

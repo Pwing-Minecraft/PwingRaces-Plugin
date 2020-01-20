@@ -1,5 +1,6 @@
 package net.pwing.races.race.trigger;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import net.pwing.races.PwingRaces;
@@ -11,11 +12,15 @@ import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
-import net.pwing.races.race.trigger.passives.*;
+import net.pwing.races.api.race.trigger.condition.RaceCondition;
+import net.pwing.races.race.trigger.passive.*;
+import net.pwing.races.race.trigger.trigger.InRegionTrigger;
+import net.pwing.races.race.trigger.trigger.SneakTrigger;
 import net.pwing.races.util.NumberUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,15 +29,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
+@Getter
 public class PwingRaceTriggerManager implements RaceTriggerManager {
 
+    @Getter(AccessLevel.NONE)
     private PwingRaces plugin;
 
-    private Map<String, Map<UUID, Long>> delay = new HashMap<>();
-
-    @Getter
     private Map<String, RaceTriggerPassive> triggerPassives = new HashMap<>();
+    private Map<String, RaceCondition> conditions = new HashMap<>();
+
+    private Map<String, Map<UUID, Long>> delay = new HashMap<>();
 
     public PwingRaceTriggerManager(PwingRaces plugin) {
         this.plugin = plugin;
@@ -42,32 +50,34 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     }
 
     public void initTriggerPassives() {
-        triggerPassives.put("add-potion-effect", new AddPotionEffectTrigger(plugin, "add-potion-effect"));
-        triggerPassives.put("allow-flight", new AllowFlightTrigger(plugin, "allow-flight"));
-        triggerPassives.put("burn", new BurnTrigger(plugin, "burn"));
-        triggerPassives.put("damage", new DamageTrigger(plugin, "damage"));
-        triggerPassives.put("disguise", new DisguiseTrigger(plugin, "disguise"));
-        triggerPassives.put("drop-item", new DropItemTrigger(plugin, "drop-item"));
-        triggerPassives.put("give-exp", new GiveExpTrigger(plugin, "give-exp"));
-        triggerPassives.put("give-health", new GiveHealthTrigger(plugin, "give-health"));
-        triggerPassives.put("give-race-exp", new GiveRaceExpTrigger(plugin, "give-race-exp"));
-        triggerPassives.put("give-saturation", new GiveSaturationTrigger(plugin, "give-saturation"));
-        triggerPassives.put("reapply-attributes", new ReapplyAttributesTrigger(plugin, "reapply-attributes"));
-        triggerPassives.put("remove-potion-effect", new RemovePotionEffectTrigger(plugin, "remove-potion-effect"));
-        triggerPassives.put("run-command", new RunCommandTrigger(plugin, "run-command"));
-        triggerPassives.put("send-actionbar-message", new SendActionBarMessageTrigger("send-action-bar-message"));
-        triggerPassives.put("send-message", new SendMessageTrigger(plugin, "send-message"));
-        triggerPassives.put("set-attribute", new SetAttributeTrigger(plugin, "set-attribute"));
-        triggerPassives.put("set-default-attributes", new SetDefaultAttributesTrigger(plugin, "set-default-attributes"));
-        triggerPassives.put("toggle-fly", new ToggleFlyTrigger(plugin, "toggle-fly"));
-        triggerPassives.put("undisguise", new UndisguiseTrigger(plugin, "undisguise"));
+        triggerPassives.put("add-potion-effect", new AddPotionEffectTriggerPassive(plugin, "add-potion-effect"));
+        triggerPassives.put("allow-flight", new AllowFlightTriggerPassive(plugin, "allow-flight"));
+        triggerPassives.put("burn", new BurnTriggerPassive(plugin, "burn"));
+        triggerPassives.put("damage", new DamageTriggerPassive(plugin, "damage"));
+        triggerPassives.put("disguise", new DisguiseTriggerPassive(plugin, "disguise"));
+        triggerPassives.put("drop-item", new DropItemTriggerPassive(plugin, "drop-item"));
+        triggerPassives.put("give-exp", new GiveExpTriggerPassive(plugin, "give-exp"));
+        triggerPassives.put("give-health", new GiveHealthTriggerPassive(plugin, "give-health"));
+        triggerPassives.put("give-race-exp", new GiveRaceExpTriggerPassive(plugin, "give-race-exp"));
+        triggerPassives.put("give-saturation", new GiveSaturationTriggerPassive(plugin, "give-saturation"));
+        triggerPassives.put("reapply-attributes", new ReapplyAttributesTriggerPassive(plugin, "reapply-attributes"));
+        triggerPassives.put("remove-potion-effect", new RemovePotionEffectTriggerPassive(plugin, "remove-potion-effect"));
+        triggerPassives.put("run-command", new RunCommandTriggerPassive(plugin, "run-command"));
+        triggerPassives.put("send-actionbar-message", new SendActionBarMessageTriggerPassive("send-action-bar-message"));
+        triggerPassives.put("send-message", new SendMessageTriggerPassive(plugin, "send-message"));
+        triggerPassives.put("set-attribute", new SetAttributeTriggerPassive(plugin, "set-attribute"));
+        triggerPassives.put("set-default-attributes", new SetDefaultAttributesTriggerPassive(plugin, "set-default-attributes"));
+        triggerPassives.put("toggle-fly", new ToggleFlyTriggerPassive(plugin, "toggle-fly"));
+        triggerPassives.put("undisguise", new UndisguiseTriggerPassive(plugin, "undisguise"));
+
+        registerCondition("in-region", new InRegionTrigger(plugin));
+        registerCondition("sneak", new SneakTrigger(this));
     }
 
     public void runTriggers(Player player, String trigger) {
         if (!plugin.getRaceManager().isRacesEnabledInWorld(player.getWorld()))
             return;
 
-        Random random = new Random();
         Collection<RaceTrigger> raceTriggers = getApplicableTriggers(player, trigger);
         if (raceTriggers == null || raceTriggers.isEmpty())
             return;
@@ -79,7 +89,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
 
             // Run chance afterward so it doesnt idle
-            if ((random.nextFloat() * 100) > raceTrigger.getChance())
+            if ((ThreadLocalRandom.current().nextFloat() * 100) > raceTrigger.getChance())
                 continue;
 
             // Run task synchronously
@@ -225,15 +235,8 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         runTriggerPassives(player, trigger.getPassives());
     }
 
-    public void runTriggerPassives(Player player, List<String> triggers) {
-        for (String effect : triggers) {
-            String name = effect.split(" ")[0];
-            RaceTriggerPassive racePassive = triggerPassives.get(name);
-            if (racePassive == null)
-                continue;
-
-            racePassive.runPassive(player, effect);
-        }
+    public void runTriggerPassives(Player player, List<RaceTriggerPassive> triggers) {
+        triggerPassives.values().forEach(racePassive -> racePassive.runPassive(player, racePassive.getName()));
     }
 
     public boolean hasDelay(Player player, String trigger) {
@@ -247,14 +250,14 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     }
 
     public void setDelay(Player player, String trigger, int amt) {
-        Map<UUID, Long> delayMap = new HashMap<>();
-
-        if (delay.containsKey(trigger))
-            delayMap = delay.get(trigger);
-
-        long time = (amt * 1000) + System.currentTimeMillis();
-
-        delayMap.put(player.getUniqueId(), time);
+        Map<UUID, Long> delayMap = delay.getOrDefault(trigger, new HashMap<>());
+        delayMap.put(player.getUniqueId(), (amt * 1000) + System.currentTimeMillis());
         delay.put(trigger, delayMap);
+    }
+
+    private void registerCondition(String internalName, RaceCondition condition) {
+        conditions.put(internalName, condition);
+        if (condition instanceof Listener)
+            plugin.getServer().getPluginManager().registerEvents((Listener) condition, plugin);
     }
 }

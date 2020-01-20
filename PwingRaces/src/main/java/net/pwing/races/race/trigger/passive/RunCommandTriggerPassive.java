@@ -1,4 +1,4 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
@@ -7,11 +7,11 @@ import net.pwing.races.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class RunCommandTrigger extends RaceTriggerPassive {
+public class RunCommandTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public RunCommandTrigger(PwingRaces plugin, String name) {
+    public RunCommandTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;

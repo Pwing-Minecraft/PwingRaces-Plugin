@@ -1,15 +1,19 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.util.MessageUtil;
+
 import org.bukkit.entity.Player;
 
-public class SendActionBarMessageTrigger extends RaceTriggerPassive {
+public class SendMessageTriggerPassive extends RaceTriggerPassive {
 
-    public SendActionBarMessageTrigger(String name) {
+    private PwingRaces plugin;
+
+    public SendMessageTriggerPassive(PwingRaces plugin, String name) {
         super(name);
+
+        this.plugin = plugin;
     }
 
     @Override
@@ -21,6 +25,6 @@ public class SendActionBarMessageTrigger extends RaceTriggerPassive {
         }
 
         String message = builder.toString();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MessageUtil.getPlaceholderMessage(player, message)));
+        player.sendMessage(MessageUtil.getPlaceholderMessage(player, message));
     }
 }

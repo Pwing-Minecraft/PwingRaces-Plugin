@@ -1,4 +1,4 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
@@ -9,11 +9,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import net.pwing.races.util.NumberUtil;
 
-public class AddPotionEffectTrigger extends RaceTriggerPassive {
+public class AddPotionEffectTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public AddPotionEffectTrigger(PwingRaces plugin, String trigger) {
+    public AddPotionEffectTriggerPassive(PwingRaces plugin, String trigger) {
         super(trigger);
 
         this.plugin = plugin;

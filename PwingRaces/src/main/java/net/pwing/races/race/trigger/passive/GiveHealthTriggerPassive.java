@@ -1,4 +1,4 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
@@ -7,9 +7,9 @@ import net.pwing.races.util.NumberUtil;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
-public class GiveHealthTrigger extends RaceTriggerPassive {
+public class GiveHealthTriggerPassive extends RaceTriggerPassive {
 
-    public GiveHealthTrigger(PwingRaces plugin, String name) {
+    public GiveHealthTriggerPassive(PwingRaces plugin, String name) {
         super(name);
     }
 

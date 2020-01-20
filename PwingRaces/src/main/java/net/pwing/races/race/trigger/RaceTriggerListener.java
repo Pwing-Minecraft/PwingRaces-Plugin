@@ -18,7 +18,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -31,31 +30,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 
+// TODO: Move everything to its own class
+@Deprecated
 @AllArgsConstructor
 public class RaceTriggerListener implements Listener {
 
     private PwingRaces plugin;
-
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
-        triggerManager.runTriggers(player, "join");
-    }
-
-    @EventHandler (priority = EventPriority.LOWEST)
-    public void onQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
-        triggerManager.runTriggers(player, "quit");
-    }
-
-    @EventHandler
-    public void onTeleport(PlayerTeleportEvent event) {
-        Player player = event.getPlayer();
-        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
-        triggerManager.runTriggers(player, "teleport");
-    }
 
     @EventHandler
     public void onToggleFly(PlayerToggleFlightEvent event) {

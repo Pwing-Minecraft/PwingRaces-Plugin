@@ -1,15 +1,15 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.util.NumberUtil;
 import org.bukkit.entity.Player;
 
-public class DamageTrigger extends RaceTriggerPassive {
+public class DamageTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public DamageTrigger(PwingRaces plugin, String name) {
+    public DamageTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;

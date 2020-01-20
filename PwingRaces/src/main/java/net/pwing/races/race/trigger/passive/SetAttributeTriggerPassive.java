@@ -1,4 +1,4 @@
-package net.pwing.races.race.trigger.passives;
+package net.pwing.races.race.trigger.passive;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class SetAttributeTrigger extends RaceTriggerPassive {
+public class SetAttributeTriggerPassive extends RaceTriggerPassive {
 
     private PwingRaces plugin;
 
-    public SetAttributeTrigger(PwingRaces plugin, String name) {
+    public SetAttributeTriggerPassive(PwingRaces plugin, String name) {
         super(name);
 
         this.plugin = plugin;
