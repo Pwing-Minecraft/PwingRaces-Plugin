@@ -19,11 +19,11 @@ import java.util.Optional;
 public class PwingRacePlayer implements RacePlayer {
 
 	private OfflinePlayer player;
-	private Race activeRace;
+	private Race race;
 	
 	private Map<String, RaceData> raceDataMap;
 
 	public Optional<Race> getRace() {
-		return Optional.ofNullable(activeRace);
+		return Optional.ofNullable(race);
 	}
 }
