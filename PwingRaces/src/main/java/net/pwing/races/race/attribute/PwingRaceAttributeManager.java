@@ -1,11 +1,5 @@
 package net.pwing.races.race.attribute;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
@@ -15,13 +9,21 @@ import net.pwing.races.api.race.attribute.RaceAttribute;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
 import net.pwing.races.api.race.attribute.RaceAttributeManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
+import net.pwing.races.api.util.math.EquationResult;
 import net.pwing.races.race.attribute.attributes.FlySpeedAttribute;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.race.attribute.attributes.WalkSpeedAttribute;
 import net.pwing.races.util.AttributeUtil;
 
+import net.pwing.races.util.math.EquationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PwingRaceAttributeManager implements RaceAttributeManager {
 
@@ -44,12 +46,22 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
 
     @Override
     public void applyAttributeBonuses(Player player) {
-        for (RaceAttribute definedAttribute : getApplicableAttributes(player)) {
-            if (AttributeUtil.isBukkitAttribute(definedAttribute.getAttribute()))
-                AttributeUtil.setAttributeValue(player, definedAttribute.getAttribute(), definedAttribute.getValue());
+        Map<String, List<RaceAttribute>> bundledAttributes = new HashMap<>();
+        for (RaceAttribute attribute : getApplicableAttributes(player)) {
+            bundledAttributes.put(attribute.getAttribute(), bundledAttributes.getOrDefault(attribute.getAttribute(), new ArrayList<>()));
+        }
 
-            if (attributeEffects.containsKey(definedAttribute.getAttribute()))
-                attributeEffects.get(definedAttribute.getAttribute()).onAttributeApply(player, definedAttribute.getValue());
+        for (Map.Entry<String, List<RaceAttribute>> attributeEntry : bundledAttributes.entrySet()) {
+            double value = 0;
+            if (AttributeUtil.isBukkitAttribute(attributeEntry.getKey()))
+                value = AttributeUtil.getDefaultAttributeValue(player, attributeEntry.getKey());
+
+            for (RaceAttribute attribute : attributeEntry.getValue()) {
+                value = EquationUtil.getValue(value, attribute.getEquationResult());
+            }
+
+            if (attributeEffects.containsKey(attributeEntry.getKey()))
+                attributeEffects.get(attributeEntry.getKey()).onAttributeApply(player, value);
         }
     }
 

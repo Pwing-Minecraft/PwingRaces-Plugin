@@ -2,7 +2,7 @@ package net.pwing.races.util.item;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
-import net.pwing.races.util.NumberUtil;
+import net.pwing.races.util.math.NumberUtil;
 import net.pwing.races.util.RaceMaterial;
 
 import org.bukkit.ChatColor;

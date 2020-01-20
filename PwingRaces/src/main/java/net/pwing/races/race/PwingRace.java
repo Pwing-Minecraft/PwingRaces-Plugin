@@ -17,6 +17,7 @@ import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
 import net.pwing.races.util.item.ItemUtil;
 import net.pwing.races.util.LocationUtil;
+import net.pwing.races.util.math.EquationUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,11 +26,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -49,13 +46,11 @@ public class PwingRace implements Race {
     private RaceIconData iconData;
 
     private Map<String, ItemStack> raceItems;
-
     private Map<Integer, String> skilltreeMap;
     private Map<String, List<RacePermission>> racePermissionsMap;
     private Map<String, List<RaceAttribute>> raceAttributesMap;
     private Map<Integer, Integer> raceLevelMap;
     private Map<Integer, Integer> raceSkillpointsMap;
-
     private Map<String, List<RaceTrigger>> raceTriggersMap;
     private Map<String, List<RaceAbility>> raceAbilitiesMap;
 
@@ -78,9 +73,9 @@ public class PwingRace implements Race {
         this.spawnLocation = LocationUtil.fromString(raceConfig.getString("race.spawn-location", ""));
 
         this.requiresUnlock = raceConfig.getBoolean("race.require-unlock", false);
-        this.skilltreeMap = new HashMap<>();
+        this.skilltreeMap = new LinkedHashMap<>();
 
-        this.raceItems = new HashMap<>();
+        this.raceItems = new LinkedHashMap<>();
         if (raceConfig.contains("race.items")) {
             for (String str : raceConfig.getConfigurationSection("race.items").getKeys(false)) {
                 ItemStack stack = ItemUtil.readItemFromConfig("race.items." + str, raceConfig);
@@ -102,8 +97,8 @@ public class PwingRace implements Race {
             skilltreeMap.put(Integer.parseInt(str.split(" ")[1]), skilltree.get().getInternalName());
         }
 
-        this.raceLevelMap = new HashMap<>();
-        this.raceSkillpointsMap = new HashMap<>();
+        this.raceLevelMap = new LinkedHashMap<>();
+        this.raceSkillpointsMap = new LinkedHashMap<>();
 
         if (raceConfig.contains("race.levels")) {
             for (String str : raceConfig.getConfigurationSection("race.levels").getKeys(false)) {
@@ -112,7 +107,7 @@ public class PwingRace implements Race {
             }
         }
 
-        this.raceTriggersMap = new HashMap<>();
+        this.raceTriggersMap = new LinkedHashMap<>();
 
         // Get triggers defined in the triggers section
         if (raceConfig.contains("race.triggers")) {
@@ -123,18 +118,18 @@ public class PwingRace implements Race {
             }
         }
 
-        this.raceAttributesMap = new HashMap<>();
+        this.raceAttributesMap = new LinkedHashMap<>();
 
         // Get attributes defined in the attributes section
         if (raceConfig.contains("race.attributes")) {
             for (String str : raceConfig.getConfigurationSection("race.attributes").getKeys(false)) {
                 List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(str, new ArrayList<>());
-                raceAttributes.add(new PwingRaceAttribute(str, raceConfig.getDouble("race.attributes." + str), "none"));
+                raceAttributes.add(new PwingRaceAttribute(str, EquationUtil.getEquationResult(raceConfig.getString("race.attributes." + str)), "none"));
                 raceAttributesMap.put(str, raceAttributes);
             }
         }
 
-        this.racePermissionsMap = new HashMap<>();
+        this.racePermissionsMap = new LinkedHashMap<>();
 
         // Get permissions defined in the permissions section
         if (raceConfig.contains("race.permissions")) {
@@ -145,7 +140,7 @@ public class PwingRace implements Race {
             }
         }
 
-        this.raceAbilitiesMap = new HashMap<>();
+        this.raceAbilitiesMap = new LinkedHashMap<>();
         RaceAbilityManager abilityManager = raceManager.getAbilityManager();
 
         // Get abilities defined in the abilities section
@@ -185,7 +180,7 @@ public class PwingRace implements Race {
                 if (elementSection.contains("attributes")) {
                     for (String attribute : elementSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
-                        raceAttributes.add(new PwingRaceAttribute(attribute, elementSection.getDouble("attributes." + attribute), elem));
+                        raceAttributes.add(new PwingRaceAttribute(attribute, EquationUtil.getEquationResult(elementSection.getString("attributes." + attribute)), elem));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }
@@ -226,7 +221,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("attributes")) {
                     for (String attribute : levelSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
-                        raceAttributes.add(new PwingRaceAttribute(attribute, levelSection.getDouble("attributes." + attribute), "level" + level));
+                        raceAttributes.add(new PwingRaceAttribute(attribute, EquationUtil.getEquationResult(levelSection.getString("attributes." + attribute)), "level" + level));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }

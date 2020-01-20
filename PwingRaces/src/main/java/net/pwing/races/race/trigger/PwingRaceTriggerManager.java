@@ -16,7 +16,7 @@ import net.pwing.races.api.race.trigger.condition.RaceCondition;
 import net.pwing.races.race.trigger.passive.*;
 import net.pwing.races.race.trigger.trigger.InRegionTrigger;
 import net.pwing.races.race.trigger.trigger.SneakTrigger;
-import net.pwing.races.util.NumberUtil;
+import net.pwing.races.util.math.NumberUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
