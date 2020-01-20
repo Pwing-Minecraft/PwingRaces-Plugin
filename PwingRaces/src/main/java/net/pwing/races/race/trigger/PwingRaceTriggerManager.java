@@ -74,6 +74,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerCondition("sneak", new SneakTrigger(this));
     }
 
+    // TODO: configure for multiple conditions
     public void runTriggers(Player player, String trigger) {
         if (!plugin.getRaceManager().isRacesEnabledInWorld(player.getWorld()))
             return;
