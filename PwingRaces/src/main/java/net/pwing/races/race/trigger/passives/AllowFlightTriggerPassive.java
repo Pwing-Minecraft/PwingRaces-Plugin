@@ -15,12 +15,11 @@ public class AllowFlightTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-        if (split.length < 2)
+    public void runTriggerPassive(Player player, String[] trigger) {
+        if (trigger.length < 2)
             return;
 
-        if (Boolean.parseBoolean(split[1]))
+        if (Boolean.parseBoolean(trigger[1]))
             player.setAllowFlight(true);
         else
             player.setAllowFlight(false);

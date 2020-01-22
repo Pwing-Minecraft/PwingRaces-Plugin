@@ -20,14 +20,12 @@ public class GiveRaceExpTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-
+    public void runTriggerPassive(Player player, String[] trigger) {
         int exp = 0;
-        if (NumberUtil.isInteger(split[1]))
-            exp = Integer.parseInt(split[1]);
-        else if (NumberUtil.isRangedInteger(split[1]))
-            exp = NumberUtil.getRangedInteger(split[1]);
+        if (NumberUtil.isInteger(trigger[1]))
+            exp = Integer.parseInt(trigger[1]);
+        else if (NumberUtil.isRangedInteger(trigger[1]))
+            exp = NumberUtil.getRangedInteger(trigger[1]);
 
         RaceManager raceManager = plugin.getRaceManager();
         RacePlayer racePlayer = raceManager.getRacePlayer(player);

@@ -16,7 +16,7 @@ public class UndisguiseTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
+    public void runTriggerPassive(Player player, String[] trigger) {
         plugin.getLibsDisguisesHook().undisguiseEntity(player);
     }
 }

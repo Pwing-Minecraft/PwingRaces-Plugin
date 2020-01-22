@@ -20,10 +20,8 @@ public class AddPotionEffectTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-
-        PotionEffectType effectType = PotionEffectType.getByName(split[1]);
+    public void runTriggerPassive(Player player, String[] trigger) {
+        PotionEffectType effectType = PotionEffectType.getByName(trigger[1]);
         if (effectType == null) {
             plugin.getLogger().warning("PotionEffectType " + effectType + " for trigger " + trigger + " is invalid.");
             return;
@@ -32,15 +30,15 @@ public class AddPotionEffectTriggerPassive extends RaceTriggerPassive {
         int duration = 0;
         int amplifier = 0;
 
-        if (NumberUtil.isInteger(split[2]))
-            duration = Integer.parseInt(split[2]) * 20;
+        if (NumberUtil.isInteger(trigger[2]))
+            duration = Integer.parseInt(trigger[2]) * 20;
 
-        if (NumberUtil.isInteger(split[3]))
-            amplifier = Integer.parseInt(split[3]) - 1;
+        if (NumberUtil.isInteger(trigger[3]))
+            amplifier = Integer.parseInt(trigger[3]) - 1;
 
         boolean clear = true;
-        if (split.length > 4) {
-            clear = Boolean.parseBoolean(split[4]);
+        if (trigger.length > 4) {
+            clear = Boolean.parseBoolean(trigger[4]);
         }
 
         if (clear) {

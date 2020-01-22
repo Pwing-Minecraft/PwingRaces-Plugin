@@ -17,7 +17,7 @@ public class ReapplyAttributesTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
+    public void runTriggerPassive(Player player, String[] trigger) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (!racePlayer.hasRace())
             return;

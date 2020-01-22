@@ -17,14 +17,13 @@ public class DisguiseTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-        if (split.length < 2)
+    public void runTriggerPassive(Player player, String[] trigger) {
+        if (trigger.length < 2)
             return;
 
-        EntityType type = null;
+        EntityType type;
         try {
-            type = EntityType.valueOf(split[1].toUpperCase());
+            type = EntityType.valueOf(trigger[1].toUpperCase());
         } catch (IllegalArgumentException ex) {
             return;
         }

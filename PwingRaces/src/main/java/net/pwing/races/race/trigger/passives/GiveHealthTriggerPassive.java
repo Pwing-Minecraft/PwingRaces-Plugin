@@ -14,14 +14,12 @@ public class GiveHealthTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-
+    public void runTriggerPassive(Player player, String[] trigger) {
         double health = 0;
-        if (NumberUtil.isDouble(split[1]))
-            health = Double.parseDouble(split[1]);
-        else if (NumberUtil.isRangedDouble(split[1]))
-            health = NumberUtil.getRangedDouble(split[1]);
+        if (NumberUtil.isDouble(trigger[1]))
+            health = Double.parseDouble(trigger[1]);
+        else if (NumberUtil.isRangedDouble(trigger[1]))
+            health = NumberUtil.getRangedDouble(trigger[1]);
 
         if (player.getHealth() + health <= player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue())
             player.setHealth(player.getHealth() + health);

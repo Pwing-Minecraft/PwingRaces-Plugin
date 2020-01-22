@@ -20,8 +20,8 @@ public class DropItemTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String itemKey = trigger.replace(name + " ", "");
+    public void runTriggerPassive(Player player, String[] trigger) {
+        String itemKey = String.join("", trigger).replace(name + " ", "");
 
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (!racePlayer.getRace().isPresent())

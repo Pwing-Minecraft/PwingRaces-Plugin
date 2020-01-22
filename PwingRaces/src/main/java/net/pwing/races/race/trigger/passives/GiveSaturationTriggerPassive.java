@@ -17,14 +17,12 @@ public class GiveSaturationTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-
+    public void runTriggerPassive(Player player, String[] trigger) {
         int saturation = 0;
-        if (NumberUtil.isInteger(split[1]))
-            saturation = Integer.parseInt(split[1]);
-        else if (NumberUtil.isRangedInteger(split[1]))
-            saturation = NumberUtil.getRangedInteger(split[1]);
+        if (NumberUtil.isInteger(trigger[1]))
+            saturation = Integer.parseInt(trigger[1]);
+        else if (NumberUtil.isRangedInteger(trigger[1]))
+            saturation = NumberUtil.getRangedInteger(trigger[1]);
 
         if (player.getFoodLevel() + saturation <= 20)
             player.setFoodLevel(player.getFoodLevel() + saturation);

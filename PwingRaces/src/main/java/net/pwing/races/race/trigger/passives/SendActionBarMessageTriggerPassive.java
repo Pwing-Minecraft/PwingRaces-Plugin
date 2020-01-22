@@ -13,11 +13,10 @@ public class SendActionBarMessageTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
+    public void runTriggerPassive(Player player, String[] trigger) {
         StringBuilder builder = new StringBuilder();
-        for (int i = 1; i < split.length; i++) {
-            builder.append(split[i]).append(" ");
+        for (int i = 1; i < trigger.length; i++) {
+            builder.append(trigger[i]).append(" ");
         }
 
         String message = builder.toString();

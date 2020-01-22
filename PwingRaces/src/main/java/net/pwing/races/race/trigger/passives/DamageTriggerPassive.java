@@ -16,14 +16,13 @@ public class DamageTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-        if (split.length < 2)
+    public void runTriggerPassive(Player player, String[] trigger) {
+        if (trigger.length < 2)
             return;
 
         double damage = 60;
-        if (NumberUtil.isDouble(split[1]))
-            damage = Double.parseDouble(split[1]);
+        if (NumberUtil.isDouble(trigger[1]))
+            damage = Double.parseDouble(trigger[1]);
 
         player.damage(damage);
     }

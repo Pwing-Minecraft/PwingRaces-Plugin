@@ -17,9 +17,8 @@ public class RemovePotionEffectTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-        PotionEffectType effectType = PotionEffectType.getByName(split[1]);
+    public void runTriggerPassive(Player player, String[] trigger) {
+        PotionEffectType effectType = PotionEffectType.getByName(trigger[1]);
         if (effectType == null) {
             plugin.getLogger().warning("PotionEffectType " + effectType + " for trigger " + trigger + " is invalid.");
             return;

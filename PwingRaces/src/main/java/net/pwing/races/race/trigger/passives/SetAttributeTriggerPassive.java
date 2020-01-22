@@ -21,18 +21,17 @@ public class SetAttributeTriggerPassive extends RaceTriggerPassive {
     }
 
     @Override
-    public void runTriggerPassive(Player player, String trigger) {
-        String[] split = trigger.split(" ");
-        if (split.length < 3)
+    public void runTriggerPassive(Player player, String[] trigger) {
+        if (trigger.length < 3)
             return;
 
-        if (!NumberUtil.isFloat(split[2])) {
-            plugin.getLogger().warning("Attribute value " + split[2] + " for trigger " + trigger + " is not a number (float expected).");
+        if (!NumberUtil.isFloat(trigger[2])) {
+            plugin.getLogger().warning("Attribute value " + trigger[2] + " for trigger " + trigger + " is not a number (float expected).");
             return;
         }
 
-        String attribute = split[1];
-        float value = Float.parseFloat(split[2]);
+        String attribute = trigger[1];
+        float value = Float.parseFloat(trigger[2]);
         if (AttributeUtil.isBukkitAttribute(attribute))
             AttributeUtil.setAttributeValue(player, attribute, value);
 
