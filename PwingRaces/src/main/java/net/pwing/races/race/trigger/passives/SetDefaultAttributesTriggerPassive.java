@@ -18,10 +18,6 @@ public class SetDefaultAttributesTriggerPassive extends RaceTriggerPassive {
 
     @Override
     public void runTriggerPassive(Player player, String[] trigger) {
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
-        if (!racePlayer.hasRace())
-            return;
-
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(player);
     }
 }

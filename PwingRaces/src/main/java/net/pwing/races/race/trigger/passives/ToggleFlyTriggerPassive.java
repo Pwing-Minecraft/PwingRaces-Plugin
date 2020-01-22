@@ -17,8 +17,10 @@ public class ToggleFlyTriggerPassive extends RaceTriggerPassive {
 
     @Override
     public void runTriggerPassive(Player player, String[] trigger) {
-        if (trigger.length < 2)
+        if (trigger.length < 2) {
+            player.setFlying(!player.isFlying());
             return;
+        }
 
         if (Boolean.parseBoolean(trigger[1]))
             player.setFlying(true);
