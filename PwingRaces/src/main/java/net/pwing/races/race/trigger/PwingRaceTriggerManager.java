@@ -13,9 +13,9 @@ import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
 import net.pwing.races.api.race.trigger.condition.RaceCondition;
-import net.pwing.races.race.trigger.passive.*;
-import net.pwing.races.race.trigger.trigger.InRegionTrigger;
-import net.pwing.races.race.trigger.trigger.SneakTrigger;
+import net.pwing.races.race.trigger.conditions.*;
+import net.pwing.races.race.trigger.passives.*;
+import net.pwing.races.race.trigger.triggers.*;
 import net.pwing.races.util.math.NumberUtil;
 
 import org.bukkit.Bukkit;
@@ -46,7 +46,6 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         this.plugin = plugin;
 
         initTriggerPassives();
-        Bukkit.getServer().getPluginManager().registerEvents(new RaceTriggerListener(plugin), plugin);
     }
 
     public void initTriggerPassives() {
@@ -70,11 +69,47 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         triggerPassives.put("toggle-fly", new ToggleFlyTriggerPassive(plugin, "toggle-fly"));
         triggerPassives.put("undisguise", new UndisguiseTriggerPassive(plugin, "undisguise"));
 
+        // Register dual conditions/triggers
+        registerCondition("burn", new BurnTrigger(this));
+        registerCondition("fly", new FlyTrigger(this));
         registerCondition("in-region", new InRegionTrigger(plugin));
         registerCondition("sneak", new SneakTrigger(this));
+        registerCondition("ticks", new TicksTrigger(plugin));
+
+        registerCondition("block-relative", new BlockRelativeCondition());
+        registerCondition("day", new DayCondition());
+        registerCondition("in-moonlight", new InMoonlightCondition());
+        registerCondition("inside", new InsideCondition());
+        registerCondition("in-sunlight", new InSunlightCondition());
+        registerCondition("in-world", new InWorldCondition());
+        registerCondition("night", new NightCondition());
+        registerCondition("outside", new OutsideCondition());
+
+        registerTrigger(new BlockBreakTrigger(this));
+        registerTrigger(new BlockPlaceTrigger(this));
+        registerTrigger(new BreedAnimalTrigger(this));
+        registerTrigger(new ConsumeItemTrigger(this));
+        registerTrigger(new CraftItemTrigger(this));
+        registerTrigger(new DamageEntityTrigger(plugin));
+        registerTrigger(new DeathTrigger(plugin));
+        registerTrigger(new EnchantItemTrigger(this));
+        registerTrigger(new FishTrigger(this));
+        registerTrigger(new HealthRegenTrigger(this));
+        registerTrigger(new JoinTrigger(this));
+        registerTrigger(new KillEntityTrigger(plugin));
+        registerTrigger(new LaunchProjectileTrigger(this));
+        registerTrigger(new MoveTrigger(this));
+        registerTrigger(new QuitTrigger(this));
+        registerTrigger(new RaceChangeTrigger(this));
+        registerTrigger(new RaceElementPurchaseTrigger(this));
+        registerTrigger(new RaceExpChangeTrigger(this));
+        registerTrigger(new RaceLevelUpTrigger(this));
+        registerTrigger(new TakeDamageTrigger(this));
+        registerTrigger(new TameAnimalTrigger(this));
+        registerTrigger(new TeleportTrigger(this));
+        registerTrigger(new UseInventoryTrigger(this));
     }
 
-    // TODO: configure for multiple conditions
     public void runTriggers(Player player, String trigger) {
         if (!plugin.getRaceManager().isRacesEnabledInWorld(player.getWorld()))
             return;
@@ -83,9 +118,15 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         if (raceTriggers == null || raceTriggers.isEmpty())
             return;
 
+        triggerLoop:
         for (RaceTrigger raceTrigger : raceTriggers) {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
+
+            for (RaceCondition condition : raceTrigger.getConditions()) {
+                if (!condition.check(player, raceTrigger.getConditionValue(condition).get().split(" ")))
+                    continue triggerLoop;
+            }
 
             setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
 
@@ -233,11 +274,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     }
 
     public void runTriggerPassives(Player player, RaceTrigger trigger) {
-        runTriggerPassives(player, trigger.getPassives());
-    }
-
-    public void runTriggerPassives(Player player, List<RaceTriggerPassive> triggers) {
-        triggerPassives.values().forEach(racePassive -> racePassive.runPassive(player, racePassive.getName()));
+        trigger.getPassives().forEach(passive -> passive.runTriggerPassive(player, trigger.getPassiveValue(passive).get().split(" ")));
     }
 
     public boolean hasDelay(Player player, String trigger) {
@@ -260,5 +297,11 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         conditions.put(internalName, condition);
         if (condition instanceof Listener)
             plugin.getServer().getPluginManager().registerEvents((Listener) condition, plugin);
+    }
+
+    // this method may do more in the future, but it's just a registerEvents method for now
+    private void registerTrigger(Object trigger) {
+        if (trigger instanceof Listener)
+            plugin.getServer().getPluginManager().registerEvents((Listener) trigger, plugin);
     }
 }

@@ -21,10 +21,7 @@ import net.pwing.races.hook.WorldGuardHook;
 import net.pwing.races.module.PwingRaceModuleLoader;
 import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
-import net.pwing.races.task.RaceSaveTask;
-import net.pwing.races.task.RaceTriggerTickTask;
 import net.pwing.races.util.MessageUtil;
-import net.pwing.races.util.VersionUtil;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -66,14 +63,14 @@ public class PwingRaces extends JavaPlugin {
         generateDefaultConfigs();
 
         try {
-            Class<? extends CompatCodeHandlerDisabled> compatClass = Class.forName("net.pwing.races.compat.CompatCodeHandler_" + VersionUtil.getNMSPackage()).asSubclass(CompatCodeHandlerDisabled.class);
+            Class<? extends CompatCodeHandlerDisabled> compatClass = Class.forName("net.pwing.races.compat.CompatCodeHandler_" + getNMSPackage()).asSubclass(CompatCodeHandlerDisabled.class);
             Constructor<? extends CompatCodeHandlerDisabled> compatConstructor = compatClass.getConstructor(PwingRaces.class);
             compatConstructor.setAccessible(true);
 
             compatCodeHandler = compatConstructor.newInstance(this);
-            getLogger().info("Successfully found code compat handler class for version " + VersionUtil.getNMSPackage() + "!");
+            getLogger().info("Successfully found code compat handler class for version " + getNMSPackage() + "!");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
-            getLogger().severe("Could not find compat code handler class for version " + VersionUtil.getNMSPackage() + ". This shouldn't be too big of a problem. If you are running the latest version of Minecraft currently, check Spigot for an updated version of the plugin. If not, ignore this.");
+            getLogger().severe("Could not find compat code handler class for version " + getNMSPackage() + ". This shouldn't be too big of a problem. If you are running the latest version of Minecraft currently, check Spigot for an updated version of the plugin. If not, ignore this.");
             compatCodeHandler = new CompatCodeHandlerDisabled(this);
             // ex.printStackTrace();
         }
@@ -114,11 +111,9 @@ public class PwingRaces extends JavaPlugin {
             raceManager.setupPlayer(player);
         }
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceTriggerTickTask(this), 1, 1);
-
         long autosave = configManager.getAutosave();
         if (autosave > 0)
-            getServer().getScheduler().runTaskTimerAsynchronously(this, new RaceSaveTask(raceManager), autosave, autosave);
+            getServer().getScheduler().runTaskTimerAsynchronously(this, () -> this.getServer().getOnlinePlayers().forEach(raceManager::savePlayer), autosave, autosave);
 
         pluginEnabled = true;
 
@@ -258,6 +253,10 @@ public class PwingRaces extends JavaPlugin {
 
     public File getModuleFolder() {
         return new File(getDataFolder(), "modules");
+    }
+
+    private String getNMSPackage() {
+        return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     }
 
     public static PwingRaces getInstance() {

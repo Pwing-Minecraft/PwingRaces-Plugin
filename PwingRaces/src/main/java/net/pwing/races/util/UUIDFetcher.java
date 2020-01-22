@@ -36,8 +36,8 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
     private static final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
 
-    private static Map<String, UUID> uuidCache = new HashMap<String, UUID>();
-    private static Map<UUID, String> nameCache = new HashMap<UUID, String>();
+    private static Map<String, UUID> uuidCache = new HashMap<>();
+    private static Map<UUID, String> nameCache = new HashMap<>();
 
     private static ExecutorService pool = Executors.newCachedThreadPool();
 
