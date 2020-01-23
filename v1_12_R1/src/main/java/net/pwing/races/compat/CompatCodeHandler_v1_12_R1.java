@@ -5,19 +5,12 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.util.AttributeUtil;
 import net.pwing.races.util.item.HeadUtil;
 import net.pwing.races.util.UUIDFetcher;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Map;
@@ -33,48 +26,12 @@ public class CompatCodeHandler_v1_12_R1 extends CompatCodeHandlerDisabled {
 		this.plugin = plugin;
 	}
 
-	@Override
-	public void setUnbreakable(ItemStack item, boolean unbreakable) {
-		ItemMeta meta = item.getItemMeta();
-		meta.setUnbreakable(true);
-		item.setItemMeta(meta);
-	}
-
-	@Override
-	public void setColor(ItemStack item, Color color) {
-		super.setColor(item, color);
-
-		if (item.getItemMeta() instanceof PotionMeta) {
-			PotionMeta im = (PotionMeta) item.getItemMeta();
-			im.setColor(color);
-			item.setItemMeta(im);
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
 	public void setOwner(ItemStack item, String owner) {
 		if (item.getItemMeta() instanceof SkullMeta) {
 			SkullMeta meta = (SkullMeta) item.getItemMeta();
 			meta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
 			item.setItemMeta(meta);
 		}
-	}
-
-	@Override
-	public double getDefaultAttributeValue(Player player, String attribute) {
-		if (!AttributeUtil.isBukkitAttribute(attribute))
-			return 0;
-
-		String attributeName = AttributeUtil.getAttributeName(attribute);
-		return player.getAttribute(Attribute.valueOf(attributeName)).getDefaultValue();
-	}
-
-	@Override
-	public void setPickupStatus(Arrow arrow, String status) {
-		try {
-			arrow.setPickupStatus(Arrow.PickupStatus.valueOf(status.toUpperCase()));
-		} catch (IllegalArgumentException ex) { /* do nothing */ }
 	}
 
 	@Override

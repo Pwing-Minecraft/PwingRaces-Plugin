@@ -20,7 +20,6 @@ public class RaceElementPurchaseTrigger implements Listener {
             return;
 
         Player player = event.getPlayer();
-        RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
         triggerManager.runTriggers(player, "element-buy " + event.getPurchasedElement().getInternalName());
     }
 }

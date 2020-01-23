@@ -1,9 +1,5 @@
 package net.pwing.races.race.ability;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
@@ -19,6 +15,10 @@ import net.pwing.races.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public class PwingRaceAbilityManager implements RaceAbilityManager {
 
@@ -70,7 +70,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             setCooldown(player, ability.getInternalName(), ability.getCooldown());
 
             RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
-            triggerManager.runTriggerPassives(player, ability.getPassives());
+            runPassives(player, ability);
             return true;
         }
 
@@ -161,6 +161,11 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
 
         cooldownMap.put(player.getUniqueId(), time);
         cooldown.put(ability, cooldownMap);
+    }
+
+    @Override
+    public void runPassives(Player player, RaceAbility ability) {
+        ability.getPassives().forEach(passive -> passive.runTriggerPassive(player, ability.getPassiveValue(passive).get().split(" ")));
     }
 
     public Optional<RaceAbility> getAbility(String key, String requirement, String configPath, FileConfiguration config) {

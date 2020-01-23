@@ -72,7 +72,7 @@ public class ArrowstormAbility extends PwingRaceAbility {
                 // arrow.setPickupStatus(PickupStatus.ALLOWED);
                 plugin.getCompatCodeHandler().setDamage(arrow, damage);
                 if (!spendArrows)
-                    plugin.getCompatCodeHandler().setPickupStatus(arrow, "CREATIVE_ONLY");
+                    arrow.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
 
                 if (i == arrows)
                     this.cancel();

@@ -57,52 +57,8 @@ public class CompatCodeHandler_v1_13_R1 extends CompatCodeHandlerDisabled {
 	}
 
 	@Override
-	public void setUnbreakable(ItemStack item, boolean unbreakable) {
-		ItemMeta meta = item.getItemMeta();
-		meta.setUnbreakable(true);
-		item.setItemMeta(meta);
-	}
-
-	@Override
-	public void setColor(ItemStack item, Color color) {
-		super.setColor(item, color);
-
-		if (item.getItemMeta() instanceof PotionMeta) {
-			PotionMeta im = (PotionMeta) item.getItemMeta();
-			im.setColor(color);
-			item.setItemMeta(im);
-		}
-	}
-
-	@Override
 	public Enchantment getEnchantment(String name) {
 		return EnchantmentWrapper.getByKey(NamespacedKey.minecraft(name.toLowerCase()));
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void setOwner(ItemStack item, String owner) {
-		if (item.getItemMeta() instanceof SkullMeta) {
-			SkullMeta meta = (SkullMeta) item.getItemMeta();
-			meta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
-			item.setItemMeta(meta);
-		}
-	}
-
-	@Override
-	public double getDefaultAttributeValue(Player player, String attribute) {
-		if (!AttributeUtil.isBukkitAttribute(attribute))
-			return 0;
-
-		String attributeName = AttributeUtil.getAttributeName(attribute);
-		return player.getAttribute(Attribute.valueOf(attributeName)).getDefaultValue();
-	}
-
-	@Override
-	public void setPickupStatus(Arrow arrow, String status) {
-		try {
-			arrow.setPickupStatus(Arrow.PickupStatus.valueOf(status.toUpperCase()));
-		} catch (IllegalArgumentException ex) { /* do nothing */ }
 	}
 
 	@Override

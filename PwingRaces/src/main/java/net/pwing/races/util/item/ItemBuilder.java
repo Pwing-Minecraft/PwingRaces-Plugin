@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.pwing.races.PwingRaces;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -13,7 +14,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 
 public class ItemBuilder {
@@ -52,7 +55,9 @@ public class ItemBuilder {
 	}
 
 	public ItemBuilder setUnbreakable(boolean unbreakable) {
-		PwingRaces.getInstance().getCompatCodeHandler().setUnbreakable(stack, unbreakable);
+		ItemMeta meta = stack.getItemMeta();
+		meta.setUnbreakable(unbreakable);
+		stack.setItemMeta(meta);
 		return this;
 	}
 
@@ -110,12 +115,25 @@ public class ItemBuilder {
 	}
 
 	public ItemBuilder setOwner(String owner) {
-		PwingRaces.getInstance().getCompatCodeHandler().setOwner(stack, owner);
+		if (stack.getItemMeta() instanceof SkullMeta) {
+			SkullMeta meta = (SkullMeta) stack.getItemMeta();
+			meta.setOwner(owner);
+			stack.setItemMeta(meta);
+		}
 		return this;
 	}
 
 	public ItemBuilder setColor(Color color) {
-		PwingRaces.getInstance().getCompatCodeHandler().setColor(stack, color);
+		if (stack.getItemMeta() instanceof LeatherArmorMeta) {
+			LeatherArmorMeta im = (LeatherArmorMeta) stack.getItemMeta();
+			im.setColor(color);
+			stack.setItemMeta(im);
+		}
+		if (stack.getItemMeta() instanceof PotionMeta) {
+			PotionMeta im = (PotionMeta) stack.getItemMeta();
+			im.setColor(color);
+			stack.setItemMeta(im);
+		}
 		return this;
 	}
 

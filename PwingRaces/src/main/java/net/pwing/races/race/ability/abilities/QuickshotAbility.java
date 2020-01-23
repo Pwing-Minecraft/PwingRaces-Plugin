@@ -57,7 +57,7 @@ public class QuickshotAbility extends PwingRaceAbility {
                 //arrow.setPickupStatus(PickupStatus.ALLOWED);
                 plugin.getCompatCodeHandler().setDamage(arrow, damage);
                 if (!spendArrows)
-                    plugin.getCompatCodeHandler().setPickupStatus(arrow, "CREATIVE_ONLY");
+                    arrow.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
 
                 player.playSound(loc, RaceSound.ENTITY_ARROW_SHOOT.parseSound(), 1f, (float) (1.5 - (Math.random() * 1f)));
 

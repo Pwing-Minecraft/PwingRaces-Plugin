@@ -60,7 +60,7 @@ public class ArrowrainAbility extends PwingRaceAbility {
             //arrow.setPickupStatus(PickupStatus.DISALLOWED);
             plugin.getCompatCodeHandler().setDamage(arrow, damage);
             if (!spendArrows)
-                plugin.getCompatCodeHandler().setPickupStatus(arrow, "CREATIVE_ONLY");
+                arrow.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
         }
 
         if (spendArrows)

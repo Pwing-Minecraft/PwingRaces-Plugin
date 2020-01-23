@@ -29,30 +29,6 @@
         </dependency>
         <dependency>
             <groupId>net.pwing.races</groupId>
-            <artifactId>PwingRaces-v1_9_R1</artifactId>
-            <version>v1_9_R1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.pwing.races</groupId>
-            <artifactId>PwingRaces-v1_9_R2</artifactId>
-            <version>v1_9_R2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.pwing.races</groupId>
-            <artifactId>PwingRaces-v1_10_R1</artifactId>
-            <version>v1_10_R1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.pwing.races</groupId>
-            <artifactId>PwingRaces-v1_11_R1</artifactId>
-            <version>v1_11_R1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.pwing.races</groupId>
             <artifactId>PwingRaces-v1_12_R1</artifactId>
             <version>v1_12_R1</version>
             <scope>compile</scope>

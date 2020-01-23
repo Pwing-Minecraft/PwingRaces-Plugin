@@ -1,6 +1,5 @@
 package net.pwing.races.util;
 
-import net.pwing.races.PwingRaces;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
@@ -39,7 +38,11 @@ public class AttributeUtil {
     }
 
     public static double getDefaultAttributeValue(Player player, String attribute) {
-        return PwingRaces.getInstance().getCompatCodeHandler().getDefaultAttributeValue(player, attribute);
+        if (!isBukkitAttribute(attribute))
+            return 0;
+
+        String attributeName = getAttributeName(attribute);
+        return player.getAttribute(Attribute.valueOf(attributeName)).getDefaultValue();
     }
 
     public static void setAttributeValue(Player player, String attribute, double amount) {

@@ -1,6 +1,8 @@
 package net.pwing.races.race.ability;
 
+import com.google.common.collect.HashBiMap;
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.util.item.ItemUtil;
 
@@ -68,7 +70,21 @@ public abstract class PwingRaceAbility extends RaceAbility {
         this.overrideDefaultAction = config.getBoolean(configPath + ".override-default-action", false);
 
         this.allowedWorlds = config.getStringList(configPath + ".allowed-worlds");
-        this.passives = config.getStringList(configPath + ".run-passives");
+        this.passives = HashBiMap.create();
+        for (String passive : config.getStringList(configPath + ".run-passives")) {
+            String passiveName = passive.split(" ")[0];
+            if (PwingRacesAPI.getTriggerManager().getTriggerPassives().containsKey(passiveName)) {
+                this.passives.put(passive, PwingRacesAPI.getTriggerManager().getTriggerPassives().get(passiveName));
+            }
+        }
+
+        this.conditions = HashBiMap.create();
+        for (String condition : config.getStringList(configPath + ".conditions")) {
+            String conditionName = condition.split(" ")[0];
+            if (PwingRacesAPI.getTriggerManager().getConditions().containsKey(conditionName)) {
+                this.conditions.put(condition, PwingRacesAPI.getTriggerManager().getConditions().get(conditionName));
+            }
+        }
     }
 
     public abstract boolean runAbility(Player player);
