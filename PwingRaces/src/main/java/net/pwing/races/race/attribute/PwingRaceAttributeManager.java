@@ -9,13 +9,12 @@ import net.pwing.races.api.race.attribute.RaceAttribute;
 import net.pwing.races.api.race.attribute.RaceAttributeEffect;
 import net.pwing.races.api.race.attribute.RaceAttributeManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
-import net.pwing.races.api.util.math.EquationResult;
 import net.pwing.races.race.attribute.attributes.FlySpeedAttribute;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.race.attribute.attributes.WalkSpeedAttribute;
 import net.pwing.races.util.AttributeUtil;
-
 import net.pwing.races.util.math.EquationUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -77,18 +76,15 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
         }
     }
 
-    public double getAttributeBonus(Player player, String attribute) {
-        double bonus = 0;
-        for (RaceAttribute definedAttribute : getApplicableAttributes(player)) {
-            if (definedAttribute.getAttribute().replace("_", "-")
-                    .equalsIgnoreCase(attribute))
-                bonus = definedAttribute.getValue();
+    public double getAttributeBonus(Player player, String attributeStr) {
+        double value = 0;
+        for (RaceAttribute attribute : getApplicableAttributes(player)) {
+            if (!attribute.getAttribute().equalsIgnoreCase(attributeStr))
+                continue;
+
+            value += EquationUtil.getValue(value, attribute.getEquationResult());
         }
-
-        if (AttributeUtil.isBukkitAttribute(attribute))
-            bonus = AttributeUtil.getAttributeValue(player, attribute);
-
-        return bonus;
+        return value;
     }
 
     public Collection<RaceAttribute> getApplicableAttributes(Player player) {

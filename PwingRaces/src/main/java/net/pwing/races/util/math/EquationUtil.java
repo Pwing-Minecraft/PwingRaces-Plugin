@@ -1,7 +1,11 @@
 package net.pwing.races.util.math;
 
+import net.pwing.races.PwingRaces;
 import net.pwing.races.api.util.math.EquationOperator;
 import net.pwing.races.api.util.math.EquationResult;
+import net.pwing.races.util.MessageUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -11,13 +15,25 @@ import java.util.regex.Pattern;
 
 public class EquationUtil {
 
-    public static EquationResult getEquationResult(String fullString) {
+    public static EquationResult getEquationResult(Player player, String fullString) {
+        fullString = MessageUtil.getPlaceholderMessage(player, fullString);
+        try {
+            return getEquationResult(fullString);
+        } catch (ScriptException ex) {
+            Bukkit.getLogger().warning("Attribute " + fullString + " failed to solve given equation.");
+            ex.printStackTrace();
+
+            return new EquationResult(EquationOperator.ADD, 0);
+        }
+    }
+
+    public static EquationResult getEquationResult(String fullString) throws ScriptException{
         EquationOperator operator = EquationOperator.getOperator(fullString.charAt(0));
         fullString = fullString.substring(1);
         return new EquationResult(operator, parseEquation(fullString));
     }
 
-    public static double parseEquation(String fullString) {
+    public static double parseEquation(String fullString) throws ScriptException {
         Pattern pattern = Pattern.compile("\\(.*?\\)");
         Matcher matcher = pattern.matcher(fullString);
         if (matcher.find()) {
@@ -27,15 +43,10 @@ public class EquationUtil {
         return NumberUtil.getDouble(fullString);
     }
 
-    public static double solveEquation(String equation) {
+    public static double solveEquation(String equation) throws ScriptException {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        String result = null;
-        try {
-            result = engine.eval(equation).toString();
-        } catch (ScriptException ex) {
-            // Bukkit.getLogger().warning("Failed to sole the equation " + equation + ". Please make sure you entered it correctly.");
-        }
+        String result = engine.eval(equation).toString();
         return result == null ? 0 : NumberUtil.getDouble(result);
     }
 

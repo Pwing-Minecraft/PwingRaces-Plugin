@@ -124,7 +124,7 @@ public class PwingRace implements Race {
         if (raceConfig.contains("race.attributes")) {
             for (String str : raceConfig.getConfigurationSection("race.attributes").getKeys(false)) {
                 List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(str, new ArrayList<>());
-                raceAttributes.add(new PwingRaceAttribute(str, EquationUtil.getEquationResult(raceConfig.getString("race.attributes." + str)), "none"));
+                raceAttributes.add(new PwingRaceAttribute(str, raceConfig.getString("race.attributes." + str), "none"));
                 raceAttributesMap.put(str, raceAttributes);
             }
         }
@@ -180,7 +180,7 @@ public class PwingRace implements Race {
                 if (elementSection.contains("attributes")) {
                     for (String attribute : elementSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
-                        raceAttributes.add(new PwingRaceAttribute(attribute, EquationUtil.getEquationResult(elementSection.getString("attributes." + attribute)), elem));
+                        raceAttributes.add(new PwingRaceAttribute(attribute, elementSection.getString("attributes." + attribute), elem));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }
@@ -221,7 +221,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("attributes")) {
                     for (String attribute : levelSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
-                        raceAttributes.add(new PwingRaceAttribute(attribute, EquationUtil.getEquationResult(levelSection.getString("attributes." + attribute)), "level" + level));
+                        raceAttributes.add(new PwingRaceAttribute(attribute, levelSection.getString("attributes." + attribute), "level" + level));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }
