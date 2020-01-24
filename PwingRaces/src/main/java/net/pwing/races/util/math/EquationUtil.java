@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 public class EquationUtil {
 
+    private static final ScriptEngine JS_ENGINE = new ScriptEngineManager().getEngineByName("JavaScript");
+
     public static EquationResult getEquationResult(Player player, String fullString) {
         fullString = MessageUtil.getPlaceholderMessage(player, fullString);
         try {
@@ -47,10 +49,7 @@ public class EquationUtil {
     }
 
     public static double solveEquation(String equation) throws ScriptException {
-        // FIXME: This code is WAAAY too slow to be used in production. Needs to be swapped out ASAP
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        String result = engine.eval(equation).toString();
+        String result = JS_ENGINE.eval(equation).toString();
         return result == null ? 0 : NumberUtil.getDouble(result);
     }
 
