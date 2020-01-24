@@ -16,6 +16,7 @@ import net.pwing.races.api.race.trigger.condition.RaceCondition;
 import net.pwing.races.race.trigger.conditions.*;
 import net.pwing.races.race.trigger.passives.*;
 import net.pwing.races.race.trigger.triggers.*;
+import net.pwing.races.race.trigger.triggers.holder.EnvironmentTriggerHolder;
 import net.pwing.races.util.math.NumberUtil;
 
 import org.bukkit.Bukkit;
@@ -27,9 +28,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 public class PwingRaceTriggerManager implements RaceTriggerManager {
@@ -45,10 +44,10 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     public PwingRaceTriggerManager(PwingRaces plugin) {
         this.plugin = plugin;
 
-        initTriggerPassives();
+        initTriggers();
     }
 
-    public void initTriggerPassives() {
+    private void initTriggers() {
         triggerPassives.put("add-potion-effect", new AddPotionEffectTriggerPassive(plugin, "add-potion-effect"));
         triggerPassives.put("allow-flight", new AllowFlightTriggerPassive(plugin, "allow-flight"));
         triggerPassives.put("burn", new BurnTriggerPassive(plugin, "burn"));
@@ -108,18 +107,16 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerTrigger(new TameAnimalTrigger(this));
         registerTrigger(new TeleportTrigger(this));
         registerTrigger(new UseInventoryTrigger(this));
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new EnvironmentTriggerHolder(this), 1, 1);
     }
 
     public void runTriggers(Player player, String trigger) {
         if (!plugin.getRaceManager().isRacesEnabledInWorld(player.getWorld()))
             return;
 
-        Collection<RaceTrigger> raceTriggers = getApplicableTriggers(player, trigger);
-        if (raceTriggers == null || raceTriggers.isEmpty())
-            return;
-
         triggerLoop:
-        for (RaceTrigger raceTrigger : raceTriggers) {
+        for (RaceTrigger raceTrigger : getApplicableTriggers(player, trigger)) {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
@@ -131,7 +128,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
 
             // Run chance afterward so it doesnt idle
-            if ((ThreadLocalRandom.current().nextFloat() * 100) > raceTrigger.getChance())
+            if ((NumberUtil.RANDOM.nextFloat() * 100) > raceTrigger.getChance())
                 continue;
 
             // Run task synchronously
@@ -143,15 +140,14 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         if (!trigger.startsWith("ticks "))
             return;
 
-        Random random = new Random();
-        for (RaceTrigger raceTrigger : getApplicableTaskTriggers(player)) {
-            if (hasDelay(player, raceTrigger.getInternalName())) {
+        triggerLoop:
+        for (RaceTrigger raceTrigger : getApplicableTriggers(player, trigger)) {
+            if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
-            }
 
-            if (!NumberUtil.isInteger(raceTrigger.getTrigger().split(" ")[1])) {
-                plugin.getLogger().warning("Could not properly parse trigger " + raceTrigger.getTrigger() + ", expected a number but got " + trigger.split(" ")[1] + "");
-                continue;
+            for (RaceCondition condition : raceTrigger.getConditions()) {
+                if (!condition.check(player, raceTrigger.getConditionValue(condition).get().split(" ")))
+                    continue triggerLoop;
             }
 
             int tickDelay = Integer.parseInt(raceTrigger.getTrigger().split(" ")[1]);
@@ -159,9 +155,10 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                 setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
 
                 // Run chance afterward so it doesnt idle
-                if ((random.nextFloat() * 100) > raceTrigger.getChance())
+                if ((NumberUtil.RANDOM.nextFloat() * 100) > raceTrigger.getChance())
                     continue;
 
+                // Run task synchronously
                 Bukkit.getScheduler().runTask(plugin, () -> runTriggerPassives(player, raceTrigger));
             }
         }
@@ -184,6 +181,9 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             List<RaceTrigger> definedTriggers = race.getRaceTriggersMap().get(key);
 
             for (RaceTrigger definedTrigger : definedTriggers) {
+                if (!definedTrigger.getTrigger().equalsIgnoreCase(trigger))
+                    continue;
+
                 String req = definedTrigger.getRequirement();
 
                 if (req.equals("none")) {
@@ -205,18 +205,6 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                 }
             }
         }
-
-        // Remove triggers that may be overridden
-        List<String> toRemove = new ArrayList<>();
-        for (String str : triggers.keySet()) {
-            RaceTrigger raceTrigger = triggers.get(str);
-
-            if (!raceTrigger.getTrigger().equalsIgnoreCase(trigger)) {
-                toRemove.add(str);
-            }
-        }
-
-        toRemove.forEach(triggers::remove);
         return triggers.values();
     }
 
@@ -237,6 +225,9 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             List<RaceTrigger> definedTriggers = race.getRaceTriggersMap().get(key);
 
             for (RaceTrigger definedTrigger : definedTriggers) {
+                if (!definedTrigger.getTrigger().startsWith("ticks "))
+                    continue;
+
                 String req = definedTrigger.getRequirement();
 
                 if (req.equals("none")) {
@@ -259,17 +250,6 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             }
         }
 
-        // Remove triggers that may be overridden
-        List<String> toRemove = new ArrayList<>();
-        for (String str : triggers.keySet()) {
-            RaceTrigger raceTrigger = triggers.get(str);
-
-            if (!raceTrigger.getTrigger().startsWith("ticks ")) {
-                toRemove.add(str);
-            }
-        }
-
-        toRemove.forEach(triggers::remove);
         return triggers.values();
     }
 

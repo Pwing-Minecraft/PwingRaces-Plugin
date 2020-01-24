@@ -3,6 +3,7 @@ package net.pwing.races.race;
 import lombok.Getter;
 
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
@@ -75,6 +76,8 @@ public class PwingRaceManager implements RaceManager {
         levelManager = new PwingRaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);
         skilltreeManager = new PwingRaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
+
+        PwingRacesAPI.setRaceManager(this);
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
             races.add(new PwingRace(this, config.getConfig()));

@@ -33,6 +33,7 @@ public class TicksTrigger implements Listener, RaceCondition {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 plugin.getRaceManager().getTriggerManager().runTaskTriggers(player, "ticks " + tick, tick);
             }
+            tick++;
         }
     }
 }

@@ -2,7 +2,6 @@ package net.pwing.races;
 
 import lombok.Getter;
 
-import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.module.RaceModuleManager;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.compat.CompatCodeHandlerDisabled;
@@ -85,9 +84,6 @@ public class PwingRaces extends JavaPlugin {
             ex.printStackTrace();
         }
         raceManager = new PwingRaceManager(this);
-
-        PwingRacesAPI.setRaceManager(raceManager);
-        PwingRacesAPI.setModuleManager(moduleManager);
 
         if (setupPlaceholderAPI()) {
             this.getLogger().info("PlaceholderAPI found, support for placeholders enabled.");

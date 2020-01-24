@@ -1,8 +1,11 @@
 package net.pwing.races.util.math;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberUtil {
+
+	public static final Random RANDOM = ThreadLocalRandom.current();
 
 	public static boolean isInteger(String str) {
 		try {
@@ -36,7 +39,7 @@ public class NumberUtil {
 		if (isInteger(split[0]) && isInteger(split[1]))
 			return 0;
 
-		return ThreadLocalRandom.current().nextInt(Integer.parseInt(split[1]) + Integer.parseInt(split[0]));
+		return RANDOM.nextInt(Integer.parseInt(split[1]) + Integer.parseInt(split[0]));
 	}
 
 	public static boolean isDouble(String str) {
@@ -73,7 +76,7 @@ public class NumberUtil {
 
 		double rangeMin = Double.parseDouble(split[0]);
 		double rangeMax = Double.parseDouble(split[1]);
-		return rangeMin + (rangeMax - rangeMin) * ThreadLocalRandom.current().nextDouble();
+		return rangeMin + (rangeMax - rangeMin) * RANDOM.nextDouble();
 	}
 
 	public static boolean isFloat(String str) {
@@ -110,6 +113,6 @@ public class NumberUtil {
 
 		double rangeMin = Float.parseFloat(split[0]);
 		double rangeMax = Float.parseFloat(split[1]);
-		return rangeMin + (rangeMax - rangeMin) * ThreadLocalRandom.current().nextDouble();
+		return rangeMin + (rangeMax - rangeMin) * RANDOM.nextDouble();
 	}
 }
