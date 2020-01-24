@@ -37,7 +37,7 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
         Bukkit.getServer().getPluginManager().registerEvents(new RaceAttributeListener(plugin), plugin);
     }
 
-    public void initAttributeEffects() {
+    private void initAttributeEffects() {
         attributeEffects.put("fly-speed", new FlySpeedAttribute("fly-speed"));
         attributeEffects.put("max-mana", new ManaAttribute(plugin, "max-mana"));
         attributeEffects.put("walk-speed", new WalkSpeedAttribute("walk-speed"));
@@ -47,20 +47,28 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
     public void applyAttributeBonuses(Player player) {
         Map<String, List<RaceAttribute>> bundledAttributes = new HashMap<>();
         for (RaceAttribute attribute : getApplicableAttributes(player)) {
-            bundledAttributes.put(attribute.getAttribute(), bundledAttributes.getOrDefault(attribute.getAttribute(), new ArrayList<>()));
+            List<RaceAttribute> attributes = bundledAttributes.getOrDefault(attribute.getAttribute(), new ArrayList<>());
+            attributes.add(attribute);
+            bundledAttributes.put(attribute.getAttribute(), attributes);
         }
 
         for (Map.Entry<String, List<RaceAttribute>> attributeEntry : bundledAttributes.entrySet()) {
             double value = 0;
-            if (AttributeUtil.isBukkitAttribute(attributeEntry.getKey()))
+            boolean bukkitAttribute = false;
+            if (AttributeUtil.isBukkitAttribute(attributeEntry.getKey())) {
+                bukkitAttribute = true;
                 value = AttributeUtil.getDefaultAttributeValue(player, attributeEntry.getKey());
+            }
 
             for (RaceAttribute attribute : attributeEntry.getValue()) {
-                value = EquationUtil.getValue(value, attribute.getEquationResult());
+                value = EquationUtil.getValue(value, EquationUtil.getEquationResult(player, attribute.getAttributeData()));
             }
 
             if (attributeEffects.containsKey(attributeEntry.getKey()))
                 attributeEffects.get(attributeEntry.getKey()).onAttributeApply(player, value);
+
+            if (bukkitAttribute)
+                AttributeUtil.setAttributeValue(player, attributeEntry.getKey(), value);
         }
     }
 
@@ -82,7 +90,7 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
             if (!attribute.getAttribute().equalsIgnoreCase(attributeStr))
                 continue;
 
-            value += EquationUtil.getValue(value, attribute.getEquationResult());
+            value = EquationUtil.getValue(value, EquationUtil.getEquationResult(player, attribute.getAttributeData()));
         }
         return value;
     }

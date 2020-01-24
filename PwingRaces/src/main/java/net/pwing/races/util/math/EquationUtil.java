@@ -20,7 +20,7 @@ public class EquationUtil {
         try {
             return getEquationResult(fullString);
         } catch (ScriptException ex) {
-            Bukkit.getLogger().warning("Attribute " + fullString + " failed to solve given equation.");
+            Bukkit.getLogger().warning("Equation for string " + fullString + " was unable to be solved.");
             ex.printStackTrace();
 
             return new EquationResult(EquationOperator.ADD, 0);
@@ -28,6 +28,9 @@ public class EquationUtil {
     }
 
     public static EquationResult getEquationResult(String fullString) throws ScriptException{
+        if (NumberUtil.isDouble(fullString)) {
+            return new EquationResult(EquationOperator.EQUAL, NumberUtil.getDouble(fullString));
+        }
         EquationOperator operator = EquationOperator.getOperator(fullString.charAt(0));
         fullString = fullString.substring(1);
         return new EquationResult(operator, parseEquation(fullString));
@@ -44,6 +47,7 @@ public class EquationUtil {
     }
 
     public static double solveEquation(String equation) throws ScriptException {
+        // FIXME: This code is WAAAY too slow to be used in production. Needs to be swapped out ASAP
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         String result = engine.eval(equation).toString();
