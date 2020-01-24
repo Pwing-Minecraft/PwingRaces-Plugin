@@ -61,6 +61,8 @@ public class PwingRaceManager implements RaceManager {
     public PwingRaceManager(PwingRaces plugin) {
         this.plugin = plugin;
 
+        PwingRacesAPI.setRaceManager(this);
+
         initRaces();
     }
 
@@ -76,8 +78,6 @@ public class PwingRaceManager implements RaceManager {
         levelManager = new PwingRaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);
         skilltreeManager = new PwingRaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
-
-        PwingRacesAPI.setRaceManager(this);
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
             races.add(new PwingRace(this, config.getConfig()));
