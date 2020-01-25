@@ -1,9 +1,9 @@
 package net.pwing.races.util.math;
 
-import net.pwing.races.PwingRaces;
 import net.pwing.races.api.util.math.EquationOperator;
 import net.pwing.races.api.util.math.EquationResult;
 import net.pwing.races.util.MessageUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
