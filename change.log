@@ -3,6 +3,7 @@ v1.4.0
 - Added support for operators in attributes
 - Added support for math equations in attributes (PlaceholderAPI supported)
 - Added support for modded blocks/items when running hybrid server softwares (Magma, Lava, etc.)
+- Added 'reclaim-skillpoints' trigger
 - Modified 'fly' and 'allow-flight' trigger passives to have toggle options
 - Updated API and cleaned up some areas
 - Dropped support for 1.9 - 1.11
