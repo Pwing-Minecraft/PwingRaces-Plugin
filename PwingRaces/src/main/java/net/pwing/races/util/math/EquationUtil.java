@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,12 +31,12 @@ public class EquationUtil {
     }
 
     public static EquationResult getEquationResult(String fullString) throws ScriptException{
-        if (NumberUtil.isDouble(fullString)) {
+        // Check first char only since +(value) is a valid number (e.g. +1)
+         Optional<EquationOperator> operator = EquationOperator.getOperator(fullString.charAt(0));
+        if (!operator.isPresent()) {
             return new EquationResult(EquationOperator.EQUAL, NumberUtil.getDouble(fullString));
         }
-        EquationOperator operator = EquationOperator.getOperator(fullString.charAt(0));
-        fullString = fullString.substring(1);
-        return new EquationResult(operator, parseEquation(fullString));
+        return new EquationResult(operator.get(), parseEquation(fullString.substring(1)));
     }
 
     public static double parseEquation(String fullString) throws ScriptException {
