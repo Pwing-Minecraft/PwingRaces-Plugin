@@ -140,6 +140,7 @@ public class PwingRaces extends JavaPlugin {
             configManager = null;
 
             HandlerList.unregisterAll(this);
+            this.getServer().getScheduler().cancelTasks(this);
 
             reloadConfig();
             configManager = new RaceConfigurationManager(this);
