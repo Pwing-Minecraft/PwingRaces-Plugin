@@ -4,6 +4,7 @@ import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceChangeEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
+import net.pwing.races.api.events.RaceReclaimSkillpointsEvent;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 
@@ -40,11 +41,18 @@ public class RaceAttributeListener implements Listener {
     }
 
     @EventHandler
-    public void onRaceChangeEvent(RaceChangeEvent event) {
+    public void onRaceChange(RaceChangeEvent event) {
         if (event.isCancelled())
             return;
 
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
+        Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer()), 20);
+    }
+
+    @EventHandler
+    public void onRaceReclaimSkillpoints(RaceReclaimSkillpointsEvent event) {
+        if (event.isCancelled())
+            return;
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer()), 20);
     }
