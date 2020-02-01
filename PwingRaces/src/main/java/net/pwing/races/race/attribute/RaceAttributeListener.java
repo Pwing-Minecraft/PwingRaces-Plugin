@@ -37,6 +37,9 @@ public class RaceAttributeListener implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(event.getPlayer());
+        racePlayer.getTemporaryAttributes().clear();
+
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
     }
 
@@ -44,6 +47,9 @@ public class RaceAttributeListener implements Listener {
     public void onRaceChange(RaceChangeEvent event) {
         if (event.isCancelled())
             return;
+
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(event.getPlayer());
+        racePlayer.getTemporaryAttributes().clear();
 
         plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(event.getPlayer());
         Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(event.getPlayer()), 20);
