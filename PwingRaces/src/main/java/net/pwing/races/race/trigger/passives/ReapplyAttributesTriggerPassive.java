@@ -22,6 +22,10 @@ public class ReapplyAttributesTriggerPassive extends RaceTriggerPassive {
         if (!racePlayer.hasRace())
             return;
 
+        if (trigger.length > 1 && Boolean.parseBoolean(trigger[0])) {
+            racePlayer.getTemporaryAttributes().clear();
+        }
+
         plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(player);
     }
 }

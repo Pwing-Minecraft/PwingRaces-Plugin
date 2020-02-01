@@ -22,21 +22,28 @@ public class SetAttributeTriggerPassive extends RaceTriggerPassive {
 
     @Override
     public void runTriggerPassive(Player player, String[] trigger) {
-        if (trigger.length < 4)
+        if (trigger.length < 3)
             return;
+
 
         String attribute = trigger[1];
         EquationResult result = EquationUtil.getEquationResult(player, trigger[2]);
-        long duration = Long.parseLong(trigger[3]);
+
+        long duration = -1;
+        if (trigger.length >= 4)
+            duration = Long.parseLong(trigger[3]);
+
         if (AttributeUtil.isBukkitAttribute(attribute))
             AttributeUtil.setAttributeValue(player, attribute, result.getResult());
 
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         racePlayer.getTemporaryAttributes().put(attribute, result);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            racePlayer.getTemporaryAttributes().remove(attribute);
-            plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(player);
-        }, duration);
+        if (duration > -1) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                racePlayer.getTemporaryAttributes().remove(attribute);
+                plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(player);
+            }, duration);
+        }
         plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(player);
     }
 }
