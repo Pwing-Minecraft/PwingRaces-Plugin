@@ -195,7 +195,7 @@ public class PwingRaceMenu implements RaceMenu {
                             return;
                         }
 
-                        racePlayer.setActiveRace(event.getNewRace());
+                        racePlayer.setRace(event.getNewRace());
 
                         // This needs to be called again for the new race as well
                         plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change");
