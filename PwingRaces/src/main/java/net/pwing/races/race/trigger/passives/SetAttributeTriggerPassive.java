@@ -1,14 +1,14 @@
 package net.pwing.races.race.trigger.passives;
 
 import net.pwing.races.PwingRaces;
-import net.pwing.races.api.race.attribute.RaceAttributeEffect;
+import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.RaceTriggerPassive;
+import net.pwing.races.api.util.math.EquationResult;
 import net.pwing.races.util.AttributeUtil;
-import net.pwing.races.util.math.NumberUtil;
+import net.pwing.races.util.math.EquationUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
 
 public class SetAttributeTriggerPassive extends RaceTriggerPassive {
 
@@ -22,21 +22,21 @@ public class SetAttributeTriggerPassive extends RaceTriggerPassive {
 
     @Override
     public void runTriggerPassive(Player player, String[] trigger) {
-        if (trigger.length < 3)
+        if (trigger.length < 4)
             return;
-
-        if (!NumberUtil.isFloat(trigger[2])) {
-            plugin.getLogger().warning("Attribute value " + trigger[2] + " for trigger " + trigger + " is not a number (float expected).");
-            return;
-        }
 
         String attribute = trigger[1];
-        float value = Float.parseFloat(trigger[2]);
+        EquationResult result = EquationUtil.getEquationResult(player, trigger[2]);
+        long duration = Long.parseLong(trigger[3]);
         if (AttributeUtil.isBukkitAttribute(attribute))
-            AttributeUtil.setAttributeValue(player, attribute, value);
+            AttributeUtil.setAttributeValue(player, attribute, result.getResult());
 
-        Map<String, RaceAttributeEffect> attributeEffects = plugin.getRaceManager().getAttributeManager().getAttributeEffects();
-        if (attributeEffects.containsKey(attribute))
-            attributeEffects.get(attribute).onAttributeApply(player, value);
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        racePlayer.getTemporaryAttributes().put(attribute, result);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            racePlayer.getTemporaryAttributes().remove(attribute);
+            plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(player);
+        }, duration);
+        plugin.getRaceManager().getAttributeManager().applyAttributeBonuses(player);
     }
 }

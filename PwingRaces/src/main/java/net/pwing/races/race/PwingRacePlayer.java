@@ -22,6 +22,7 @@ public class PwingRacePlayer implements RacePlayer {
 	private Race race;
 	
 	private Map<String, RaceData> raceDataMap;
+	private Map<String, Double> temporaryAttributes;
 
 	public Optional<Race> getRace() {
 		return Optional.ofNullable(race);
