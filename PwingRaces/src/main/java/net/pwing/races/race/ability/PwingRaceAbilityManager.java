@@ -181,10 +181,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
                     plugin.getLogger().warning("Attempted to find ability with name " + abilityClassName + ", but nothing was found.");
                     return Optional.empty();
                 }
-                plugin.getLogger().info("Loading custom ability " + abilityClassName);
                 abilityClass = Class.forName(abilityClassName).asSubclass(RaceAbility.class);
-
-                plugin.getLogger().info("Successfully loaded custom ability module " + abilityClassName + "!");
             } catch (ClassNotFoundException ex2) {
                 plugin.getLogger().warning("Attempted to find custom ability with class path " + abilityClassName + ", but nothing was found.");
                 return Optional.empty();
