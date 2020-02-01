@@ -7,6 +7,7 @@ import lombok.Setter;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RacePlayer;
+import net.pwing.races.api.util.math.EquationResult;
 
 import org.bukkit.OfflinePlayer;
 
@@ -22,7 +23,7 @@ public class PwingRacePlayer implements RacePlayer {
 	private Race race;
 	
 	private Map<String, RaceData> raceDataMap;
-	private Map<String, Double> temporaryAttributes;
+	private Map<String, EquationResult> temporaryAttributes;
 
 	public Optional<Race> getRace() {
 		return Optional.ofNullable(race);
