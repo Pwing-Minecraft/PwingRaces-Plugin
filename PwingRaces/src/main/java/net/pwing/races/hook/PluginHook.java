@@ -22,7 +22,7 @@ public abstract class PluginHook {
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
 		if (plugin == null) {
-			owningPlugin.getLogger().info(pluginName + " not found, anything that hooks into this plugin will be disabled.");
+			owningPlugin.getLogger().info(pluginName + " not found, anything Pwing Races hooks for this plugin will be disabled.");
 			return;
 		}
 
