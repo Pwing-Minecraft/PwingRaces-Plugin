@@ -117,7 +117,7 @@ public class ItemBuilder {
 	public ItemBuilder setOwner(String owner) {
 		if (stack.getItemMeta() instanceof SkullMeta) {
 			SkullMeta meta = (SkullMeta) stack.getItemMeta();
-			meta.setOwner(owner);
+			meta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
 			stack.setItemMeta(meta);
 		}
 		return this;
