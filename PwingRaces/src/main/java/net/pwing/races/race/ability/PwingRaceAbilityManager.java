@@ -38,7 +38,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
 
         Race race = racePlayer.getRace().get();
         Collection<RaceAbility> raceAbilities = getApplicableAbilities(player, race);
-        if (raceAbilities == null || raceAbilities.isEmpty())
+        if (raceAbilities.isEmpty())
             return;
 
         for (RaceAbility ability : raceAbilities) {
@@ -177,7 +177,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         } catch (ClassNotFoundException ex) {
             try {
                 // Assume it's a custom ability and the path is defined
-                if (abilityClassName == null || abilityClassName.isEmpty()) {
+                if (abilityClassName.isEmpty()) {
                     plugin.getLogger().warning("Attempted to find ability with name " + abilityClassName + ", but nothing was found.");
                     return Optional.empty();
                 }

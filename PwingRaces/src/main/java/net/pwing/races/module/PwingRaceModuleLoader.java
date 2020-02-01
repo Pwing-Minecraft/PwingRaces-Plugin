@@ -127,11 +127,11 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
         }
     }
 
-    private Field getField(Class clazz, String fieldName) throws NoSuchFieldException {
+    private Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            Class superClass = clazz.getSuperclass();
+            Class<?> superClass = clazz.getSuperclass();
             if (superClass == null) {
                 throw e;
             } else {

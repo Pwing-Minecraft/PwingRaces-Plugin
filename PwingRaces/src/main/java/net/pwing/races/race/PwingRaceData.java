@@ -8,6 +8,7 @@ import net.pwing.races.config.RaceConfiguration;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +59,6 @@ public class PwingRaceData implements RaceData {
 		if (name.equals(raceName.toLowerCase()))
 			return true;
 
-		if (getPurchasedElements(skillTree) == null)
-			return false;
-
 		return getPurchasedElements(skillTree).contains(name);
 	}
 
@@ -80,6 +78,6 @@ public class PwingRaceData implements RaceData {
 	}
 
 	public List<String> getPurchasedElements(String skillTree) {
-		return purchasedElementsMap.get(skillTree);
+		return !purchasedElementsMap.containsKey(skillTree) ? new ArrayList<>() : purchasedElementsMap.get(skillTree);
 	}
 }

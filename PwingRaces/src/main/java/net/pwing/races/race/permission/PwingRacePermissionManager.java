@@ -40,7 +40,7 @@ public class PwingRacePermissionManager implements RacePermissionManager {
         }
 
         Collection<RacePermission> racePermissions = getApplicablePermissions(player);
-        if (racePermissions == null || racePermissions.isEmpty())
+        if (racePermissions.isEmpty())
             return;
 
         for (RacePermission perm : racePermissions) {
@@ -66,7 +66,7 @@ public class PwingRacePermissionManager implements RacePermissionManager {
         }
 
         Collection<RacePermission> racePermissions = getApplicablePermissions(player);
-        if (racePermissions == null || racePermissions.isEmpty())
+        if (racePermissions.isEmpty())
             return;
 
         for (RacePermission perm : racePermissions) {

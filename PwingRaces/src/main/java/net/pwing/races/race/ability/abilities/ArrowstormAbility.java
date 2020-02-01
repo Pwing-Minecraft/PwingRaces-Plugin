@@ -50,7 +50,7 @@ public class ArrowstormAbility extends PwingRaceAbility {
 
     @Override
     public boolean runAbility(Player player) {
-        Block block = player.getTargetBlock((Set<Material>) null, 10);
+        Block block = player.getTargetBlock(null, 10);
 
         if (block == null || block.getType() == Material.AIR)
             return false;
