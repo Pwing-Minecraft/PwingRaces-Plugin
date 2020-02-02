@@ -4,6 +4,7 @@ v1.4.0
 - Added support for math equations in attributes (PlaceholderAPI supported)
 - Added support for modded blocks/items when running hybrid server softwares (Magma, Lava, etc.)
 - Added 'reclaim-skillpoints' trigger
+- Added 'moon-phase' trigger
 - Expanded upon 'set-attribute' trigger passive to allow for more customization (to better support the new conditions)
 - Modified 'fly' and 'allow-flight' trigger passives to have toggle options
 - Updated and cleaned up parts of the API
