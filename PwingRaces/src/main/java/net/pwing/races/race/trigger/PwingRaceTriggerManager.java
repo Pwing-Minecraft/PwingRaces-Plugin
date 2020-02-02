@@ -122,9 +122,11 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
-            for (RaceCondition condition : raceTrigger.getConditions()) {
-                if (!condition.check(player, raceTrigger.getConditionValue(condition).get().split(" ")))
-                    continue triggerLoop;
+            for (String fullCondition : raceTrigger.getConditions().keys()) {
+                for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
+                    if (!condition.check(player, fullCondition.split(" ")))
+                        continue triggerLoop;
+                }
             }
 
             setDelay(player, raceTrigger.getInternalName(), raceTrigger.getDelay());
@@ -147,9 +149,11 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
-            for (RaceCondition condition : raceTrigger.getConditions()) {
-                if (!condition.check(player, raceTrigger.getConditionValue(condition).get().split(" ")))
-                    continue triggerLoop;
+            for (String fullCondition : raceTrigger.getConditions().keys()) {
+                for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
+                    if (!condition.check(player, fullCondition.split(" ")))
+                        continue triggerLoop;
+                }
             }
 
             int tickDelay = Integer.parseInt(raceTrigger.getTrigger().split(" ")[1]);
@@ -256,7 +260,8 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     }
 
     public void runTriggerPassives(Player player, RaceTrigger trigger) {
-        trigger.getPassives().forEach(passive -> passive.runTriggerPassive(player, trigger.getPassiveValue(passive).get().split(" ")));
+        trigger.getPassives().keySet().forEach(fullPassive -> trigger.getPassives().get(fullPassive).forEach(passive -> passive.runPassive(player, fullPassive)));
+        // trigger.getPassives().forEach(passive -> passive.runTriggerPassive(player, trigger.getPassiveValue(passive).get().split(" ")));
     }
 
     public boolean hasDelay(Player player, String trigger) {
