@@ -23,7 +23,7 @@ public class AddPotionEffectTriggerPassive extends RaceTriggerPassive {
     public void runTriggerPassive(Player player, String[] trigger) {
         PotionEffectType effectType = PotionEffectType.getByName(trigger[1]);
         if (effectType == null) {
-            plugin.getLogger().warning("PotionEffectType " + effectType + " for trigger " + trigger + " is invalid.");
+            plugin.getLogger().warning("PotionEffectType " + trigger[1] + " for trigger " + trigger + " is invalid.");
             return;
         }
 
