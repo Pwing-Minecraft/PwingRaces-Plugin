@@ -14,21 +14,21 @@ public class MoonPhaseCondition implements RaceCondition {
         int phase = (int) (time / 24000) % 8;
         switch (phase) {
             case 0:
-                return args[0].equalsIgnoreCase("full");
+                return args[1].equalsIgnoreCase("full");
             case 1:
-                return args[0].equalsIgnoreCase("waning gibbous");
+                return args[1].equalsIgnoreCase("waning gibbous");
             case 2:
-                return args[0].equalsIgnoreCase("last quarter");
+                return args[1].equalsIgnoreCase("last quarter");
             case 3:
-                return args[0].equalsIgnoreCase("waning crescent");
+                return args[1].equalsIgnoreCase("waning crescent");
             case 4:
-                return args[0].equalsIgnoreCase("new");
+                return args[1].equalsIgnoreCase("new");
             case 5:
-                return args[0].equalsIgnoreCase("waxing crescent");
+                return args[1].equalsIgnoreCase("waxing crescent");
             case 6:
-                return args[0].equalsIgnoreCase("first quarter");
+                return args[1].equalsIgnoreCase("first quarter");
             case 7:
-                return args[0].equalsIgnoreCase("waxing gibbous");
+                return args[1].equalsIgnoreCase("waxing gibbous");
             default:
                 return false;
         }

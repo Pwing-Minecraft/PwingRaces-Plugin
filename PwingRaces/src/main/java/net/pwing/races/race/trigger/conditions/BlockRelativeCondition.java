@@ -15,8 +15,8 @@ public class BlockRelativeCondition implements RaceCondition {
             return false;
 
         try {
-            BlockFace face = BlockFace.valueOf(args[0]);
-            SafeMaterialData material = RaceMaterial.fromString(args[1]);
+            BlockFace face = BlockFace.valueOf(args[1].toUpperCase());
+            SafeMaterialData material = RaceMaterial.fromString(args[2]);
             if (material.getMaterial() == null)
                 return false;
 

@@ -11,6 +11,6 @@ public class InWorldCondition implements RaceCondition {
         if (args.length < 2)
             return false;
 
-        return player.getWorld().getName().equals(args[0]);
+        return player.getWorld().getName().equals(args[1]);
     }
 }
