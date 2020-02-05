@@ -125,8 +125,13 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
 
             for (String fullCondition : raceTrigger.getConditions().keySet()) {
                 for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
-                    if (!condition.check(player, fullCondition.split(" ")))
-                        continue triggerLoop;
+                    if (fullCondition.startsWith("!")) {
+                        if (condition.check(player, fullCondition.substring(1).split(" ")))
+                            continue triggerLoop;
+                    } else {
+                        if (!condition.check(player, fullCondition.split(" ")))
+                            continue triggerLoop;
+                    }
                 }
             }
 
@@ -152,8 +157,13 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
 
             for (String fullCondition : raceTrigger.getConditions().keySet()) {
                 for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
-                    if (!condition.check(player, fullCondition.split(" ")))
-                        continue triggerLoop;
+                    if (fullCondition.startsWith("!")) {
+                        if (condition.check(player, fullCondition.substring(1).split(" ")))
+                            continue triggerLoop;
+                    } else {
+                        if (!condition.check(player, fullCondition.split(" ")))
+                            continue triggerLoop;
+                    }
                 }
             }
 
