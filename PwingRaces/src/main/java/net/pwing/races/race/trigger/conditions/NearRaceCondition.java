@@ -22,12 +22,12 @@ public class NearRaceCondition implements RaceCondition {
         if (args.length < 4)
             return false;
 
-        Optional<Race> race = raceManager.getRaceFromName(args[0]);
+        Optional<Race> race = raceManager.getRaceFromName(args[1]);
         if (!race.isPresent())
             return false;
 
-        double radius = NumberUtil.getDouble(args[1]);
-        int requiredNearby = NumberUtil.getInteger(args[2]);
+        double radius = NumberUtil.getDouble(args[2]);
+        int requiredNearby = NumberUtil.getInteger(args[3]);
         return RaceUtil.getNearbyRaceCount(player.getLocation(), race.get(), radius) >= requiredNearby;
     }
 }
