@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
-import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.trigger.condition.RaceCondition;
+import net.pwing.races.util.RaceUtil;
 import net.pwing.races.util.math.NumberUtil;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -29,19 +28,6 @@ public class NearRaceCondition implements RaceCondition {
 
         double radius = NumberUtil.getDouble(args[1]);
         int requiredNearby = NumberUtil.getInteger(args[2]);
-        int nearby = 0;
-        for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
-            if (!(entity instanceof Player))
-                continue;
-
-            RacePlayer racePlayer = raceManager.getRacePlayer((Player) entity);
-            if (!racePlayer.getRace().isPresent())
-                continue;
-
-            if (racePlayer.getRace().get().equals(race.get()))
-                nearby += 1;
-        }
-
-        return nearby >= requiredNearby;
+        return RaceUtil.getNearbyRaceCount(player.getLocation(), race.get(), radius) >= requiredNearby;
     }
 }

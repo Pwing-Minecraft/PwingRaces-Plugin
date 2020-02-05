@@ -6,6 +6,8 @@ import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.PwingRaces;
 
+import net.pwing.races.util.RaceUtil;
+import net.pwing.races.util.math.NumberUtil;
 import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
@@ -61,6 +63,17 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return String.valueOf(data.getUsedSkillpoints());
             case "unused_skillpoints":
                 return String.valueOf(data.getUnusedSkillpoints());
+        }
+
+        if (params.startsWith("nearby_race_")) {
+            String[] split = params.split("_");
+            if (split.length < 4)
+                return "";
+
+            double radius = NumberUtil.getDouble(split[3]);
+            return plugin.getRaceManager().getRaceFromName(split[2])
+                    .map(value -> String.valueOf(RaceUtil.getNearbyRaceCount(player.getLocation(), value, radius)))
+                    .orElse("");
         }
 
         return "";
