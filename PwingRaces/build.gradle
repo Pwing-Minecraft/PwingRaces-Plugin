@@ -1,0 +1,26 @@
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    compileOnly 'net.milkbowl.vault:Vault:1.7.3'
+    compileOnly 'com.sk89q:worldedit:6.0.0-SNAPSHOT'
+    compileOnly 'com.sk89q:worldguard:6.0.0-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.9.2'
+    compileOnly 'LibsDisguises:LibsDisguises:9.9.1'
+    compileOnly 'com.github.TheComputerGeek2:MagicSpells:3.5-Release'
+    compileOnly ':LoreAttributesRecoded'
+    compileOnly ':Quests'
+    compileOnly ':MythicMobs'
+
+    compileOnly 'org.bstats:bstats-bukkit:1.4'
+    compileOnly project(":PwingRaces-API")
+}
+
+processResources {
+    expand([
+            "name": parent.rootProject.name,
+            "version": parent.version, // FIXME lel
+            "description": parent.description
+    ])
+}

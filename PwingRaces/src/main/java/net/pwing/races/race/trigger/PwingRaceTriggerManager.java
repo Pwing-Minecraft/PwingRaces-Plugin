@@ -122,7 +122,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
-            for (String fullCondition : raceTrigger.getConditions().keys()) {
+            for (String fullCondition : raceTrigger.getConditions().keySet()) {
                 for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
                     if (!condition.check(player, fullCondition.split(" ")))
                         continue triggerLoop;
@@ -149,7 +149,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
-            for (String fullCondition : raceTrigger.getConditions().keys()) {
+            for (String fullCondition : raceTrigger.getConditions().keySet()) {
                 for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
                     if (!condition.check(player, fullCondition.split(" ")))
                         continue triggerLoop;

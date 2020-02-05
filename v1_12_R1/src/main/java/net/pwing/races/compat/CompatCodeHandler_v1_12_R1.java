@@ -10,8 +10,6 @@ import net.pwing.races.util.UUIDFetcher;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -24,14 +22,6 @@ public class CompatCodeHandler_v1_12_R1 extends CompatCodeHandlerDisabled {
 		super(plugin);
 
 		this.plugin = plugin;
-	}
-
-	public void setOwner(ItemStack item, String owner) {
-		if (item.getItemMeta() instanceof SkullMeta) {
-			SkullMeta meta = (SkullMeta) item.getItemMeta();
-			meta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
-			item.setItemMeta(meta);
-		}
 	}
 
 	@Override

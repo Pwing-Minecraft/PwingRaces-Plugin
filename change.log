@@ -8,6 +8,7 @@ v1.4.0
 - Expanded upon 'set-attribute' trigger passive to allow for more customization (to better support the new conditions)
 - Modified 'fly' and 'allow-flight' trigger passives to have toggle options
 - Updated and cleaned up parts of the API
+- Converted project (and API) to Gradle
 - Dropped support for 1.9 - 1.11
 
 v1.3.0

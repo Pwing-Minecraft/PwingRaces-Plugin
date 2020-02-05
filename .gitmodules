@@ -1,0 +1,3 @@
+[submodule "PwingRaces-API"]
+	path = PwingRaces-API
+	url = https://github.com/Pwing-Minecraft/PwingRaces-API.git

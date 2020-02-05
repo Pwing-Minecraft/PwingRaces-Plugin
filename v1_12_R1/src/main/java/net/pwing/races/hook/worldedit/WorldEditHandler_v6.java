@@ -31,7 +31,6 @@ public class WorldEditHandler_v6 implements IWorldEditHandler {
         EditSession session = we.getEditSessionFactory().getEditSession(new BukkitWorld(loc.getWorld()), -1);
         try {
             MCEditSchematicFormat.getFormat(schematic).load(file).paste(session, new Vector(loc.getX(), loc.getY(), loc.getZ()), false);
-            return;
         } catch (MaxChangedBlocksException | com.sk89q.worldedit.data.DataException | IOException ex) {
             ex.printStackTrace();
         }

@@ -1,7 +1,7 @@
 main: net.pwing.races.PwingRaces
-name: ${project.name}
-description: ${project.description}
-version: ${revision}
+name: $name
+description: $description
+version: $version
 api-version: 1.13
 author: Redned
 website: http://pwing.net
