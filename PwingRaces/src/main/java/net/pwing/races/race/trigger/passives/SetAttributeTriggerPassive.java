@@ -25,7 +25,6 @@ public class SetAttributeTriggerPassive extends RaceTriggerPassive {
         if (trigger.length < 3)
             return;
 
-
         String attribute = trigger[1];
         EquationResult result = EquationUtil.getEquationResult(player, trigger[2]);
 

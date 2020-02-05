@@ -65,7 +65,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return String.valueOf(data.getUnusedSkillpoints());
         }
 
-        if (params.startsWith("nearby_race_")) {
+        if (params.startsWith("near_race_")) {
             String[] split = params.split("_");
             if (split.length < 4)
                 return "";
