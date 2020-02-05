@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class RaceUtil {
 
     public static int getNearbyRaceCount(Location loc, Race race, double radius) {
-        int nearby = 0;
+        int nearby = -1; // since the player is included in the operation below
         for (Entity nearbyEntity : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
             if (!(nearbyEntity instanceof Player))
                 continue;
@@ -23,6 +23,6 @@ public class RaceUtil {
             if (racePlayer.getRace().get().equals(race))
                 nearby += 1;
         }
-        return nearby;
+        return Math.max(nearby, 0);
     }
 }
