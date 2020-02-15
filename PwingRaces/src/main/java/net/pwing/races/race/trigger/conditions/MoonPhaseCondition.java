@@ -16,19 +16,19 @@ public class MoonPhaseCondition implements RaceCondition {
             case 0:
                 return args[1].equalsIgnoreCase("full");
             case 1:
-                return args[1].equalsIgnoreCase("waning gibbous");
+                return args[1].equalsIgnoreCase("waning_gibbous");
             case 2:
-                return args[1].equalsIgnoreCase("last quarter");
+                return args[1].equalsIgnoreCase("last_quarter");
             case 3:
-                return args[1].equalsIgnoreCase("waning crescent");
+                return args[1].equalsIgnoreCase("waning_crescent");
             case 4:
                 return args[1].equalsIgnoreCase("new");
             case 5:
-                return args[1].equalsIgnoreCase("waxing crescent");
+                return args[1].equalsIgnoreCase("waxing_crescent");
             case 6:
-                return args[1].equalsIgnoreCase("first quarter");
+                return args[1].equalsIgnoreCase("first_quarter");
             case 7:
-                return args[1].equalsIgnoreCase("waxing gibbous");
+                return args[1].equalsIgnoreCase("waxing_gibbous");
             default:
                 return false;
         }
