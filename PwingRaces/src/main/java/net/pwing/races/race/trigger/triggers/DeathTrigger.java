@@ -38,6 +38,6 @@ public class DeathTrigger implements Listener {
         if (!targetRacePlayer.getRace().isPresent())
             return;
 
-        triggerManager.runTriggers(player, "killed-by" + targetRacePlayer.getRace().get().getName());
+        triggerManager.runTriggers(player, "killed-by " + targetRacePlayer.getRace().get().getName());
     }
 }
