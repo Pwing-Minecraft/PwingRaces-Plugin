@@ -20,7 +20,7 @@ dependencies {
 processResources {
     expand([
             "name": parent.rootProject.name,
-            "version": parent.version, // FIXME lel
+            "version": parent.version,
             "description": parent.description
     ])
 }
