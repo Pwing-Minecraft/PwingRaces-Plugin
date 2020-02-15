@@ -1,6 +1,7 @@
 package net.pwing.races.race.ability;
 
 import com.google.common.collect.HashBiMap;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.race.ability.RaceAbility;
@@ -93,9 +94,6 @@ public abstract class PwingRaceAbility extends RaceAbility {
     @Override
     public boolean canRun(Player player, ItemStack stack) {
         ItemStack hand = player.getInventory().getItemInMainHand();
-        if (hand == null)
-            return false;
-
         if (stack == null)
             return false;
 

@@ -68,8 +68,6 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
 
         if (ability.runAbility(player)) {
             setCooldown(player, ability.getInternalName(), ability.getCooldown());
-
-            RaceTriggerManager triggerManager = plugin.getRaceManager().getTriggerManager();
             runPassives(player, ability);
             return true;
         }

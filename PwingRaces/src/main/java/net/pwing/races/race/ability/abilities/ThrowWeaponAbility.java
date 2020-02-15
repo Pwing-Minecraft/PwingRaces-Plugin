@@ -1,9 +1,5 @@
 package net.pwing.races.race.ability.abilities;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
 import net.pwing.races.util.RaceMaterial;
@@ -22,6 +18,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class ThrowWeaponAbility extends PwingRaceAbility {
 
@@ -107,7 +107,7 @@ public class ThrowWeaponAbility extends PwingRaceAbility {
                 Vector vec = weaponStart.clone().getDirection();
                 Location frontLoc = stand.getLocation().clone().add(0D, yOffset + 1.5D, 0D).add(vec);
                 Collection<Entity> entities = stand.getLocation().clone().add(0D, 1D, 0D).getWorld().getNearbyEntities(frontLoc, 1D, 1D, 1D);
-                if (entities != null && !entities.isEmpty()) {
+                if (!entities.isEmpty()) {
                     for (Entity entity : entities) {
                         // if (i < hitDelay)
                         //     break;

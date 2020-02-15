@@ -17,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -201,13 +202,14 @@ public class RaceExecutor extends RaceCommandExecutor {
     @RaceCommand(commands = "reload", description = "Reload the race plugin.", permissionNode = "reload", overrideDisabled = true)
     public boolean reloadRaces(CommandSender sender) {
         sender.sendMessage(MessageUtil.getPrefix() + " Reloading PwingRaces...");
-
+        long startTime = System.currentTimeMillis();
         if (!plugin.reloadPlugin()) {
-            sender.sendMessage(MessageUtil.getPrefix() + ChatColor.RED + " An error occured when reloading the plugin. Please check the console for more details!");
+            sender.sendMessage(MessageUtil.getPrefix() + ChatColor.RED + " An error occurred when reloading the plugin. Please check the console for more details!");
             return true;
         }
 
-        sender.sendMessage(MessageUtil.getPrefix() + " PwingRaces successfully reloaded!");
+        double completeTime = (System.currentTimeMillis() - startTime) / 1000D;
+        sender.sendMessage(MessageUtil.getPrefix() + " PwingRaces successfully reloaded (" + new DecimalFormat("#.###").format(completeTime) + "s)!");
         return true;
     }
 
