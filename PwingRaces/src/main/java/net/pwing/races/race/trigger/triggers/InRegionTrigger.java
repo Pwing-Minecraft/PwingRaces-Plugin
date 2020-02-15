@@ -37,13 +37,17 @@ public class InRegionTrigger implements RaceCondition {
         @Override
         public void run() {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                plugin.getWorldGuardHook().getRegions(player.getLocation()).forEach(region ->
-                        plugin.getRaceManager().getTriggerManager().runTriggers(player, "in-region " + region));
+                if (!plugin.getWorldGuardHook().getRegions(player.getLocation()).isEmpty()) {
+                    plugin.getWorldGuardHook().getRegions(player.getLocation()).forEach(region ->
+                            plugin.getRaceManager().getTriggerManager().runTriggers(player, "in-region " + region));
+                }
 
                 if (plugin.getWorldGuardHook().getLastRegionsCache().containsKey(player.getUniqueId())) {
                     List<String> leftRegions = plugin.getWorldGuardHook().getLastRegionsCache().get(player.getUniqueId());
-                    leftRegions.removeAll(plugin.getWorldGuardHook().getRegions(player.getLocation()));
-                    leftRegions.forEach(region -> plugin.getRaceManager().getTriggerManager().runTriggers(player, "leave-region " + region));
+                    if (!leftRegions.isEmpty()) {
+                        leftRegions.removeAll(plugin.getWorldGuardHook().getRegions(player.getLocation()));
+                        leftRegions.forEach(region -> plugin.getRaceManager().getTriggerManager().runTriggers(player, "leave-region " + region));
+                    }
                 }
 
                 plugin.getWorldGuardHook().getLastRegionsCache().put(player.getUniqueId(), plugin.getWorldGuardHook().getRegions(player.getLocation()));
