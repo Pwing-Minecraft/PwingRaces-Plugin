@@ -20,8 +20,9 @@ public class FishTrigger implements Listener {
             return;
 
         triggerManager.runTriggers(event.getPlayer(), "fish");
-        triggerManager.runTriggers(event.getPlayer(), "fish " + event.getCaught().getType().name().toLowerCase());
-
+        if (event.getCaught() != null) {
+            triggerManager.runTriggers(event.getPlayer(), "fish " + event.getCaught().getType().name().toLowerCase());
+        }
         if (event.getCaught() instanceof Item) {
             Item item = (Item) event.getCaught();
             triggerManager.runTriggers(event.getPlayer(), "fish " + item.getItemStack().getType().name().toLowerCase());
