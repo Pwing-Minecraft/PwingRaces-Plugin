@@ -177,9 +177,9 @@ public class RaceExecutor extends RaceCommandExecutor {
         }
 
         racePlayer.getRaceData(event.getRace()).setUnlocked(true);
-        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-unlocked-new-race", "%prefix% Successfully unlocked %race% for %player_name%!").replace("%race%", race.getDisplayName())));
+        sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("set-unlocked-new-race", "%prefix% Successfully unlocked %race% for %player_name%!").replace("%race%", ChatColor.stripColor(race.getDisplayName()))));
         if (player.isOnline()) {
-            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("unlocked-new-race", "%prefix% You have unlocked the race %race%!").replace("%race%", race.getDisplayName())));
+            sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("unlocked-new-race", "%prefix% You have unlocked the race %race%!").replace("%race%", ChatColor.stripColor(race.getDisplayName()))));
         }
         return true;
     }
