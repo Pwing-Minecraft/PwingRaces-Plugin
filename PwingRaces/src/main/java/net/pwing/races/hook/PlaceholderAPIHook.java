@@ -72,7 +72,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
             double radius = NumberUtil.getDouble(split[3]);
             return plugin.getRaceManager().getRaceFromName(split[2])
-                    .map(value -> String.valueOf(RaceUtil.getNearbyRaceCount(player.getLocation(), value, radius)))
+                    .map(value -> String.valueOf(RaceUtil.getNearbyRaceCount(player.getLocation(), value, radius).getNow(0)))
                     .orElse("");
         }
 

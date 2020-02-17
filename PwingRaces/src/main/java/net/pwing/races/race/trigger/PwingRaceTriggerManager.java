@@ -81,7 +81,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerCondition("inside", new InsideCondition());
         registerCondition("in-sunlight", new InSunlightCondition());
         registerCondition("in-world", new InWorldCondition());
-        registerCondition("near-race", new NearRaceCondition(plugin.getRaceManager()));
+        registerCondition("near-race", new NearRaceCondition(plugin));
         registerCondition("moon-phase", new MoonPhaseCondition());
         registerCondition("night", new NightCondition());
         registerCondition("outside", new OutsideCondition());

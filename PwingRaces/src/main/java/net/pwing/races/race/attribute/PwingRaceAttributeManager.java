@@ -97,6 +97,11 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
 
             value = EquationUtil.getValue(value, EquationUtil.getEquationResult(player, attribute.getAttributeData()));
         }
+
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer.getTemporaryAttributes().containsKey(attributeStr)) {
+            value = EquationUtil.getValue(value, racePlayer.getTemporaryAttributes().get(attributeStr));
+        }
         return value;
     }
 
