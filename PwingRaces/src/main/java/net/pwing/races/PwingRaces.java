@@ -139,15 +139,12 @@ public class PwingRaces extends JavaPlugin {
             raceManager.getRacePlayerMap().clear();
             configManager = null;
 
-            HandlerList.unregisterAll(this);
-            this.getServer().getScheduler().cancelTasks(this);
-
             reloadConfig();
             configManager = new RaceConfigurationManager(this);
             MessageUtil.initMessages("messages", configManager);
 
             // TODO: Refactor this ?
-            ((PwingRaceManager) raceManager).initRaces();
+            ((PwingRaceManager) raceManager).reloadRaces();
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 raceManager.registerPlayer(player);

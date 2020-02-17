@@ -46,12 +46,12 @@ public class PwingRaceManager implements RaceManager {
 
     private PwingRaces plugin;
 
-    private RaceTriggerManager triggerManager;
-    private RaceAttributeManager attributeManager;
-    private RacePermissionManager permissionManager;
-    private RaceLevelManager levelManager;
-    private RaceAbilityManager abilityManager;
-    private RaceSkilltreeManager skilltreeManager;
+    private PwingRaceTriggerManager triggerManager;
+    private PwingRaceAttributeManager attributeManager;
+    private PwingRacePermissionManager permissionManager;
+    private PwingRaceLevelManager levelManager;
+    private PwingRaceAbilityManager abilityManager;
+    private PwingRaceSkilltreeManager skilltreeManager;
 
     private RaceMenu raceMenu;
 
@@ -78,6 +78,22 @@ public class PwingRaceManager implements RaceManager {
         levelManager = new PwingRaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);
         skilltreeManager = new PwingRaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
+                races.add(new PwingRace(this, config.getConfig()));
+
+            FileConfiguration config = plugin.getConfig();
+            raceMenu = new PwingRaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
+        }, 20);
+    }
+
+    public void reloadRaces() {
+        races.clear();
+        racePlayers.clear();
+
+        skilltreeManager.getSkilltrees().clear();
+        skilltreeManager.initSkilltrees(new File(plugin.getDataFolder(), "skilltrees"));
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
             races.add(new PwingRace(this, config.getConfig()));
