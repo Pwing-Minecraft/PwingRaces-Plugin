@@ -44,7 +44,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     public PwingRaceTriggerManager(PwingRaces plugin) {
         this.plugin = plugin;
 
-        initTriggers();
+        Bukkit.getScheduler().runTaskLater(plugin, this::initTriggers, 100);
     }
 
     private void initTriggers() {
