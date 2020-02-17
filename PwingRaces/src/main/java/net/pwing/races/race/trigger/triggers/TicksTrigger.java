@@ -9,13 +9,10 @@ import org.bukkit.event.Listener;
 
 public class TicksTrigger implements Listener, RaceCondition {
 
-    private PwingRaces plugin;
     private static int tick = 0;
 
     public TicksTrigger(PwingRaces plugin) {
-        this.plugin = plugin;
-
-        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Task(), 1, 1);
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Task(plugin), 1, 1);
     }
 
     @Override
@@ -26,7 +23,13 @@ public class TicksTrigger implements Listener, RaceCondition {
         return tick % Integer.parseInt(args[1]) == 0;
     }
 
-    public class Task implements Runnable {
+    static class Task implements Runnable {
+
+        private PwingRaces plugin;
+
+        public Task(PwingRaces plugin) {
+            this.plugin = plugin;
+        }
 
         @Override
         public void run() {

@@ -151,7 +151,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             return;
 
         triggerLoop:
-        for (RaceTrigger raceTrigger : getApplicableTriggers(player, trigger)) {
+        for (RaceTrigger raceTrigger : getApplicableTaskTriggers(player)) {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
