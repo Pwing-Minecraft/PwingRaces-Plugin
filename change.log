@@ -1,9 +1,10 @@
 v1.4.0
-- Added conditions for triggers (some existing triggers double-up as conditions too)
+- Added conditions for triggers and abilities (some existing triggers double-up as conditions too)
 - Added support for operators in attributes
 - Added support for math equations in attributes (PlaceholderAPI supported)
 - Added support for modded blocks/items when running hybrid server softwares (Magma, Lava, etc.)
 - Added 'reclaim-skillpoints' trigger
+- Added 'reclaim-race-items' trigger
 - Added 'moon-phase' trigger
 - Added 'near-race' condition
 - Added '%pwingraces_near_race..%' placeholder

@@ -8,7 +8,7 @@ import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
-import net.pwing.races.api.race.trigger.RaceTriggerManager;
+import net.pwing.races.api.race.trigger.condition.RaceCondition;
 import net.pwing.races.util.MessageUtil;
 import net.pwing.races.util.TimeUtil;
 
@@ -64,6 +64,18 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
                 player.sendMessage(cooldownMessage.replace("%time%", cooldown));
 
             return ability.isDefaultActionOverriden();
+        }
+
+        for (String fullCondition : ability.getConditions().keySet()) {
+            for (RaceCondition condition : ability.getConditions().get(fullCondition)) {
+                if (fullCondition.startsWith("!")) {
+                    if (condition.check(player, fullCondition.substring(1).split(" ")))
+                        return false;
+                } else {
+                    if (!condition.check(player, fullCondition.split(" ")))
+                        return false;
+                }
+            }
         }
 
         if (ability.runAbility(player)) {
@@ -163,7 +175,7 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
 
     @Override
     public void runPassives(Player player, RaceAbility ability) {
-        ability.getPassives().forEach(passive -> passive.runTriggerPassive(player, ability.getPassiveValue(passive).get().split(" ")));
+        ability.getPassives().keySet().forEach(fullPassive -> ability.getPassives().get(fullPassive).forEach(passive -> passive.runPassive(player, fullPassive)));
     }
 
     public Optional<RaceAbility> getAbility(String key, String requirement, String configPath, FileConfiguration config) {

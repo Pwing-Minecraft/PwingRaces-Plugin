@@ -17,7 +17,6 @@ import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
 import net.pwing.races.util.item.ItemUtil;
 import net.pwing.races.util.LocationUtil;
-import net.pwing.races.util.math.EquationUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

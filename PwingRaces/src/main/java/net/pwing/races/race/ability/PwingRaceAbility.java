@@ -1,6 +1,6 @@
 package net.pwing.races.race.ability;
 
-import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ArrayListMultimap;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.PwingRacesAPI;
@@ -71,7 +71,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
         this.overrideDefaultAction = config.getBoolean(configPath + ".override-default-action", false);
 
         this.allowedWorlds = config.getStringList(configPath + ".allowed-worlds");
-        this.passives = HashBiMap.create();
+        this.passives = ArrayListMultimap.create();
         for (String passive : config.getStringList(configPath + ".run-passives")) {
             String passiveName = passive.split(" ")[0];
             if (PwingRacesAPI.getTriggerManager().getTriggerPassives().containsKey(passiveName)) {
@@ -79,7 +79,7 @@ public abstract class PwingRaceAbility extends RaceAbility {
             }
         }
 
-        this.conditions = HashBiMap.create();
+        this.conditions = ArrayListMultimap.create();
         for (String condition : config.getStringList(configPath + ".conditions")) {
             String conditionName = condition.split(" ")[0];
             if (PwingRacesAPI.getTriggerManager().getConditions().containsKey(conditionName)) {

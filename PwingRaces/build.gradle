@@ -7,7 +7,7 @@ dependencies {
     compileOnly 'com.sk89q:worldedit:6.0.0-SNAPSHOT'
     compileOnly 'com.sk89q:worldguard:6.0.0-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.9.2'
-    compileOnly 'LibsDisguises:LibsDisguises:9.9.1'
+    compileOnly 'LibsDisguises:LibsDisguises:9.9.6'
     compileOnly 'com.github.TheComputerGeek2:MagicSpells:3.5-Release'
     compileOnly ':LoreAttributesRecoded'
     compileOnly ':Quests'
