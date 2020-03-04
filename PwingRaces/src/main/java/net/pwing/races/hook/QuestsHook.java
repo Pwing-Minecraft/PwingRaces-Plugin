@@ -1,8 +1,7 @@
 package net.pwing.races.hook;
 
-import org.bukkit.plugin.Plugin;
-
 import me.blackvein.quests.Quests;
+
 import net.pwing.races.PwingRaces;
 import net.pwing.races.hook.quests.RaceExperienceRequirement;
 import net.pwing.races.hook.quests.RaceExperienceReward;
@@ -11,9 +10,9 @@ import net.pwing.races.hook.quests.RaceLevelReward;
 import net.pwing.races.hook.quests.RaceRequirement;
 import net.pwing.races.hook.quests.RaceReward;
 
-public class QuestsHook extends PluginHook {
+import org.bukkit.plugin.Plugin;
 
-	private Quests quests;
+public class QuestsHook extends PluginHook {
 
 	public QuestsHook(PwingRaces owningPlugin, String pluginName) {
 		super(owningPlugin, pluginName);
@@ -21,10 +20,14 @@ public class QuestsHook extends PluginHook {
 
 	@Override
 	public void enableHook(PwingRaces owningPlugin, Plugin hook) {
-		if (!(hook instanceof Quests))
+		try {
+			if (!Class.forName("me.blackvein.quests.Quests").isAssignableFrom(hook.getClass()))
+				return;
+		} catch (Throwable ex) {
 			return;
+		}
 
-		this.quests = (Quests) hook;
+		Quests quests = (Quests) hook;
 		owningPlugin.getLogger().info("Quests found, questing integration enabled.");
 
 		quests.getCustomRewards().add(new RaceExperienceReward(owningPlugin.getRaceManager()));
