@@ -8,6 +8,7 @@ v1.4.0
 - Added 'moon-phase' trigger
 - Added 'near-race' condition
 - Added '%pwingraces_near_race..%' placeholder
+- Added option to disable abilities in creative mode
 - Expanded upon 'set-attribute' trigger passive to allow for more customization (to better support the new conditions)
 - Modified 'fly' and 'allow-flight' trigger passives to have toggle options
 - Updated and cleaned up parts of the API

@@ -38,6 +38,7 @@ public class RaceConfigurationManager {
 	private double reclaimSkillpointReduction;
 	private boolean sendSkillpointMessageOnJoin;
 	private boolean useProjectileEvent;
+	private boolean disableAbilitiesInCreative;
 	private List<String> projectileLaunchers;
 	private List<String> projectileTypes;
 	private List<String> disabledWorlds;
@@ -79,6 +80,7 @@ public class RaceConfigurationManager {
 		projectileLaunchers = fileConfiguration.getStringList(configPath + ".projectile-launchers");
 		projectileTypes = fileConfiguration.getStringList(configPath + ".projectile-types");
 		disabledWorlds = fileConfiguration.getStringList(configPath + ".disabled-worlds");
+		disableAbilitiesInCreative = fileConfiguration.getBoolean(configPath + ".disable-abilities-in-creative", true);
 	}
 
 	public void initConfigs() {

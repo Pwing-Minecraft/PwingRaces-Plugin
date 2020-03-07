@@ -3,6 +3,7 @@ package net.pwing.races.race.ability.abilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
@@ -45,9 +46,10 @@ public class ShadowstepAbility extends PwingRaceAbility {
         checkPlugins = config.getBoolean(configPath + ".check-plugins", true);
         damageEntitiesInPath = config.getBoolean(configPath + ".damage-entities-in-path", false);
 
-        ignoredEntities = new ArrayList<>();
-        List<String> entityList = config.getStringList(configPath + ".ignored-entites");
-        entityList.forEach(entityStr -> ignoredEntities.add(EntityType.valueOf(entityStr.toUpperCase().replace(" ", "_"))));
+        ignoredEntities = config.getStringList(configPath + ".ignored-entites").stream()
+                .map(str -> str.toUpperCase().replace(" ", "_"))
+                .map(EntityType::valueOf)
+                .collect(Collectors.toList());
     }
 
     @Override

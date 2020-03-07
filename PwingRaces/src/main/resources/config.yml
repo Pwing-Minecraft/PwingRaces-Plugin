@@ -23,3 +23,4 @@ settings:
     projectile-launchers: [bow, snowball, egg, trident, splash_potion, thrown_exp_bottle]
     projectile-types: [arrow, egg, snowball, trident, fireball, small_fireball, splash_potion, thrown_exp_bottle]
     disabled-worlds: [disabledworld1, disabledworld2]
+    disable-abilities-in-creative: true

@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ThrowWeaponAbility extends PwingRaceAbility {
 
@@ -52,9 +53,10 @@ public class ThrowWeaponAbility extends PwingRaceAbility {
         damagePlayers = config.getBoolean(configPath + ".damage-players", false);
         checkPlugins = config.getBoolean(configPath + ".check-plugins", true);
 
-        ignoredEntities = new ArrayList<>();
-        List<String> entityList = config.getStringList(configPath + ".ignored-entites");
-        entityList.forEach(entityStr -> ignoredEntities.add(EntityType.valueOf(entityStr.toUpperCase().replace(" ", "_"))));
+        ignoredEntities = config.getStringList(configPath + ".ignored-entites").stream()
+                .map(str -> str.toUpperCase().replace(" ", "_"))
+                .map(EntityType::valueOf)
+                .collect(Collectors.toList());
 
         yOffset = config.getInt(configPath + ".y-offset", 0);
     }
