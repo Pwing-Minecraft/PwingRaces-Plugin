@@ -13,6 +13,7 @@ import net.pwing.races.util.MessageUtil;
 import net.pwing.races.util.TimeUtil;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -51,6 +52,9 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             return false;
 
         if (!ability.getRequiredPermission().equals("none") && !plugin.getVaultHook().hasPermission(player, "pwingraces.ability." + ability.getRequiredPermission()) && !plugin.getVaultHook().hasPermission(player, "pwingraces.ability.*"))
+            return false;
+
+        if (plugin.getConfigManager().isDisableAbilitiesInCreative() && player.getGameMode() == GameMode.CREATIVE)
             return false;
 
         if (hasCooldown(player, ability.getInternalName())) {
