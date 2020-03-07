@@ -23,7 +23,7 @@ public class PwingRacePermissionManager implements RacePermissionManager {
     public PwingRacePermissionManager(PwingRaces plugin) {
         this.plugin = plugin;
 
-        Bukkit.getServer().getPluginManager().registerEvents(new RacePermissionListener(this), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new RacePermissionListener(plugin), plugin);
     }
 
     public void applyPermissions(Player player) {
