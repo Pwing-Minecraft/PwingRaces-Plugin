@@ -117,7 +117,6 @@ public class ShadowstepAbility extends PwingRaceAbility {
 
     private Entity getTarget(Player player) {
         BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, range);
-        Entity target = null;
         while (iterator.hasNext()) {
             Block item = iterator.next();
             for (Entity entity : player.getNearbyEntities(range, range, range)) {
@@ -131,13 +130,22 @@ public class ShadowstepAbility extends PwingRaceAbility {
             }
         }
 
-        return target;
+        return null;
+    }
+
+    private boolean lookingAt(Player player, LivingEntity entity) {
+        Location eyeLoc = player.getEyeLocation();
+        double dot = entity.getEyeLocation().toVector().subtract(eyeLoc.toVector()).normalize().dot(eyeLoc.getDirection());
+        return 0.99D <= dot;
     }
 
     private List<Entity> getEntitiesInLineOfSight(Player player) {
         List<Entity> entities = new ArrayList<>();
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
-            if (player.hasLineOfSight(entity))
+            if (!(entity instanceof LivingEntity))
+                continue;
+
+            if (lookingAt(player, (LivingEntity) entity))
                 entities.add(entity);
         }
 

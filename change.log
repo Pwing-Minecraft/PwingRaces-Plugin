@@ -15,6 +15,7 @@ v1.4.0
 - Updated and cleaned up parts of the API
 - Converted project (and API) to Gradle
 - Fixed NPE if caught item when fishing was null for 'fish' trigger
+- Fixed a couple entity detection bugs with ShadowstepAbility
 - Dropped support for 1.9 - 1.11
 
 v1.3.0
