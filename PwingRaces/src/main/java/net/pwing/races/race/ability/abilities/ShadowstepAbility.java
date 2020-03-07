@@ -1,10 +1,5 @@
 package net.pwing.races.race.ability.abilities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
 
@@ -21,9 +16,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.BlockIterator;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 public class ShadowstepAbility extends PwingRaceAbility {
 
-    private List<UUID> shadowstepping = new ArrayList<UUID>();
+    private List<UUID> shadowstepping = new ArrayList<>();
 
     private int range;
     private double damage;

@@ -1,10 +1,8 @@
 package net.pwing.races.race.ability.abilities;
 
-import java.util.Random;
-import java.util.Set;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
+import net.pwing.races.util.math.NumberUtil;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -55,7 +53,6 @@ public class ArrowstormAbility extends PwingRaceAbility {
         if (block == null || block.getType() == Material.AIR)
             return false;
 
-        Random random = new Random();
         if (spendArrows && !player.getInventory().contains(Material.ARROW, arrows))
             return false;
 
@@ -64,7 +61,7 @@ public class ArrowstormAbility extends PwingRaceAbility {
 
             @Override
             public void run() {
-                Location loc = block.getLocation().clone().add((random.nextInt(spread) * 2) - spread, yOffset, random.nextInt((spread * 2) - spread));
+                Location loc = block.getLocation().clone().add((NumberUtil.RANDOM.nextInt(spread) * 2) - spread, yOffset, NumberUtil.RANDOM.nextInt((spread * 2) - spread));
 
                 Arrow arrow = loc.getWorld().spawnArrow(loc, block.getLocation().toVector().subtract(loc.toVector()).normalize(), 1, velocitySpread);
                 arrow.setShooter(player);
@@ -98,9 +95,7 @@ public class ArrowstormAbility extends PwingRaceAbility {
 
             @Override
             public void run() {
-                Random random = new Random();
-                Location loc = player.getLocation().clone().add(random.nextInt(5), random.nextInt(5), random.nextInt(5));
-
+                Location loc = player.getLocation().clone().add(NumberUtil.RANDOM.nextInt(5), NumberUtil.RANDOM.nextInt(5), NumberUtil.RANDOM.nextInt(5));
                 player.getWorld().strikeLightningEffect(loc);
 
                 if (i == effectDuration / 20) {
