@@ -22,5 +22,7 @@ public class RaceChangeTrigger implements Listener {
         Player player = event.getPlayer();
         triggerManager.runTriggers(player, "race-change");
         triggerManager.runTriggers(player, "race-change " + event.getNewRace().getName());
+        triggerManager.runTriggers(player, "race-change-from " + event.getOldRace().getName());
+
     }
 }

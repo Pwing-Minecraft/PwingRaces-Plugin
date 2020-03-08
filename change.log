@@ -5,7 +5,8 @@ v1.4.0
 - Added support for modded blocks/items when running hybrid server softwares (Magma, Lava, etc.)
 - Added 'reclaim-skillpoints' trigger
 - Added 'reclaim-race-items' trigger
-- Added 'moon-phase' trigger
+- Added 'race-change-from' trigger
+- Added 'moon-phase' condition
 - Added 'near-race' condition
 - Added '%pwingraces_near_race..%' placeholder
 - Added 'finished-passives' to AllowFlightAbility and ShadowmeldAbility
