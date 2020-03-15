@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceChangeEvent;
-import net.pwing.races.api.race.permission.RacePermissionManager;
+import net.pwing.races.api.events.RaceReclaimSkillpointsEvent;
 import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 
@@ -37,14 +37,20 @@ public class RacePermissionListener implements Listener {
 
     @EventHandler
     public void onRaceElementPurchase(RaceElementPurchaseEvent event) {
-        plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer());
+        Bukkit.getScheduler().runTaskLater(plugin, () ->
+            plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer()), 20);
     }
 
     @EventHandler
     public void onRaceChange(RaceChangeEvent event) {
         plugin.getRaceManager().getPermissionManager().removePermissions(event.getPlayer());
         Bukkit.getScheduler().runTaskLater(plugin, () ->
-                plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer()), 20
-        );
+                plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer()), 20);
+    }
+
+    @EventHandler
+    public void onSkillpointReclaim(RaceReclaimSkillpointsEvent event) {
+        Bukkit.getScheduler().runTaskLater(plugin, () ->
+            plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer()), 20);
     }
 }
