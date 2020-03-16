@@ -25,7 +25,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,7 +71,7 @@ public class PwingRaceManager implements RaceManager {
         permissionManager = new PwingRacePermissionManager(plugin);
         levelManager = new PwingRaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);
-        skilltreeManager = new PwingRaceSkilltreeManager(new File(plugin.getDataFolder(), "skilltrees"));
+        skilltreeManager = new PwingRaceSkilltreeManager(Paths.get(plugin.getDataFolder().toString(), "skilltrees"));
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
@@ -87,7 +87,7 @@ public class PwingRaceManager implements RaceManager {
         racePlayers.clear();
 
         skilltreeManager.getSkilltrees().clear();
-        skilltreeManager.initSkilltrees(new File(plugin.getDataFolder(), "skilltrees"));
+        skilltreeManager.initSkilltrees(Paths.get(plugin.getDataFolder().toString(), "skilltrees"));
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
             races.add(new PwingRace(this, config.getConfig()));

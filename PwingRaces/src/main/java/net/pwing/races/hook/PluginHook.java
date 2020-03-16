@@ -1,61 +1,62 @@
 package net.pwing.races.hook;
 
-import java.io.File;
-import java.io.IOException;
-
+import net.pwing.races.PwingRaces;
 import net.pwing.races.config.RaceConfiguration;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import net.pwing.races.PwingRaces;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public abstract class PluginHook {
 
-	protected Plugin plugin;
-	protected PwingRaces owningPlugin;
+    protected Plugin plugin;
+    protected PwingRaces owningPlugin;
 
-	protected RaceConfiguration hookConfig;
+    protected RaceConfiguration hookConfig;
 
-	public PluginHook(PwingRaces owningPlugin, String pluginName) {
-		this.owningPlugin = owningPlugin;
+    public PluginHook(PwingRaces owningPlugin, String pluginName) {
+        this.owningPlugin = owningPlugin;
 
-		Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-		if (plugin == null) {
-			owningPlugin.getLogger().info(pluginName + " not found, anything Pwing Races hooks for this plugin will be disabled.");
-			return;
-		}
+        Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+        if (plugin == null) {
+            owningPlugin.getLogger().info(pluginName + " not found, anything Pwing Races hooks for this plugin will be disabled.");
+            return;
+        }
 
-		this.plugin = plugin;
+        this.plugin = plugin;
 
-		enableHook(owningPlugin, plugin);
-	}
+        enableHook(owningPlugin, plugin);
+    }
 
-	public boolean isHooked() {
-		return plugin != null;
-	}
+    public boolean isHooked() {
+        return plugin != null;
+    }
 
-	public void setupHookConfig() {
-		File filePath = new File(owningPlugin.getDataFolder() + "/hooks/" + plugin.getName() + "/");
-		if (!filePath.exists())
-			filePath.mkdirs();
+    public void setupHookConfig() {
+        try {
+            Path filePath = Paths.get(owningPlugin.getDataFolder().toString(), "hooks", plugin.getName());
+            if (Files.notExists(filePath)) {
+                Files.createDirectories(filePath);
+            }
+            Path file = Paths.get(filePath.toString(), plugin.getName() + "Config.yml");
+            if (Files.notExists(file)) {
+                Files.createFile(file);
+            }
+            hookConfig = new RaceConfiguration(file, YamlConfiguration.loadConfiguration(Files.newBufferedReader(file)));
+        } catch (IOException ex) {
+            owningPlugin.getLogger().severe("Could not create " + plugin.getName() + "Config.yml !!!");
+            ex.printStackTrace();
+        }
+    }
 
-		File file = new File(filePath,  plugin.getName() + "Config.yml");
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				owningPlugin.getLogger().severe("Could not create " + plugin.getName() + "Config.yml !!!");
-				e.printStackTrace();
-			}
-		}
+    public RaceConfiguration getHookConfig() {
+        return hookConfig;
+    }
 
-		hookConfig = new RaceConfiguration(file, YamlConfiguration.loadConfiguration(file));
-	}
-
-	public RaceConfiguration getHookConfig() {
-		return hookConfig;
-	}
-
-	public abstract void enableHook(PwingRaces owningPlugin, Plugin hook);
+    public abstract void enableHook(PwingRaces owningPlugin, Plugin hook);
 }

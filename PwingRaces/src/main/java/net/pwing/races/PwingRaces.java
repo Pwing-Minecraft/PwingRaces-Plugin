@@ -28,9 +28,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Getter
 public class PwingRaces extends JavaPlugin {
@@ -190,34 +194,40 @@ public class PwingRaces extends JavaPlugin {
 
         saveDefaultConfig();
 
-        File racesDir = new File(getDataFolder() + "/races");
-        File playerDataDir = new File(getDataFolder() + "/playerdata");
-        File hooksDir = new File(getDataFolder() + "/hooks");
-        File modulesDir = new File(getDataFolder() + "/modules");
-        File skilltreesDir = new File(getDataFolder() + "/skilltrees");
+        Path racesDir = Paths.get(getDataFolder().toString(), "races");
+        Path playerDataDir = Paths.get(getDataFolder().toString(), "playerdata");
+        Path hooksDir = Paths.get(getDataFolder().toString(), "hooks");
+        Path modulesDir = Paths.get(getDataFolder().toString(), "modules");
+        Path skilltreesDir = Paths.get(getDataFolder().toString(), "skilltrees");
 
-        if (!racesDir.exists())
-            racesDir.mkdirs();
+        try {
+            if (Files.notExists(racesDir)) {
+                Files.createDirectories(racesDir);
+            }
 
-        if (!playerDataDir.exists())
-            playerDataDir.mkdirs();
-
-        if (!hooksDir.exists())
-            hooksDir.mkdirs();
-
-        if (!modulesDir.exists())
-            modulesDir.mkdirs();
-
-        if (!skilltreesDir.exists())
-            skilltreesDir.mkdirs();
-
-        if (!firstLoad)
+            if (Files.notExists(playerDataDir)) {
+                Files.createDirectories(playerDataDir);
+            }
+            if (Files.notExists(hooksDir)) {
+                Files.createDirectories(hooksDir);
+            }
+            if (Files.notExists(modulesDir)) {
+                Files.createDirectories(modulesDir);
+            }
+            if (Files.notExists(skilltreesDir)) {
+                Files.createDirectories(skilltreesDir);
+            }
+        } catch (IOException ex) {
+            this.getLogger().warning("Failed to create directories!");
+            ex.printStackTrace();
+        }
+        if (!firstLoad) {
             return;
-
+        }
         getLogger().info("It appears this is your first time running the plugin! Creating default files...");
         for (String race : new String[] {"dwarf", "human"}) {
             try {
-                saveResource("races" + File.separator + race + ".yml", true);
+                saveResource("races" + FileSystems.getDefault().getSeparator() + race + ".yml", true);
             } catch (Exception e) {
                 e.printStackTrace();
                 getLogger().severe("Could not create " + race + ".yml !!!");
@@ -226,7 +236,7 @@ public class PwingRaces extends JavaPlugin {
 
         for (String skilltree : new String[] {"strength", "weaponry"}) {
             try {
-                saveResource("skilltrees" + File.separator + skilltree + ".yml", true);
+                saveResource("skilltrees" + FileSystems.getDefault().getSeparator() + skilltree + ".yml", true);
             } catch (Exception e) {
                 e.printStackTrace();
                 getLogger().severe("Could not create " + skilltree + ".yml !!!");
@@ -245,8 +255,8 @@ public class PwingRaces extends JavaPlugin {
         return super.getClassLoader();
     }
 
-    public File getModuleFolder() {
-        return new File(getDataFolder(), "modules");
+    public Path getModuleFolder() {
+        return Paths.get(getDataFolder().toString(), "modules");
     }
 
     private String getNMSPackage() {

@@ -1,17 +1,19 @@
 package net.pwing.races.config;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import lombok.Getter;
+
+import net.pwing.races.PwingRaces;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.pwing.races.PwingRaces;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class RaceConfigurationManager {
@@ -86,39 +88,43 @@ public class RaceConfigurationManager {
 	}
 
 	public void initConfigs() {
-		for (File file : new File(plugin.getDataFolder() + "/races/").listFiles()) {
-			if (!file.getName().endsWith(".yml"))
-				continue;
+		try {
+			Files.walk(Paths.get(plugin.getDataFolder().toString(), "races"))
+					.filter(path -> path.getFileName().toString().endsWith(".yml"))
+					.forEach(path -> {
+						try {
+							FileConfiguration config = YamlConfiguration.loadConfiguration(Files.newBufferedReader(path));
+							raceConfigs.add(new RaceConfiguration(path, config));
+						} catch (IOException ex) {
+							plugin.getLogger().severe("Could not create messages.yml !!!");
+							ex.printStackTrace();
+						}
+					});
 
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-			raceConfigs.add(new RaceConfiguration(file, config));
-		}
-
-		File messagesFile = new File(plugin.getDataFolder() + "/messages.yml");
-		if (!messagesFile.exists()) {
-			try {
-				messagesFile.createNewFile();
+			Path messagesPath = Paths.get(plugin.getDataFolder() + "/messages.yml");
+			if (Files.notExists(messagesPath)) {
+				Files.createFile(messagesPath);
 				plugin.saveResource("messages.yml", true);
-			} catch (IOException e) {
-				plugin.getLogger().severe("Could not create messages.yml !!!");
 			}
-		}
 
-		messageConfig = new RaceConfiguration(messagesFile, YamlConfiguration.loadConfiguration(messagesFile));
+			messageConfig = new RaceConfiguration(messagesPath, YamlConfiguration.loadConfiguration(Files.newBufferedReader(messagesPath)));
+		} catch (IOException ex) {
+			plugin.getLogger().severe("Could not create messages.yml !!!");
+			ex.printStackTrace();
+		}
 	}
 
 	public RaceConfiguration getPlayerDataConfig(UUID uuid) {
-		File file = new File(plugin.getDataFolder() + "/playerdata/" + uuid.toString() + ".yml");
-
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				plugin.getLogger().severe("Could not create playerdata file for " + uuid.toString() + " !!!");
-				e.printStackTrace();
+		try {
+			Path playerDataPath = Paths.get(plugin.getDataFolder().toString(), "playerdata", uuid.toString() + ".yml");
+			if (Files.notExists(playerDataPath)) {
+				Files.createFile(playerDataPath);
 			}
+			return new RaceConfiguration(playerDataPath, YamlConfiguration.loadConfiguration(Files.newBufferedReader(playerDataPath)));
+		} catch (IOException ex) {
+			plugin.getLogger().severe("Could not create playerdata file for " + uuid.toString() + " !!!");
+			ex.printStackTrace();
 		}
-
-		return new RaceConfiguration(file, YamlConfiguration.loadConfiguration(file));
+		throw new RuntimeException("Failed to create data config for " + uuid.toString());
 	}
 }

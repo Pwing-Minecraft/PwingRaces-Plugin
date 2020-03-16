@@ -1,24 +1,24 @@
 package net.pwing.races.config;
 
-import java.io.File;
-import java.io.IOException;
-
 import lombok.AllArgsConstructor;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 @AllArgsConstructor
 public class RaceConfiguration {
 
-	private File configFile;
+	private Path configFile;
 	private FileConfiguration config;
 
 	public void reloadConfig() {
-		config = YamlConfiguration.loadConfiguration(configFile);
-
 		try {
-			config.save(configFile);
+			config = YamlConfiguration.loadConfiguration(Files.newBufferedReader(configFile));
+			config.save(configFile.toFile());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -26,13 +26,13 @@ public class RaceConfiguration {
 
 	public void saveConfig() {
 		try {
-			config.save(configFile);
+			config.save(configFile.toFile());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public File getConfigFile() {
+	public Path getConfigPath() {
 		return configFile;
 	}
 

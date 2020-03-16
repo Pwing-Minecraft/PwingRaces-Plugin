@@ -5,10 +5,13 @@ import lombok.Getter;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +20,28 @@ public class PwingRaceSkilltreeManager implements RaceSkilltreeManager {
 
     private List<RaceSkilltree> skilltrees;
 
-    public PwingRaceSkilltreeManager(File dir) {
+    public PwingRaceSkilltreeManager(Path path) {
         skilltrees = new ArrayList<>();
-        initSkilltrees(dir);
+        initSkilltrees(path);
     }
 
-    public void initSkilltrees(File dir) {
-        if (dir == null || !dir.isDirectory())
+    public void initSkilltrees(Path path) {
+        if (!Files.isDirectory(path)) {
             return;
+        }
 
-        for (File file : dir.listFiles()) {
-            if (!file.getName().endsWith(".yml"))
-                continue;
-
-            initSkilltree(file.getName().replace(".yml", ""), YamlConfiguration.loadConfiguration(file));
+        try {
+            Files.walk(path).filter(file -> file.getFileName().toString().endsWith(".yml"))
+                    .forEach(file -> {
+                        try {
+                            initSkilltree(file.getFileName().toString().replace(".yml", ""), YamlConfiguration.loadConfiguration(Files.newBufferedReader(file)));
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+        } catch (IOException ex) {
+            Bukkit.getLogger().warning("Failed to setup skilltree " + path.toString());
+            ex.printStackTrace();
         }
     }
 

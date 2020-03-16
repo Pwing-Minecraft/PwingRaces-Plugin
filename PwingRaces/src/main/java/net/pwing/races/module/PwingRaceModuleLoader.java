@@ -7,13 +7,15 @@ import net.pwing.races.api.module.RaceModuleLoader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.ZipEntry;
@@ -33,24 +35,25 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
 
     @Override
     public void loadModules() {
-        File directory = plugin.getModuleFolder();
-        if (!directory.exists())
-            directory.mkdir();
+        try {
+            Path directory = plugin.getModuleFolder();
+            if (Files.notExists(directory)) {
+                Files.createDirectories(directory);
+            }
+            Files.walk(directory)
+                    .filter(path -> path.getFileName().toString().endsWith(".jar"))
+                    .forEach(path -> {
 
-        for (File moduleFile : directory.listFiles()) {
-            if (!moduleFile.getName().toLowerCase().endsWith(".jar"))
-                continue;
-
-            try {
-                ZipFile zipFile = new ZipFile(moduleFile);
+                try {
+                ZipFile zipFile = new ZipFile(path.toFile());
                 ZipEntry zipEntry = zipFile.getEntry("module.yml");
 
                 if (zipEntry == null || zipEntry.isDirectory()) {
-                    plugin.getLogger().warning("Module " + moduleFile.getName() + " is missing a module.yml file! Please contact the author!");
+                    plugin.getLogger().warning("Module " + path.getFileName().toString() + " is missing a module.yml file! Please contact the author!");
                     return;
                 }
 
-                URL[] urls = new URL[]{moduleFile.toURI().toURL()};
+                URL[] urls = new URL[]{path.toUri().toURL()};
                 URLClassLoader classLoader = new URLClassLoader(urls, plugin.getPluginClassLoader());
 
                 zipFile.stream().forEach((file -> {
@@ -62,7 +65,7 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
                             classLoader.loadClass(getClassCanonicalName(file).replace(".class", ""));
                             inputStream.close();
                         } catch (Exception ex) {
-                            plugin.getLogger().warning("Error when setting up module " + moduleFile.getName() + "! Please contact the module author!");
+                            plugin.getLogger().warning("Error when setting up module " + path.getFileName().toString() + "! Please contact the module author!");
                             ex.printStackTrace();
                         }
                     }
@@ -93,10 +96,14 @@ public class PwingRaceModuleLoader implements RaceModuleLoader {
                 this.plugin.getLogger().info("Loaded module " + module.getName() + "!");
                 enableModule(module);
                 this.plugin.getLogger().info("Enabled module " + module.getName() + "!");
-            } catch (Exception ex) {
-                plugin.getLogger().warning("Error loading module " + moduleFile.getName() + "! Please contact the module author!");
-                ex.printStackTrace();
-            }
+                } catch (Exception ex) {
+                    plugin.getLogger().warning("Error loading module " + path.getFileName().toString() + "! Please contact the module author!");
+                    ex.printStackTrace();
+                }
+            });
+        } catch (IOException ex) {
+            plugin.getLogger().warning("Failed to load modules!");
+            ex.printStackTrace();
         }
     }
 
