@@ -16,4 +16,12 @@ public class DisguiseHandler {
     public void undisguiseEntity(Entity entity) {
         DisguiseAPI.undisguiseToAll(entity);
     }
+
+    public boolean isDisguised(Entity entity) {
+        return DisguiseAPI.isDisguised(entity);
+    }
+
+    public boolean hasDisguise(Entity entity, EntityType type) {
+        return DisguiseAPI.getDisguise(entity).getType().getEntityType() == type;
+    }
 }

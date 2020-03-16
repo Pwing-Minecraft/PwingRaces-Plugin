@@ -1,3 +1,6 @@
+v1.4.1
+- Added 'disguised' condition
+
 v1.4.0
 - Added conditions for triggers and abilities (some existing triggers double-up as conditions too)
 - Added support for operators in attributes
