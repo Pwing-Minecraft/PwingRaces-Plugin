@@ -196,6 +196,7 @@ public class PwingRaceMenu implements RaceMenu {
                         }
 
                         racePlayer.setRace(event.getNewRace());
+                        racePlayer.getRaceData(event.getNewRace()).setHasPlayed(true);
 
                         // This needs to be called again for the new race as well
                         plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change");
@@ -296,7 +297,6 @@ public class PwingRaceMenu implements RaceMenu {
 
                         RaceReclaimItemsEvent event = new RaceReclaimItemsEvent(player, race, race.getRaceItems().values());
                         Bukkit.getPluginManager().callEvent(event);
-
                         if (event.isCancelled())
                             return;
 

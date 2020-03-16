@@ -21,6 +21,8 @@ public class PwingRaceData implements RaceData {
 
 	private boolean unlocked;
 
+	private boolean played;
+
 	private int level;
 	private int experience;
 
@@ -41,6 +43,7 @@ public class PwingRaceData implements RaceData {
 		FileConfiguration config = playerConfig.getConfig();
 
 		this.unlocked = config.getBoolean(configPath + "." + raceName + ".unlocked");
+		this.played = config.getBoolean(configPath + "." + raceName + ".played", true);
 		this.level = config.getInt(configPath + "." + raceName + ".level");
 		this.experience = config.getInt(configPath + "." + raceName + ".exp");
 		this.usedSkillpoints = config.getInt(configPath + "." + raceName + ".used-skillpoints");
@@ -53,6 +56,16 @@ public class PwingRaceData implements RaceData {
 				purchasedElementsMap.put(str, elements);
 			}
 		}
+	}
+
+	@Override
+	public boolean hasPlayed() {
+		return played;
+	}
+
+	@Override
+	public void setHasPlayed(boolean played) {
+		this.played = played;
 	}
 
 	public boolean hasPurchasedElement(String skillTree, String name) {

@@ -152,6 +152,7 @@ public class RaceExecutor extends RaceCommandExecutor {
         }
 
         racePlayer.setRace(event.getNewRace());
+        racePlayer.getRaceData(event.getNewRace()).setHasPlayed(true);
 
         // This needs to be called again for the new race as well
         plugin.getRaceManager().getTriggerManager().runTriggers(player, "race-change");

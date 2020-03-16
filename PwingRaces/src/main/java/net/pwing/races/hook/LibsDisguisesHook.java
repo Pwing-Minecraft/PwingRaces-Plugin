@@ -54,5 +54,6 @@ public class LibsDisguisesHook extends PluginHook {
 		if (!isDisguised(entity)) {
 			return false;
 		}
+		return disguiseHandler.hasDisguise(entity, type);
 	}
 }

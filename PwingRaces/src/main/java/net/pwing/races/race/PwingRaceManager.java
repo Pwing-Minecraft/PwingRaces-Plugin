@@ -140,6 +140,7 @@ public class PwingRaceManager implements RaceManager {
             config.set("data." + race.getName() + ".exp", data.getExperience());
             config.set("data." + race.getName() + ".used-skillpoints", data.getUsedSkillpoints());
             config.set("data." + race.getName() + ".unused-skillpoints", data.getUnusedSkillpoints());
+            config.set("data." + race.getName() + ".played", data.hasPlayed());
 
             for (String str : race.getSkilltreeMap().values()) {
                 List<String> elements = data.getPurchasedElements(str);
@@ -176,6 +177,7 @@ public class PwingRaceManager implements RaceManager {
                 config.set(racePath + ".used-skillpoints", 0);
                 config.set(racePath + ".exp", 0);
                 config.set(racePath + ".unlocked", !race.doesRequireUnlock());
+                config.set(racePath + ".played", false);
             }
 
             for (String str : race.getSkilltreeMap().values()) {

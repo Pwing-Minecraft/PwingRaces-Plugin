@@ -30,6 +30,7 @@ public class RaceConfigurationManager {
 	private boolean raceUnlocks;
 	private boolean raceUnlockUsesCost;
 	private boolean giveItemsOnRaceChange;
+	private boolean giveItemsOnFirstSelect;
 	private boolean allowReclaimingItems;
 	private int reclaimItemsCost;
 	private boolean allowReclaimingSkillpoints;
@@ -69,6 +70,7 @@ public class RaceConfigurationManager {
 		raceUnlocks = fileConfiguration.getBoolean(configPath + ".race-unlocks", true);
 		raceUnlockUsesCost = fileConfiguration.getBoolean(configPath + ".race-unlock-uses-cost", false);
 		giveItemsOnRaceChange = fileConfiguration.getBoolean(configPath + ".give-items-on-race-change", true);
+		giveItemsOnFirstSelect = fileConfiguration.getBoolean(configPath + ".give-items-on-first-select", true);
 		allowReclaimingItems = fileConfiguration.getBoolean(configPath + ".allow-reclaiming-items", true);
 		reclaimItemsCost = fileConfiguration.getInt(configPath + ".reclaim-items-cost", 5000);
 		allowReclaimingSkillpoints = fileConfiguration.getBoolean(configPath + ".allow-reclaiming-skillpoints", false);

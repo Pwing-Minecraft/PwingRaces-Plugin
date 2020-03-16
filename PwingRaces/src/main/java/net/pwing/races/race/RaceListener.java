@@ -89,9 +89,16 @@ public class RaceListener implements Listener {
 
     @EventHandler
     public void onRaceChange(RaceChangeEvent event) {
-        if (!plugin.getConfigManager().isGiveItemsOnRaceChange())
+        RaceData raceData = plugin.getRaceManager().getPlayerData(event.getPlayer(), event.getNewRace());
+        if (!plugin.getConfigManager().isGiveItemsOnRaceChange() && !plugin.getConfigManager().isGiveItemsOnFirstSelect()) {
             return;
-
+        }
+        if (!plugin.getConfigManager().isGiveItemsOnRaceChange() && plugin.getConfigManager().isGiveItemsOnFirstSelect() && raceData.hasPlayed()) {
+            return;
+        }
+        if (plugin.getConfigManager().isGiveItemsOnRaceChange() && !plugin.getConfigManager().isGiveItemsOnFirstSelect() && !raceData.hasPlayed()) {
+            return;
+        }
         event.getNewRace().getRaceItems().values().forEach(event.getPlayer().getInventory()::addItem);
         plugin.getLibsDisguisesHook().undisguiseEntity(event.getPlayer());
     }
