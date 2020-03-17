@@ -204,7 +204,6 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
                     continue;
 
                 String req = definedTrigger.getRequirement();
-
                 if (req.equals("none")) {
                     triggers.put(definedTrigger.getInternalName(), definedTrigger);
 

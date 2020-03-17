@@ -391,9 +391,8 @@ race:
                     # Note: This command only works properly in versions 1.13+
                     - "run-command console: execute at %player_name% run effect give @e[type=!player,distance=..5] minecraft:poison 5 2"
         swords7:
-            triggers:
-                attributes:
-                    swords-damage: 3
+            attributes:
+                swords-damage: 3
         swords8:
             triggers:
                 nvattack:
@@ -412,9 +411,8 @@ race:
                     # Note: This command only works properly in versions 1.13+
                     - "run-command console: execute at %player_name% run effect give @e[type=!player,distance=..5] minecraft:poison 5 3"
         swords10:
-            triggers:
-                attributes:
-                    swords-damage: 4
+            attributes:
+                 swords-damage: 4
         swords11:
             triggers:
                 nvattack:
