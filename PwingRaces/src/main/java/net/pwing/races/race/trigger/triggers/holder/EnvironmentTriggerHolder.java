@@ -40,7 +40,7 @@ public class EnvironmentTriggerHolder implements Runnable {
             if ((time < 13000 || time > 23850) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
                 triggerManager.runTriggers(player, "in-sunlight");
 
-            if ((time >= 1300 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
+            if ((time >= 13000 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm())
                 triggerManager.runTriggers(player, "in-moonlight");
 
             for (BlockFace face : BlockFace.values())

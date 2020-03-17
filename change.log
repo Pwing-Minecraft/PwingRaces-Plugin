@@ -1,3 +1,6 @@
+v1.4.2
+- Fixed time range for 'in-moonlight' trigger that caused it to be ran no matter the time
+
 v1.4.1
 - Added 'disguised' condition
 - Added an option to only give race items on the first selection of a race

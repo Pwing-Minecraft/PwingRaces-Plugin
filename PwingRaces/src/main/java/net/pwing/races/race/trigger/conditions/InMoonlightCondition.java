@@ -9,6 +9,6 @@ public class InMoonlightCondition implements RaceCondition {
     @Override
     public boolean check(Player player, String[] args) {
         long time = player.getWorld().getTime();
-        return (time >= 1300 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm();
+        return (time >= 13000 && time <= 23840) && player.getWorld().getHighestBlockYAt(player.getLocation()) <= player.getEyeLocation().getY() && !player.getWorld().hasStorm();
     }
 }
