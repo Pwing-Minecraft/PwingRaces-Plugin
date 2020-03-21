@@ -144,7 +144,7 @@ public class RaceExecutor extends RaceCommandExecutor {
             return true;
         }
 
-        RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getRace().get(), race);
+        RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getRace().orElse(null) /* is nullable */, race);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             sender.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));

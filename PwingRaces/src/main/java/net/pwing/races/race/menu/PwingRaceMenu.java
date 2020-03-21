@@ -187,7 +187,7 @@ public class PwingRaceMenu implements RaceMenu {
                             }
                         }
 
-                        RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getRace().get(), race);
+                        RaceChangeEvent event = new RaceChangeEvent(player, racePlayer.getRace().orElse(null) /* is nullable */, race);
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
@@ -212,9 +212,9 @@ public class PwingRaceMenu implements RaceMenu {
                         MessageUtil.sendMessage(player, "cancelled-race-change", "%prefix% &cCancelled race change.");
                     }
                 });
-
-                if (plugin.getConfigManager().isAllowPlayerRaceChanges() && (racePlayer.getRace().isPresent() || !racePlayer.getRace().get().equals(race)))
+                if (plugin.getConfigManager().isAllowPlayerRaceChanges() && (racePlayer.getRace().isPresent() || !racePlayer.getRace().map(Race::getName).orElse("").equals(race.getName()))) {
                     menu.open(clickedPlayer);
+                }
             }
         });
 

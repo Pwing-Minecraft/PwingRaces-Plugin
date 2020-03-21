@@ -46,6 +46,9 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
     @Override
     public void applyAttributeBonuses(Player player) {
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            return;
+        }
         Map<String, List<RaceAttribute>> bundledAttributes = new HashMap<>();
         for (RaceAttribute attribute : getApplicableAttributes(player)) {
             List<RaceAttribute> attributes = bundledAttributes.getOrDefault(attribute.getAttribute(), new ArrayList<>());
@@ -90,6 +93,11 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
     }
 
     public double getAttributeBonus(Player player, String attributeStr) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            return 0;
+        }
+
         double value = 0;
         for (RaceAttribute attribute : getApplicableAttributes(player)) {
             if (!attribute.getAttribute().equalsIgnoreCase(attributeStr))
@@ -98,7 +106,6 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
             value = EquationUtil.getValue(value, EquationUtil.getEquationResult(player, attribute.getAttributeData()));
         }
 
-        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
         if (racePlayer.getTemporaryAttributes().containsKey(attributeStr)) {
             value = EquationUtil.getValue(value, racePlayer.getTemporaryAttributes().get(attributeStr));
         }

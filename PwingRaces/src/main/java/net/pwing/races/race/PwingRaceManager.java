@@ -116,7 +116,7 @@ public class PwingRaceManager implements RaceManager {
             return false;
         }
 
-        Race activeRace = getRaceFromName(raceName).get();
+        Race activeRace = getRaceFromName(raceName).orElse(null);
         racePlayers.put(player.getUniqueId(), new PwingRacePlayer(player, activeRace, raceDataMap));
         return true;
     }
@@ -162,6 +162,7 @@ public class PwingRaceManager implements RaceManager {
                 Optional<Race> defaultRace = getRaceFromName(plugin.getConfigManager().getDefaultRace());
                 if (!defaultRace.isPresent()) {
                     plugin.getLogger().severe("Could not find default race " + plugin.getConfigManager().getDefaultRace() + "! Please make sure your config is correct!");
+                    config.set("active-race", "");
                 } else {
                     config.set("active-race", plugin.getConfigManager().getDefaultRace());
                     defaultRace.get().getRaceItems().values().forEach(item -> ItemUtil.addItem(player, item));

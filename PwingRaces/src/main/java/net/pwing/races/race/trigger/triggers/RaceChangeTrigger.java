@@ -3,6 +3,7 @@ package net.pwing.races.race.trigger.triggers;
 import lombok.AllArgsConstructor;
 
 import net.pwing.races.api.events.RaceChangeEvent;
+import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.trigger.RaceTriggerManager;
 
 import org.bukkit.entity.Player;
@@ -22,6 +23,6 @@ public class RaceChangeTrigger implements Listener {
         Player player = event.getPlayer();
         triggerManager.runTriggers(player, "race-change");
         triggerManager.runTriggers(player, "race-change " + event.getNewRace().getName());
-        triggerManager.runTriggers(player, "race-change-from " + event.getOldRace().getName());
+        triggerManager.runTriggers(player, "race-change-from " + event.getOldRace().map(Race::getName).orElse("none"));
     }
 }

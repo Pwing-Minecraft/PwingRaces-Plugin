@@ -1,8 +1,6 @@
 package net.pwing.races.race;
 
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import net.pwing.races.api.race.Race;
@@ -18,21 +16,26 @@ import java.util.Optional;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class PwingRacePlayer implements RacePlayer {
 
-	@NonNull
 	private OfflinePlayer player;
-
-	@NonNull
 	private Race race;
-
-	@NonNull
 	private Map<String, RaceData> raceDataMap;
+
+	public PwingRacePlayer(OfflinePlayer player, Race race, Map<String, RaceData> raceDataMap) {
+		this.player = player;
+		this.race = race;
+		this.raceDataMap = raceDataMap;
+	}
 
 	private Map<String, EquationResult> temporaryAttributes = new HashMap<>();
 
 	public Optional<Race> getRace() {
 		return Optional.ofNullable(race);
+	}
+
+	@Override
+	public void setRace(Race race) {
+		this.race = race;
 	}
 }
