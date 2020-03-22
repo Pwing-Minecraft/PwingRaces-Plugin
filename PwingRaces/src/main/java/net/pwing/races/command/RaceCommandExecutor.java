@@ -313,7 +313,8 @@ public class RaceCommandExecutor implements TabExecutor {
                 completions = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 break;
             case "offlineplayer":
-                completions = Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
+                // lol no way we're listing all offline players
+                completions = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 break;
             case "world":
                 completions = Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList());
