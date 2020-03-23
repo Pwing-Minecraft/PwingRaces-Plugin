@@ -340,6 +340,28 @@ public class RaceExecutor extends RaceCommandExecutor {
         return true;
     }
 
+    @RaceCommand(commands = "level", description = "View your race level.", permissionNode = "level")
+    public boolean raceLevel(Player player) {
+        RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
+        if (racePlayer == null) {
+            player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("invalid-player", "%prefix% &cThat player does not exist!")));
+            return true;
+        }
+
+        if (!racePlayer.getRace().isPresent())
+            return false;
+
+        Race race = racePlayer.getRace().get();
+        RaceData raceData = plugin.getRaceManager().getPlayerData(player, race);
+
+        player.sendMessage(MessageUtil.getHeader());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Race: " + ChatColor.WHITE + race.getDisplayName());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Level: " + ChatColor.WHITE + raceData.getLevel());
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience: " + ChatColor.WHITE + raceData.getExperience() + " / " + race.getRequiredExperience(raceData.getLevel()));
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "Experience Until Level Up: " + ChatColor.WHITE + (race.getRequiredExperience(raceData.getLevel()) - raceData.getExperience()));
+        return true;
+    }
+
     @Override
     protected Object verifyArgument(CommandSender sender, String arg, Class<?> parameter) {
         if (parameter.getSimpleName().equalsIgnoreCase("race")) {
