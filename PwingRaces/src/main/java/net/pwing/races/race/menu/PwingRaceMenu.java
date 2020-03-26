@@ -302,7 +302,7 @@ public class PwingRaceMenu implements RaceMenu {
 
                         vaultHook.withdrawPlayer(player, cost12);
                         race.getRaceItems().values().forEach(raceItem -> ItemUtil.addItem(player, raceItem));
-                        MessageUtil.sendMessage(player, "race-item-claim", "%prefix% Sucessfully reclaimed your race items!");
+                        MessageUtil.sendMessage(player, "race-item-claim", "%prefix% Successfully reclaimed your race items!");
                         player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
                         openRaceMenu(player, race);
                     }

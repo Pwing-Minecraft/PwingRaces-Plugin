@@ -22,6 +22,9 @@ public class RaceUtil {
                     continue;
 
                 RacePlayer racePlayer = PwingRaces.getInstance().getRaceManager().getRacePlayer((Player) nearbyEntity);
+                if (racePlayer == null) {
+                    continue;
+                }
                 if (!racePlayer.getRace().isPresent())
                     continue;
 
