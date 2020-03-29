@@ -193,6 +193,8 @@ public class RaceExecutor extends RaceCommandExecutor {
             return true;
         }
 
+        this.plugin.getRaceManager().getAttributeManager().removeAttributeBonuses(player);
+
         plugin.getRaceManager().savePlayer(player);
         plugin.getRaceManager().registerPlayer(player, true);
         plugin.getRaceManager().setupPlayer(player);
