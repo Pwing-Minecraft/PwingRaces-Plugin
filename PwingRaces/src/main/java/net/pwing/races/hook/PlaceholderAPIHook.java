@@ -57,6 +57,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return String.valueOf(race.getMaxLevel());
             case "exp":
                 return String.valueOf(data.getExperience());
+            case "maxexp":
+                return String.valueOf(race.getRequiredExperience(data.getLevel()));
             case "exp_until_levelup":
                 return String.valueOf(race.getRequiredExperience(data.getLevel()) - data.getExperience());
             case "used_skillpoints":

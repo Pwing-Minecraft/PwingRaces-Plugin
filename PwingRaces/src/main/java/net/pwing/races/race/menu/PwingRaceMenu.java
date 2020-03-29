@@ -311,7 +311,6 @@ public class PwingRaceMenu implements RaceMenu {
                 menu.open(clickedPlayer);
             });
         }
-
         builder.open(player);
     }
 }
