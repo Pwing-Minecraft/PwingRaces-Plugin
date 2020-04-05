@@ -11,8 +11,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import org.bukkit.Location;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WorldGuardHandler_v7 implements IWorldGuardHandler {
 
@@ -27,6 +27,9 @@ public class WorldGuardHandler_v7 implements IWorldGuardHandler {
             return false;
 
         RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
+        if (regionManager == null) {
+            return false;
+        }
         BlockVector3 vec = BukkitAdapter.asBlockVector(loc);
         ApplicableRegionSet regionSet = regionManager.getApplicableRegions(vec);
         return regionSet.queryState(null, getFlagFromString(flag)) == StateFlag.State.ALLOW;
@@ -34,9 +37,17 @@ public class WorldGuardHandler_v7 implements IWorldGuardHandler {
 
     @Override
     public List<String> getRegions(Location loc) {
-        return WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()))
-                .getApplicableRegions(BukkitAdapter.asBlockVector(loc)).getRegions().stream().map(ProtectedRegion::getId)
-                .collect(Collectors.toList());
+        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
+        if (regionManager == null) {
+            return new ArrayList<>();
+        }
+
+        List<String> regions = new ArrayList<>();
+        for (ProtectedRegion region : regionManager.getApplicableRegions(BukkitAdapter.asBlockVector(loc)).getRegions()) {
+            regions.add(region.getId());
+        }
+
+        return regions;
     }
 
     private StateFlag getFlagFromString(String flagString) {

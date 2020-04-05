@@ -2,6 +2,7 @@ v1.4.2
 - Added 'in-biome' condition
 - Added a /race level command
 - Added a '%pwingraces_maxexp%' placeholder for PlaceholderAPI
+- Fixed potential NPE from WorldGuard when in an area without regions
 - Fixed bug where _all_ offline players would be listed in tab completion of some commands, resulting in lag for large servers
 - Fixed time range for 'in-moonlight' trigger that caused it to be ran no matter the time
 - Fixed a few bugs that caused console spam if a player did not have a race
