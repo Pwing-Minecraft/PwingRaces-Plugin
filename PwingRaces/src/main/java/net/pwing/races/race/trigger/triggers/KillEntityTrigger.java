@@ -2,6 +2,7 @@ package net.pwing.races.race.trigger.triggers;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+
 import lombok.AllArgsConstructor;
 
 import net.pwing.races.PwingRaces;

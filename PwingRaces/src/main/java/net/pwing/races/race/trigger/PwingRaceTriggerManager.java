@@ -111,7 +111,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerTrigger(new RaceLevelUpTrigger(this));
         registerTrigger(new RaceReclaimItemsTrigger(this));
         registerTrigger(new RaceReclaimSkillpointsTrigger(this));
-        registerTrigger(new TakeDamageTrigger(this));
+        registerTrigger(new TakeDamageTrigger(plugin.getRaceManager()));
         registerTrigger(new TameAnimalTrigger(this));
         registerTrigger(new TeleportTrigger(this));
         registerTrigger(new UseInventoryTrigger(this));
