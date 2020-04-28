@@ -1,6 +1,7 @@
 package net.pwing.races.util;
 
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 
 public class AttributeUtil {
@@ -29,27 +30,28 @@ public class AttributeUtil {
         return name;
     }
 
-    public static double getAttributeValue(Player player, String attribute) {
-        if (!isBukkitAttribute(attribute))
+
+    public static double getDefaultAttributeValue(Player player, String attributeStr) {
+        if (!isBukkitAttribute(attributeStr))
             return 0;
 
-        String attributeName = getAttributeName(attribute);
-        return player.getAttribute(Attribute.valueOf(attributeName)).getBaseValue();
-    }
-
-    public static double getDefaultAttributeValue(Player player, String attribute) {
-        if (!isBukkitAttribute(attribute))
+        String attributeName = getAttributeName(attributeStr);
+        AttributeInstance attribute = player.getAttribute(Attribute.valueOf(attributeName));
+        if (attribute == null) {
             return 0;
-
-        String attributeName = getAttributeName(attribute);
-        return player.getAttribute(Attribute.valueOf(attributeName)).getDefaultValue();
+        }
+        return attribute.getDefaultValue();
     }
 
-    public static void setAttributeValue(Player player, String attribute, double amount) {
-        if (!isBukkitAttribute(attribute))
+    public static void setAttributeValue(Player player, String attributeStr, double amount) {
+        if (!isBukkitAttribute(attributeStr))
             return;
 
-        String attributeName = getAttributeName(attribute);
-        player.getAttribute(Attribute.valueOf(attributeName)).setBaseValue(amount);
+        String attributeName = getAttributeName(attributeStr);
+        AttributeInstance attribute = player.getAttribute(Attribute.valueOf(attributeName));
+        if (attribute == null) {
+            return;
+        }
+        attribute.setBaseValue(amount);
     }
 }
