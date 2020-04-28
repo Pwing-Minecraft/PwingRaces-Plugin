@@ -89,6 +89,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerCondition("night", new NightCondition());
         registerCondition("outside", new OutsideCondition());
         registerCondition("riding", new RidingCondition());
+        registerCondition("time", new TimeCondition());
 
         registerTrigger(new BlockBreakTrigger(this));
         registerTrigger(new BlockPlaceTrigger(this));

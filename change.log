@@ -1,6 +1,7 @@
 v1.4.3
-- Added 'riding' condition
 - Added 'holding' condition
+- Added 'riding' condition
+- Added 'time' condition
 - Added support for the race name to be specified as a damage source in the 'take-damage' trigger
 - Fixed potential NPE if a player has not received a certain attribute yet
 
