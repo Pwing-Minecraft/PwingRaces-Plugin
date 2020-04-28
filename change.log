@@ -1,5 +1,6 @@
 v1.4.3
 - Added 'riding' condition
+- Added 'holding' condition
 - Fixed potential NPE if a player has not received a certain attribute yet
 
 v1.4.2
