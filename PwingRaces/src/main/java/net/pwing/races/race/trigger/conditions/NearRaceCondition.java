@@ -29,6 +29,6 @@ public class NearRaceCondition implements RaceCondition {
 
         double radius = NumberUtil.getDouble(args[2]);
         int requiredNearby = NumberUtil.getInteger(args[3]);
-        return RaceUtil.getNearbyRaceCount(player.getLocation(), race.get(), radius).getNow(0) >= requiredNearby;
+        return RaceUtil.getNearbyRaceCount(player.getLocation(), race.get(), radius) >= requiredNearby;
     }
 }
