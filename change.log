@@ -4,6 +4,7 @@ v1.4.3
 - Added 'time' condition
 - Added support for the race name to be specified as a damage source in the 'take-damage' trigger
 - Fixed potential NPE if a player has not received a certain attribute yet
+- Fixed permission refresh upon race skillpoint reclaim
 
 v1.4.2
 - Added 'in-biome' condition

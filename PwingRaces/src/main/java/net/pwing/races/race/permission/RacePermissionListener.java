@@ -37,6 +37,7 @@ public class RacePermissionListener implements Listener {
 
     @EventHandler
     public void onRaceElementPurchase(RaceElementPurchaseEvent event) {
+        plugin.getRaceManager().getPermissionManager().removePermissions(event.getPlayer());
         Bukkit.getScheduler().runTaskLater(plugin, () ->
             plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer()), 20);
     }
@@ -50,6 +51,7 @@ public class RacePermissionListener implements Listener {
 
     @EventHandler
     public void onSkillpointReclaim(RaceReclaimSkillpointsEvent event) {
+        plugin.getRaceManager().getPermissionManager().removePermissions(event.getPlayer());
         Bukkit.getScheduler().runTaskLater(plugin, () ->
             plugin.getRaceManager().getPermissionManager().applyPermissions(event.getPlayer()), 20);
     }
