@@ -2,7 +2,7 @@ package net.pwing.races.race.trigger.triggers;
 
 import lombok.AllArgsConstructor;
 
-import net.pwing.races.api.race.RaceManager;
+import net.pwing.races.PwingRaces;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 @AllArgsConstructor
 public class TakeDamageTrigger implements Listener {
 
-    private RaceManager raceManager;
+    private PwingRaces plugin;
 
     @EventHandler
     public void onTakeDamage(EntityDamageEvent event) {
@@ -24,7 +24,7 @@ public class TakeDamageTrigger implements Listener {
             return;
 
         Player player = (Player) event.getEntity();
-        raceManager.getTriggerManager().runTriggers(player, "take-damage");
+        plugin.getRaceManager().getTriggerManager().runTriggers(player, "take-damage");
     }
 
     @EventHandler
@@ -36,14 +36,14 @@ public class TakeDamageTrigger implements Listener {
             return;
 
         Player player = (Player) event.getEntity();
-        raceManager.getTriggerManager().runTriggers(player, "take-damage " + event.getDamager().getType().name().toLowerCase());
+        plugin.getRaceManager().getTriggerManager().runTriggers(player, "take-damage " + event.getDamager().getType().name().toLowerCase());
 
         if (!(event.getDamager() instanceof Player)) {
             return;
         }
 
         Player damager = (Player) event.getDamager();
-        raceManager.getRacePlayer(damager).getRace().ifPresent(race ->
-                raceManager.getTriggerManager().runTriggers(player, "take-damage " + race.getName()));
+        plugin.getRaceManager().getRacePlayer(damager).getRace().ifPresent(race ->
+                plugin.getRaceManager().getTriggerManager().runTriggers(player, "take-damage " + race.getName()));
     }
 }
