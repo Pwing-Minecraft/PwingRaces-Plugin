@@ -18,7 +18,7 @@ public class HoldingCondition implements RaceCondition {
             builder.append(args[i]).append(" ");
         }
 
-        ItemStack stack = ItemUtil.fromString(builder.toString());
+        ItemStack stack = ItemUtil.fromString(builder.toString().trim());
         if (stack == null) {
             return false;
         }
