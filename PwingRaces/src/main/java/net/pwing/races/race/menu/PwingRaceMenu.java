@@ -114,7 +114,7 @@ public class PwingRaceMenu implements RaceMenu {
         List<String> lore = new ArrayList<>();
         String level = MessageUtil.getMessage("menu-level", "&7Level: &3") + data.getLevel();
         String experience = MessageUtil.getMessage("menu-experience", "&7Experience: &3") + MessageUtil.getMessage("menu-max-level", "Max Level");
-        if (race.getRaceLevelMap().containsKey(data.getLevel()))
+        if (race.getRaceLevelMap().containsKey(data.getLevel()) && !race.isMaxLevel(data.getLevel()))
             experience = MessageUtil.getMessage("menu-experience", "&7Experience: &3") + data.getExperience() + ChatColor.GRAY + " / " + ChatColor.DARK_AQUA + race.getRequiredExperience(data.getLevel());
 
         String skillpoint = MessageUtil.getMessage("menu-remaining-skillpoints", "&7Remaining Skillpoints: &3") + data.getUnusedSkillpoints();

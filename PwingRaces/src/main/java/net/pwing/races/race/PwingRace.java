@@ -265,7 +265,7 @@ public class PwingRace implements Race {
         if (raceLevelMap.isEmpty())
             return true;
 
-        return raceLevelMap.size() < level;
+        return (raceLevelMap.size() <= level) || (level >= maxLevel);
     }
 
     public int getRequiredExperience(int level) {

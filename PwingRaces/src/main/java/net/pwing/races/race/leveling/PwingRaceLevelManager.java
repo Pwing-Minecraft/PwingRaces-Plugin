@@ -21,6 +21,9 @@ public class PwingRaceLevelManager implements RaceLevelManager {
 
     public void setExperience(Player player, Race race, int amount) {
         RaceData data = plugin.getRaceManager().getPlayerData(player, race);
+        if (race.isMaxLevel(data.getLevel()))
+            return;
+
         RaceExpChangeEvent event = new RaceExpChangeEvent(player, race, data.getExperience(), amount);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled())
@@ -33,10 +36,10 @@ public class PwingRaceLevelManager implements RaceLevelManager {
     public boolean setLevel(Player player, Race race, int amount) {
         RaceData data = plugin.getRaceManager().getPlayerData(player, race);
         RaceLevelUpEvent event = new RaceLevelUpEvent(player, race, data.getLevel(), amount);
-        Bukkit.getPluginManager().callEvent(event);
-
         if (race.isMaxLevel(data.getLevel()))
             return false;
+
+        Bukkit.getPluginManager().callEvent(event);
 
         int newAmount = event.getNewLevel();
         if (event.getNewLevel() > race.getMaxLevel())
@@ -55,6 +58,9 @@ public class PwingRaceLevelManager implements RaceLevelManager {
 
     public boolean canLevelUp(Player player, Race race) {
         RaceData data = plugin.getRaceManager().getPlayerData(player, race);
+        if (race.isMaxLevel(data.getLevel()))
+            return false;
+
         return data.getExperience() >= race.getRequiredExperience(data.getLevel());
     }
 

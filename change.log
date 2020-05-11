@@ -1,5 +1,6 @@
 v1.4.4
 - Run task triggers on the main thread to prevent async catches
+- Fixed random bug where players could "level up" again even after reaching the max level
 
 v1.4.3
 - Added 'holding' condition
