@@ -1,3 +1,6 @@
+v1.4.4
+- Run task triggers on the main thread to prevent async catches
+
 v1.4.3
 - Added 'holding' condition
 - Added 'riding' condition

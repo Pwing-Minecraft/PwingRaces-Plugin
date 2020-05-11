@@ -12,7 +12,7 @@ public class TicksTrigger implements Listener, RaceCondition {
     private static int tick = 0;
 
     public TicksTrigger(PwingRaces plugin) {
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Task(plugin), 1, 1);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new Task(plugin), 1, 1);
     }
 
     @Override
