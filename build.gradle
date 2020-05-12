@@ -16,7 +16,7 @@ apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'net.pwing.races'
-version = '1.4.3'
+version = '1.4.4'
 description = 'A very highly-customizable race plugin for any server!'
 
 sourceCompatibility = 1.8
