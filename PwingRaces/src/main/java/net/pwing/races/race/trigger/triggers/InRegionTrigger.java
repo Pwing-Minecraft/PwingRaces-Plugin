@@ -15,6 +15,9 @@ public class InRegionTrigger implements RaceCondition {
     public InRegionTrigger(PwingRaces plugin) {
         this.plugin = plugin;
 
+        if (!plugin.getWorldGuardHook().isHooked()) {
+            return;
+        }
         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Task(), 20, 20);
     }
 

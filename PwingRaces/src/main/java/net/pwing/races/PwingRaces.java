@@ -87,7 +87,6 @@ public class PwingRaces extends JavaPlugin {
             getLogger().warning("Error when loading modules! Please report this error!");
             ex.printStackTrace();
         }
-        raceManager = new PwingRaceManager(this);
 
         if (setupPlaceholderAPI()) {
             this.getLogger().info("PlaceholderAPI found, support for placeholders enabled.");
@@ -102,6 +101,8 @@ public class PwingRaces extends JavaPlugin {
         libsDisguisesHook = new LibsDisguisesHook(this, "LibsDisguises");
         worldEditHook = new WorldEditHook(this, "WorldEdit");
         worldGuardHook = new WorldGuardHook(this, "WorldGuard");
+
+        raceManager = new PwingRaceManager(this);
 
         registerCommands();
 

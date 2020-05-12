@@ -5,6 +5,7 @@ v1.4.4
 - Fixed random bug where players could "level up" again even after reaching the max level
 - Fixed NPE for 'take-damage' trigger
 - Fixed holding condition not working if it contained spaces
+- Fixed 'in-region' trigger causing a few errors in console if WorldGuard was not installed
 
 v1.4.3
 - Added 'holding' condition
