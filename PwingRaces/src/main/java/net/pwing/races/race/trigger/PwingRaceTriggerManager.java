@@ -80,6 +80,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerCondition("disguised", new DisguisedCondition(plugin));
         registerCondition("health", new HealthCondition());
         registerCondition("holding", new HoldingCondition());
+        registerCondition("hunger", new HungerCondition());
         registerCondition("in-biome", new InBiomeCondition());
         registerCondition("in-moonlight", new InMoonlightCondition());
         registerCondition("inside", new InsideCondition());
