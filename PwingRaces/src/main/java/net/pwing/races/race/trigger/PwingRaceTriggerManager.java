@@ -78,6 +78,7 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         registerCondition("block-relative", new BlockRelativeCondition());
         registerCondition("day", new DayCondition());
         registerCondition("disguised", new DisguisedCondition(plugin));
+        registerCondition("health", new HealthCondition());
         registerCondition("holding", new HoldingCondition());
         registerCondition("in-biome", new InBiomeCondition());
         registerCondition("in-moonlight", new InMoonlightCondition());

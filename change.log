@@ -1,4 +1,5 @@
 v1.4.4
+- Added 'health' condition
 - Run task triggers on the main thread to prevent async catches (this should not have a negative effect on lag)
 - Fixed random bug where players could "level up" again even after reaching the max level
 - Fixed NPE for 'take-damage' trigger
