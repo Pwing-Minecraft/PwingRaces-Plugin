@@ -57,10 +57,6 @@ public class PwingRaceManager implements RaceManager {
 
         PwingRacesAPI.setRaceManager(this);
 
-        initRaces();
-    }
-
-    public void initRaces() {
         Bukkit.getServer().getPluginManager().registerEvents(new RaceListener(plugin), plugin);
 
         races = new HashSet<>();
@@ -73,13 +69,11 @@ public class PwingRaceManager implements RaceManager {
         abilityManager = new PwingRaceAbilityManager(plugin);
         skilltreeManager = new PwingRaceSkilltreeManager(Paths.get(plugin.getDataFolder().toString(), "skilltrees"));
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
-                races.add(new PwingRace(this, config.getConfig()));
+        for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
+            races.add(new PwingRace(this, config.getConfig()));
 
-            FileConfiguration config = plugin.getConfig();
-            raceMenu = new PwingRaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
-        }, 20);
+        FileConfiguration config = plugin.getConfig();
+        raceMenu = new PwingRaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
     }
 
     public void reloadRaces() {

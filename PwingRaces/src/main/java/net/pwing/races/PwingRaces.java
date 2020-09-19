@@ -3,7 +3,6 @@ package net.pwing.races;
 import lombok.Getter;
 
 import net.pwing.races.api.module.RaceModuleManager;
-import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.compat.CompatCodeHandlerDisabled;
 import net.pwing.races.compat.ICompatCodeHandler;
 import net.pwing.races.config.RaceConfigurationManager;
@@ -44,7 +43,7 @@ public class PwingRaces extends JavaPlugin {
 
     private ICompatCodeHandler compatCodeHandler;
 
-    private RaceManager raceManager;
+    private PwingRaceManager raceManager;
     private RaceConfigurationManager configManager;
     private RaceModuleManager moduleManager;
 
@@ -153,8 +152,7 @@ public class PwingRaces extends JavaPlugin {
             configManager = new RaceConfigurationManager(this);
             MessageUtil.initMessages("messages", configManager);
 
-            // TODO: Refactor this ?
-            ((PwingRaceManager) raceManager).reloadRaces();
+            raceManager.reloadRaces();
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 raceManager.registerPlayer(player);

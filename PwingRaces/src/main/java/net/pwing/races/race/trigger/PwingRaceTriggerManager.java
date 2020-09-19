@@ -44,10 +44,6 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
     public PwingRaceTriggerManager(PwingRaces plugin) {
         this.plugin = plugin;
 
-        Bukkit.getScheduler().runTaskLater(plugin, this::initTriggers, 100);
-    }
-
-    private void initTriggers() {
         triggerPassives.put("add-potion-effect", new AddPotionEffectTriggerPassive(plugin, "add-potion-effect"));
         triggerPassives.put("allow-flight", new AllowFlightTriggerPassive(plugin, "allow-flight"));
         triggerPassives.put("burn", new BurnTriggerPassive(plugin, "burn"));
