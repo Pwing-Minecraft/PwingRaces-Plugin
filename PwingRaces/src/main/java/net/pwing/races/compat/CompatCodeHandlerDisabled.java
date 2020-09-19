@@ -49,6 +49,6 @@ public class CompatCodeHandlerDisabled implements ICompatCodeHandler {
 
 	@Override
 	public CompletableFuture<String> getHeadURL(String player) {
-		return null;
+		return CompletableFuture.completedFuture(null);
 	}
 }
