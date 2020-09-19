@@ -34,7 +34,7 @@ public class WorldEditHook extends PluginHook {
 			worldEditHandler = (IWorldEditHandler) clazz.newInstance();
 			owningPlugin.getLogger().info("Hooking into WorldEdit version " + hook.getDescription().getVersion());
 		} catch (Exception ex) {
-			owningPlugin.getLogger().warning("Could not properly hook into WorldEdit. Version " + hook.getDescription().getVersion() + " was detected, however PwingRaces requires WorldEdit v6 for 1.8 - 1.12 or WorldEdit v7 for 1.13+.");
+			owningPlugin.getLogger().warning("Could not properly hook into WorldEdit. Version " + hook.getDescription().getVersion() + " was detected, however PwingRaces requires WorldEdit v6 for 1.12 or WorldEdit v7 for 1.13+.");
 			ex.printStackTrace();
 		}
 	}
