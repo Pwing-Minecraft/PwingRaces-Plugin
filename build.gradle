@@ -92,6 +92,7 @@ dependencies {
     shadow project(":v1_14_R1")
     shadow project(":v1_15_R1")
     shadow project(":v1_16_R1")
+    shadow project(":v1_16_R2")
 }
 
 shadowJar {
