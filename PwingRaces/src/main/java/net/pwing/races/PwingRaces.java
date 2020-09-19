@@ -21,8 +21,8 @@ import net.pwing.races.module.PwingRaceModuleLoader;
 import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.util.MessageUtil;
-
 import net.pwing.races.util.VersionUtil;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
