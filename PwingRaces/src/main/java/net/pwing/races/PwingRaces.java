@@ -267,7 +267,7 @@ public class PwingRaces extends JavaPlugin {
 
     private String getCompatPackage() {
         String nmsPackage = VersionUtil.getNMSPackage();
-        if (nmsPackage.equals("v1_12_R1") || nmsPackage.equals("v1_13_R1") || nmsPackage.equals("v1_13_R2")) { // 1.12
+        if (nmsPackage.equals("v1_12_R1") || nmsPackage.equals("v1_13_R1") || nmsPackage.equals("v1_13_R2")) {
             return "_" + nmsPackage;
         }
         return "Modern";
