@@ -1,3 +1,8 @@
+v1.4.7
+- Optimized and improved ability, trigger, and condition processing
+- Refactored version support to better accommodate future changes without requiring updates to the plugin
+- Cleaned up some old hacks in the code to fix a few problems
+
 v1.4.6
 - 1.16.2 support
 
