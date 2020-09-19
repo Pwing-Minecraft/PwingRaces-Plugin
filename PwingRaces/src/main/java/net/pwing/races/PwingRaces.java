@@ -22,6 +22,7 @@ import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.util.MessageUtil;
 
+import net.pwing.races.util.VersionUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -66,16 +67,20 @@ public class PwingRaces extends JavaPlugin {
         generateDefaultConfigs();
 
         try {
-            Class<? extends CompatCodeHandlerDisabled> compatClass = Class.forName("net.pwing.races.compat.CompatCodeHandler_" + getNMSPackage()).asSubclass(CompatCodeHandlerDisabled.class);
+            Class<? extends CompatCodeHandlerDisabled> compatClass = Class.forName("net.pwing.races.compat.CompatCodeHandler" + getCompatPackage()).asSubclass(CompatCodeHandlerDisabled.class);
             Constructor<? extends CompatCodeHandlerDisabled> compatConstructor = compatClass.getConstructor(PwingRaces.class);
             compatConstructor.setAccessible(true);
 
             compatCodeHandler = compatConstructor.newInstance(this);
-            getLogger().info("Successfully found code compat handler class for version " + getNMSPackage() + "!");
+            getLogger().info("Successfully found code compat handler class for version " + VersionUtil.getNMSPackage() + "!");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
-            getLogger().severe("Could not find compat code handler class for version " + getNMSPackage() + ". This shouldn't be too big of a problem. If you are running the latest version of Minecraft currently, check Spigot for an updated version of the plugin. If not, ignore this.");
+            getLogger().severe("Could not find compat code handler class for version " + VersionUtil.getNMSPackage() + ". This shouldn't be too big of a problem. If you are running the latest version of Minecraft currently, check Spigot for an updated version of the plugin. If not, ignore this.");
             compatCodeHandler = new CompatCodeHandlerDisabled(this);
             // ex.printStackTrace();
+        } catch (RuntimeException ex) {
+            getLogger().severe("An error occurred when enabling the compat code handler for version " + VersionUtil.getNMSPackage() + "! Please ensure you are on 1.12 or greater for full support! Considering this, the plugin should still work for the most part, but certain functions may end up not working properly or working slower.");
+            ex.printStackTrace();
+            compatCodeHandler = new CompatCodeHandlerDisabled(this);
         }
 
         configManager = new RaceConfigurationManager(this);
@@ -260,8 +265,12 @@ public class PwingRaces extends JavaPlugin {
         return Paths.get(getDataFolder().toString(), "modules");
     }
 
-    private String getNMSPackage() {
-        return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    private String getCompatPackage() {
+        String nmsPackage = VersionUtil.getNMSPackage();
+        if (nmsPackage.equals("v1_12_R1") || nmsPackage.equals("v1_13_R1") || nmsPackage.equals("v1_13_R2")) { // 1.12
+            return "_" + nmsPackage;
+        }
+        return "Modern";
     }
 
     public static PwingRaces getInstance() {
