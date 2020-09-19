@@ -140,8 +140,9 @@ public class PwingRaceMenu implements RaceMenu {
             reclaimItems.setLore(reclaimLore);
         }
 
-        for (int slot : race.getSkilltreeMap().keySet()) {
-            Optional<RaceSkilltree> skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(race.getSkilltreeMap().get(slot));
+        for (Map.Entry<Integer, String> entry : race.getSkilltreeMap().entrySet()) {
+            int slot = entry.getKey();
+            Optional<RaceSkilltree> skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(entry.getValue());
             if (!skilltree.isPresent())
                 continue;
 

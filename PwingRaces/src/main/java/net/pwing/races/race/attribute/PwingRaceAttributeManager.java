@@ -124,8 +124,8 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
         Race race = racePlayer.getRace().get();
         RaceData data = raceManager.getPlayerData(player, race);
         List<RaceAttribute> attributes = new ArrayList<>();
-        for (String key : race.getRaceAttributesMap().keySet()) {
-            List<RaceAttribute> definedAttributes = race.getRaceAttributesMap().get(key);
+        for (Map.Entry<String, List<RaceAttribute>> entry : race.getRaceAttributesMap().entrySet()) {
+            List<RaceAttribute> definedAttributes = entry.getValue();
 
             for (RaceAttribute definedAttribute : definedAttributes) {
                 String req = definedAttribute.getRequirement();

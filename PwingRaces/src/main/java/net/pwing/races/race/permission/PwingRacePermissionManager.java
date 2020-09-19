@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class PwingRacePermissionManager implements RacePermissionManager {
 
@@ -90,8 +91,8 @@ public class PwingRacePermissionManager implements RacePermissionManager {
         RaceData data = racePlayer.getRaceData(race);
 
         List<RacePermission> permissions = new ArrayList<>();
-        for (String key : race.getRacePermissionsMap().keySet()) {
-            List<RacePermission> definedPermissions = race.getRacePermissionsMap().get(key);
+        for (Map.Entry<String, List<RacePermission>> entry : race.getRacePermissionsMap().entrySet()) {
+            List<RacePermission> definedPermissions = entry.getValue();
 
             for (RacePermission definedPermission : definedPermissions) {
                 String req = definedPermission.getRequirement();

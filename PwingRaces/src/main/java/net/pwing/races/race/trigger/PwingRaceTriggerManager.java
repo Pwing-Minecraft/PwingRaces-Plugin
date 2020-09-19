@@ -131,13 +131,15 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
-            for (String fullCondition : raceTrigger.getConditions().keySet()) {
-                for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
-                    if (fullCondition.startsWith("!")) {
-                        if (condition.check(player, fullCondition.substring(1).split(" ")))
+            for (Map.Entry<String, Collection<RaceCondition>> entry : raceTrigger.getConditions().entrySet()) {
+                String[] conditionArgs = entry.getKey().split(" ");
+                String[] conditionNoArgs = entry.getKey().substring(1).split(" ");
+                for (RaceCondition condition : entry.getValue()) {
+                    if (entry.getKey().startsWith("!")) {
+                        if (condition.check(player, conditionNoArgs))
                             continue triggerLoop;
                     } else {
-                        if (!condition.check(player, fullCondition.split(" ")))
+                        if (!condition.check(player, conditionArgs))
                             continue triggerLoop;
                     }
                 }
@@ -163,13 +165,15 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
             if (hasDelay(player, raceTrigger.getInternalName()))
                 continue;
 
-            for (String fullCondition : raceTrigger.getConditions().keySet()) {
-                for (RaceCondition condition : raceTrigger.getConditions().get(fullCondition)) {
-                    if (fullCondition.startsWith("!")) {
-                        if (condition.check(player, fullCondition.substring(1).split(" ")))
+            for (Map.Entry<String, Collection<RaceCondition>> entry : raceTrigger.getConditions().entrySet()) {
+                for (RaceCondition condition : entry.getValue()) {
+                    String[] conditionArgs = entry.getKey().split(" ");
+                    String[] conditionNoArgs = entry.getKey().substring(1).split(" ");
+                    if (entry.getKey().startsWith("!")) {
+                        if (condition.check(player, conditionNoArgs))
                             continue triggerLoop;
                     } else {
-                        if (!condition.check(player, fullCondition.split(" ")))
+                        if (!condition.check(player, conditionArgs))
                             continue triggerLoop;
                     }
                 }
@@ -202,8 +206,8 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         RaceData data = raceManager.getPlayerData(player, race);
 
         Map<String, RaceTrigger> triggers = new HashMap<>();
-        for (String key : race.getRaceTriggersMap().keySet()) {
-            List<RaceTrigger> definedTriggers = race.getRaceTriggersMap().get(key);
+        for (Map.Entry<String, List<RaceTrigger>> entry : race.getRaceTriggersMap().entrySet()) {
+            List<RaceTrigger> definedTriggers = entry.getValue();
 
             for (RaceTrigger definedTrigger : definedTriggers) {
                 if (!definedTrigger.getTrigger().equalsIgnoreCase(trigger))
@@ -245,8 +249,8 @@ public class PwingRaceTriggerManager implements RaceTriggerManager {
         RaceData data = raceManager.getPlayerData(player, race);
 
         Map<String, RaceTrigger> triggers = new HashMap<>();
-        for (String key : race.getRaceTriggersMap().keySet()) {
-            List<RaceTrigger> definedTriggers = race.getRaceTriggersMap().get(key);
+        for (Map.Entry<String, List<RaceTrigger>> entry : race.getRaceTriggersMap().entrySet()) {
+            List<RaceTrigger> definedTriggers = entry.getValue();
 
             for (RaceTrigger definedTrigger : definedTriggers) {
                 if (!definedTrigger.getTrigger().startsWith("ticks "))

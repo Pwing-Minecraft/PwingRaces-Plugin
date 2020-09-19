@@ -70,13 +70,15 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
             return ability.isDefaultActionOverriden();
         }
 
-        for (String fullCondition : ability.getConditions().keySet()) {
-            for (RaceCondition condition : ability.getConditions().get(fullCondition)) {
-                if (fullCondition.startsWith("!")) {
-                    if (condition.check(player, fullCondition.substring(1).split(" ")))
+        for (Map.Entry<String, Collection<RaceCondition>> fullCondition : ability.getConditions().entrySet()) {
+            String[] conditionArgs = fullCondition.getKey().split(" ");
+            String[] conditionNoArgs = fullCondition.getKey().substring(1).split(" ");
+            for (RaceCondition condition : fullCondition.getValue()) {
+                if (fullCondition.getKey().startsWith("!")) {
+                    if (condition.check(player, conditionNoArgs))
                         return false;
                 } else {
-                    if (!condition.check(player, fullCondition.split(" ")))
+                    if (!condition.check(player, conditionArgs))
                         return false;
                 }
             }
@@ -96,8 +98,8 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         RaceData data = raceManager.getPlayerData(player, race);
 
         Map<String, RaceAbility> abilities = new HashMap<>();
-        for (String key : race.getRaceAbilitiesMap().keySet()) {
-            List<RaceAbility> definedAbilities = race.getRaceAbilitiesMap().get(key);
+        for (Map.Entry<String, List<RaceAbility>> entry : race.getRaceAbilitiesMap().entrySet()) {
+            List<RaceAbility> definedAbilities = entry.getValue();
 
             for (RaceAbility definedAbility : definedAbilities) {
                 String req = definedAbility.getRequirement();
@@ -127,16 +129,16 @@ public class PwingRaceAbilityManager implements RaceAbilityManager {
         }
 
         List<String> toRemove = new ArrayList<>();
-        for (String str : abilities.keySet()) {
-            RaceAbility raceAbility = abilities.get(str);
-
-            if (!raceAbility.getInternalName().equalsIgnoreCase(str)) {
-                toRemove.add(str);
+        for (Map.Entry<String, RaceAbility> entry : abilities.entrySet()) {
+            String key = entry.getKey();
+            RaceAbility raceAbility = entry.getValue();
+            if (!raceAbility.getInternalName().equalsIgnoreCase(key)) {
+                toRemove.add(key);
             }
 
             if (raceAbility.getAllowedWorlds() != null && !raceAbility.getAllowedWorlds().isEmpty()) {
                 if (!raceAbility.getAllowedWorlds().contains(player.getWorld().getName())) {
-                    toRemove.add(str);
+                    toRemove.add(key);
                 }
             }
         }
