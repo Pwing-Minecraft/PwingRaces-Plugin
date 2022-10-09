@@ -2,8 +2,6 @@ package net.pwing.races.race.ability.abilities;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
-import net.pwing.races.util.RaceMaterial;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -149,7 +147,7 @@ public class ThrowWeaponAbility extends PwingRaceAbility {
                 }
 
                 Material weaponMat = stand.getLocation().clone().add(0D, 1D, 0D).getBlock().getType();
-                if (weaponMat != RaceMaterial.AIR.parseMaterial() && weaponMat != RaceMaterial.VOID_AIR.parseMaterial() && weaponMat != RaceMaterial.CAVE_AIR.parseMaterial()) {
+                if (!weaponMat.isAir()) {
                     stand.remove();
                     if (takeItemOnThrow)
                         player.getInventory().addItem(finalItem);

@@ -2,6 +2,8 @@ package net.pwing.races.race.menu;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.events.RaceChangeEvent;
+import net.pwing.races.api.events.RaceReclaimItemsEvent;
+import net.pwing.races.api.events.RaceReclaimSkillpointsEvent;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
@@ -9,23 +11,19 @@ import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.menu.RaceIconData;
 import net.pwing.races.api.race.menu.RaceMenu;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
-import net.pwing.races.util.item.ItemBuilder;
-import net.pwing.races.util.menu.MenuBuilder;
 import net.pwing.races.config.RaceConfigurationManager;
-import net.pwing.races.api.events.RaceReclaimItemsEvent;
-import net.pwing.races.api.events.RaceReclaimSkillpointsEvent;
 import net.pwing.races.hook.VaultAPIHook;
+import net.pwing.races.race.skilltree.PwingRaceSkilltreeMenu;
+import net.pwing.races.util.MessageUtil;
+import net.pwing.races.util.item.ItemBuilder;
+import net.pwing.races.util.item.ItemUtil;
 import net.pwing.races.util.menu.ConfirmationMenu;
 import net.pwing.races.util.menu.IConfirmationHandler;
-import net.pwing.races.race.skilltree.PwingRaceSkilltreeMenu;
-import net.pwing.races.util.item.ItemUtil;
-import net.pwing.races.util.MessageUtil;
-import net.pwing.races.util.RaceMaterial;
-import net.pwing.races.util.RaceSound;
-
+import net.pwing.races.util.menu.MenuBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -72,7 +70,7 @@ public class PwingRaceMenu implements RaceMenu {
         if (glassFilled) {
             for (int i = 0; i < builder.getInventorySize(); i++) {
                 if (builder.toInventory().getItem(i) == null || builder.toInventory().getItem(i).getType() == Material.AIR)
-                    builder.setItem(new ItemBuilder(RaceMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("&a"), i);
+                    builder.setItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("&a"), i);
 
             }
         }
@@ -266,7 +264,7 @@ public class PwingRaceMenu implements RaceMenu {
                             data.getPurchasedElementsMap().put(tree, new ArrayList<>());
 
                         MessageUtil.sendMessage(player, "race-skillpoint-claim", "%prefix% Successfully reclaimed your used skillpoints!");
-                        player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
                         openRaceMenu(player, race);
                     }
                 });
@@ -304,7 +302,7 @@ public class PwingRaceMenu implements RaceMenu {
                         vaultHook.withdrawPlayer(player, cost12);
                         race.getRaceItems().values().forEach(raceItem -> ItemUtil.addItem(player, raceItem));
                         MessageUtil.sendMessage(player, "race-item-claim", "%prefix% Successfully reclaimed your race items!");
-                        player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
                         openRaceMenu(player, race);
                     }
                 });

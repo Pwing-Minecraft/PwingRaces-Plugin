@@ -2,7 +2,6 @@ package net.pwing.races.race.ability.abilities;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -56,7 +55,7 @@ public class ArrowrainAbility extends PwingRaceAbility {
             arrow.setShooter(player);
             arrow.setMetadata("PwingRacesSource", new FixedMetadataValue(plugin, "Arrowrain" + internalName));
             //arrow.setPickupStatus(PickupStatus.DISALLOWED);
-            plugin.getCompatCodeHandler().setDamage(arrow, damage);
+            arrow.setDamage(damage);
             if (!spendArrows)
                 arrow.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
         }

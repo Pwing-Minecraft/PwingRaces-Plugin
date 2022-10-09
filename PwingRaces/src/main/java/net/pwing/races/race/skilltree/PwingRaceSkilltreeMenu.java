@@ -1,25 +1,23 @@
 package net.pwing.races.race.skilltree;
 
 import lombok.AllArgsConstructor;
-
 import net.pwing.races.PwingRaces;
+import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.skilltree.RaceSkilltreeElement;
+import net.pwing.races.util.MessageUtil;
 import net.pwing.races.util.item.ItemBuilder;
-import net.pwing.races.util.menu.MenuBuilder;
-import net.pwing.races.api.events.RaceElementPurchaseEvent;
 import net.pwing.races.util.menu.ConfirmationMenu;
 import net.pwing.races.util.menu.IConfirmationHandler;
-import net.pwing.races.util.MessageUtil;
-import net.pwing.races.util.RaceMaterial;
-import net.pwing.races.util.RaceSound;
-
+import net.pwing.races.util.menu.MenuBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -102,7 +100,7 @@ public class PwingRaceSkilltreeMenu {
                             raceData.addPurchasedElement(skilltree.getInternalName(), element.getInternalName());
 
                             player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("successful-purchase", "%prefix% You have successfully purchased the %element% upgrade for the %skilltree% skilltree!").replace("%element%", element.getTitle()).replace("%skilltree%", skilltree.getName())));
-                            player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
+                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
                             openMenu(player);
                         } else {
                             MessageUtil.sendMessage(player, "already-purchased", "%prefix% &cYou have already purchased this upgrade.");
@@ -124,7 +122,7 @@ public class PwingRaceSkilltreeMenu {
 
         List<String> lore = new ArrayList<>(element.getDescription());
         if (data.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName())) {
-            ItemStack purchasedIcon = new ItemBuilder(RaceMaterial.LIME_STAINED_GLASS_PANE.parseItem())
+            ItemStack purchasedIcon = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.GREEN + "Purchased")
                     .setLore(element.getDescription())
                     .toItemStack();
@@ -154,9 +152,12 @@ public class PwingRaceSkilltreeMenu {
 
         if (parentsPurchased >= element.getRequiredParentAmount() || parents.size() >= 1 && parents.contains("none")) {
             lore.add(MessageUtil.getMessage("menu-skilltree-skillpoint-cost", "&7Skillpoint Cost: &a") + element.getCost());
-            lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
 
-            ItemStack unlockedIcon = new ItemBuilder(RaceMaterial.ORANGE_STAINED_GLASS_PANE.parseItem())
+            if (raceManager.getRacePlayer(player).getRace().map(selectedRace -> selectedRace.equals(race)).orElse(false)) {
+                lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
+            }
+
+            ItemStack unlockedIcon = new ItemBuilder(Material.ORANGE_STAINED_GLASS_PANE)
                     .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked")
                     .setLore(lore)
                     .toItemStack();
@@ -186,7 +187,7 @@ public class PwingRaceSkilltreeMenu {
             loreString.append(str).append("\n");
         }
 
-        ItemStack lockedItem = new ItemBuilder(RaceMaterial.RED_STAINED_GLASS_PANE.parseItem())
+        ItemStack lockedItem = new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
                 .setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked")
                 .setLore(loreString.toString())
                 .toItemStack();

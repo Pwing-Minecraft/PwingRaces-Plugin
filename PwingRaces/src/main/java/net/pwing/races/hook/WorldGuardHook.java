@@ -1,12 +1,9 @@
 package net.pwing.races.hook;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
 import lombok.Getter;
-
 import net.pwing.races.PwingRaces;
-import net.pwing.races.hook.worldguard.IWorldGuardHandler;
-import net.pwing.races.hook.worldguard.WorldGuardHandlerDisabled;
+import net.pwing.races.hook.worldguard.WorldGuardHandler;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -17,10 +14,10 @@ import java.util.UUID;
 
 public class WorldGuardHook extends PluginHook {
 
-    private IWorldGuardHandler worldGuardHandler;
+    private WorldGuardHandler worldGuardHandler;
 
     @Getter
-    private Map<UUID, List<String>> lastRegionsCache = new HashMap<>();
+    private final Map<UUID, List<String>> lastRegionsCache = new HashMap<>();
 
     public WorldGuardHook(PwingRaces owningPlugin, String pluginName) {
         super(owningPlugin, pluginName);
@@ -28,25 +25,13 @@ public class WorldGuardHook extends PluginHook {
 
     @Override
     public void enableHook(PwingRaces owningPlugin, Plugin hook) {
-        worldGuardHandler = new WorldGuardHandlerDisabled();
-        if (!(hook instanceof WorldGuardPlugin))
+        if (!(hook instanceof WorldGuardPlugin)) {
             return;
+        }
 
         owningPlugin.getLogger().info("WorldGuard found, region hook enabled.");
 
-        Class<?> clazz = null;
-        try {
-            if (hook.getDescription().getVersion().startsWith("7")) {
-                clazz = Class.forName("net.pwing.races.hook.worldguard.WorldGuardHandler_v7");
-            } else if (hook.getDescription().getVersion().startsWith("6")) {
-                clazz = Class.forName("net.pwing.races.hook.worldguard.WorldGuardHandler_v6");
-            }
-            worldGuardHandler = (IWorldGuardHandler) clazz.newInstance();
-            owningPlugin.getLogger().info("Hooking into WorldGuard version " + hook.getDescription().getVersion());
-        } catch (Exception ex) {
-            owningPlugin.getLogger().warning("Could not properly hook into WorldGuard. Version " + hook.getDescription().getVersion() + " was detected, however PwingRaces requires WorldGuard v6 for 1.12 or WorldGuard v7 for 1.13+.");
-            ex.printStackTrace();
-        }
+        worldGuardHandler = new WorldGuardHandler();
     }
 
     public boolean isInRegion(Location loc) {

@@ -2,10 +2,9 @@ package net.pwing.races.race.ability.abilities;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.race.ability.PwingRaceAbility;
-import net.pwing.races.util.RaceSound;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -55,11 +54,11 @@ public class QuickshotAbility extends PwingRaceAbility {
                 arrow.setShooter(player);
                 arrow.setMetadata("PwingRacesSource", new FixedMetadataValue(plugin, "Quickshot" + internalName));
                 //arrow.setPickupStatus(PickupStatus.ALLOWED);
-                plugin.getCompatCodeHandler().setDamage(arrow, damage);
+                arrow.setDamage(damage);
                 if (!spendArrows)
                     arrow.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
 
-                player.playSound(loc, RaceSound.ENTITY_ARROW_SHOOT.parseSound(), 1f, (float) (1.5 - (Math.random() * 1f)));
+                player.playSound(loc, Sound.ENTITY_ARROW_SHOOT, 1f, (float) (1.5 - (Math.random() * 1f)));
 
                 if (spendArrows)
                     player.getInventory().removeItem(new ItemStack(Material.ARROW, 1));

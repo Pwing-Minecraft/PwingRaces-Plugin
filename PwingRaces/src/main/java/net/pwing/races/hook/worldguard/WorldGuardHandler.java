@@ -8,20 +8,17 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldGuardHandler_v7 implements IWorldGuardHandler {
+public class WorldGuardHandler {
 
-    @Override
     public boolean isInRegion(Location loc) {
         return WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld())).getApplicableRegions(BukkitAdapter.asBlockVector(loc)).getRegions().size() > 0;
     }
 
-    @Override
     public boolean hasFlag(String flag, Location loc) {
         if (!isInRegion(loc))
             return false;
@@ -35,7 +32,6 @@ public class WorldGuardHandler_v7 implements IWorldGuardHandler {
         return regionSet.queryState(null, getFlagFromString(flag)) == StateFlag.State.ALLOW;
     }
 
-    @Override
     public List<String> getRegions(Location loc) {
         RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
         if (regionManager == null) {

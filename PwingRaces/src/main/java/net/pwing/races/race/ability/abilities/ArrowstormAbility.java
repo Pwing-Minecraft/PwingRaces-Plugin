@@ -67,7 +67,7 @@ public class ArrowstormAbility extends PwingRaceAbility {
                 arrow.setShooter(player);
                 arrow.setMetadata("PwingRacesSource", new FixedMetadataValue(plugin, "Arrowstorm" + internalName));
                 // arrow.setPickupStatus(PickupStatus.ALLOWED);
-                plugin.getCompatCodeHandler().setDamage(arrow, damage);
+                arrow.setDamage(damage);
                 if (!spendArrows)
                     arrow.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
 

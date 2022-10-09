@@ -1,8 +1,0 @@
-rootProject.name = 'PwingRaces'
-
-include 'PwingRaces-API'
-include 'PwingRaces'
-include 'v1_12_R1'
-include 'v1_13_R1'
-include 'v1_13_R2'
-include 'Modern'

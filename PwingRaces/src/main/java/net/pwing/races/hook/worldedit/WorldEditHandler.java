@@ -14,14 +14,13 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.util.io.file.FilenameException;
-
 import org.bukkit.Location;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class WorldEditHandler_v7 implements IWorldEditHandler {
+public class WorldEditHandler {
 
     public void pasteSchematic(Location loc, String schematic, boolean pasteAir) {
         WorldEdit we = WorldEdit.getInstance();

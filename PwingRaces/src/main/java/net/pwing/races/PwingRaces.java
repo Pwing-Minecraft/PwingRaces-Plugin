@@ -1,12 +1,9 @@
 package net.pwing.races;
 
 import lombok.Getter;
-
 import net.pwing.races.api.module.RaceModuleManager;
-import net.pwing.races.compat.CompatCodeHandlerDisabled;
-import net.pwing.races.compat.ICompatCodeHandler;
-import net.pwing.races.config.RaceConfigurationManager;
 import net.pwing.races.command.RaceExecutor;
+import net.pwing.races.config.RaceConfigurationManager;
 import net.pwing.races.hook.LibsDisguisesHook;
 import net.pwing.races.hook.LoreAttributesHook;
 import net.pwing.races.hook.MagicSpellsHook;
@@ -20,8 +17,6 @@ import net.pwing.races.module.PwingRaceModuleLoader;
 import net.pwing.races.module.PwingRaceModuleManager;
 import net.pwing.races.race.PwingRaceManager;
 import net.pwing.races.util.MessageUtil;
-import net.pwing.races.util.VersionUtil;
-
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,8 +24,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,8 +33,6 @@ import java.nio.file.Paths;
 public class PwingRaces extends JavaPlugin {
 
     private static PwingRaces instance;
-
-    private ICompatCodeHandler compatCodeHandler;
 
     private PwingRaceManager raceManager;
     private RaceConfigurationManager configManager;
@@ -64,23 +55,6 @@ public class PwingRaces extends JavaPlugin {
         instance = this;
 
         generateDefaultConfigs();
-
-        try {
-            Class<? extends CompatCodeHandlerDisabled> compatClass = Class.forName("net.pwing.races.compat.CompatCodeHandler" + getCompatPackage()).asSubclass(CompatCodeHandlerDisabled.class);
-            Constructor<? extends CompatCodeHandlerDisabled> compatConstructor = compatClass.getConstructor(PwingRaces.class);
-            compatConstructor.setAccessible(true);
-
-            compatCodeHandler = compatConstructor.newInstance(this);
-            getLogger().info("Successfully found code compat handler class for version " + VersionUtil.getNMSPackage() + "!");
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
-            getLogger().severe("Could not find compat code handler class for version " + VersionUtil.getNMSPackage() + ". This shouldn't be too big of a problem. If you are running the latest version of Minecraft currently, check Spigot for an updated version of the plugin. If not, ignore this.");
-            compatCodeHandler = new CompatCodeHandlerDisabled(this);
-            // ex.printStackTrace();
-        } catch (RuntimeException ex) {
-            getLogger().severe("An error occurred when enabling the compat code handler for version " + VersionUtil.getNMSPackage() + "! Please ensure you are on 1.12 or greater for full support! Considering this, the plugin should still work for the most part, but certain functions may end up not working properly or working slower.");
-            ex.printStackTrace();
-            compatCodeHandler = new CompatCodeHandlerDisabled(this);
-        }
 
         configManager = new RaceConfigurationManager(this);
         MessageUtil.initMessages("messages", configManager);
@@ -135,7 +109,7 @@ public class PwingRaces extends JavaPlugin {
         moduleManager.getModules().values().forEach(moduleManager::disableModule);
     }
 
-    public boolean reloadPlugin(){
+    public boolean reloadPlugin() {
         if (pluginEnabled) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 raceManager.savePlayer(player);
@@ -161,7 +135,7 @@ public class PwingRaces extends JavaPlugin {
             }
 
             pluginEnabled = true;
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -261,14 +235,6 @@ public class PwingRaces extends JavaPlugin {
 
     public Path getModuleFolder() {
         return Paths.get(getDataFolder().toString(), "modules");
-    }
-
-    private String getCompatPackage() {
-        String nmsPackage = VersionUtil.getNMSPackage();
-        if (nmsPackage.equals("v1_12_R1") || nmsPackage.equals("v1_13_R1") || nmsPackage.equals("v1_13_R2")) {
-            return "_" + nmsPackage;
-        }
-        return "Modern";
     }
 
     public static PwingRaces getInstance() {

@@ -2,7 +2,6 @@ package net.pwing.races.race;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
@@ -15,9 +14,8 @@ import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.race.attribute.PwingRaceAttribute;
 import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
-import net.pwing.races.util.item.ItemUtil;
 import net.pwing.races.util.LocationUtil;
-
+import net.pwing.races.util.item.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,7 +23,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -280,6 +283,19 @@ public class PwingRace implements Race {
             return raceSkillpointsMap.get(level);
 
         return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PwingRace pwingRace = (PwingRace) o;
+        return Objects.equals(this.name, pwingRace.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.name);
     }
 
     // public RaceCommandExecutor getExecutor() {

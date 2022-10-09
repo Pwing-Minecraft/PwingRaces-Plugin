@@ -3,18 +3,20 @@ package net.pwing.races.util.item;
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.util.math.NumberUtil;
-import net.pwing.races.util.RaceMaterial;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Locale;
 
 public class ItemUtil {
 
@@ -40,7 +42,7 @@ public class ItemUtil {
             return null;
 
         String string = str;
-        SafeMaterialData mat;
+        Material mat;
         String name = null;
 
         if (string.contains("|")) {
@@ -50,7 +52,7 @@ public class ItemUtil {
             name = ChatColor.translateAlternateColorCodes('&', temp[1]);
         }
 
-        mat = RaceMaterial.fromString(string.toUpperCase());
+        mat = Material.getMaterial(string.toUpperCase());
         ItemBuilder builder = new ItemBuilder(mat);
         if (name != null) {
             builder.setName(name);
@@ -70,7 +72,14 @@ public class ItemUtil {
                 case "type":
                 case "material":
                 case "item":
-                    builder = new ItemBuilder(RaceMaterial.fromString(config.getString(configPath + "." + str).toUpperCase()));
+                    String matName = config.getString(configPath + "." + str).toUpperCase(Locale.ROOT);
+                    Material material = Material.getMaterial(matName);
+                    if (material == null) {
+                        PwingRaces.getInstance().getLogger().warning("Invalid material " + matName + " at path " + configPath + "! Defaulting to stone...");
+                        material = Material.STONE;
+                    }
+
+                    builder = new ItemBuilder(material);
                     break;
                 case "durability":
                 case "data":
@@ -96,11 +105,14 @@ public class ItemUtil {
                         if (NumberUtil.isInteger(split[1]))
                             level = Integer.parseInt(split[1]);
 
-                        if (!isEnchantment(split[0]))
-                            break;
+                        Enchantment enchantment = EnchantmentWrapper.getByKey(NamespacedKey.fromString(split[0].toLowerCase(Locale.ROOT)));
+                        if (enchantment == null) {
+                            enchantment = EnchantmentWrapper.getByName(split[0].toUpperCase());
+                        }
 
-                        Enchantment enchantment = PwingRaces.getInstance().getCompatCodeHandler().getEnchantment(split[0].toUpperCase());
-                        builder.addEnchantment(enchantment, level);
+                        if (enchantment != null) {
+                            builder.addEnchantment(enchantment, level);
+                        }
                     }
                     break;
                 case "lore":
@@ -112,7 +124,6 @@ public class ItemUtil {
                 case "owner":
                 case "head-owner":
                     builder = new ItemBuilder(HeadUtil.getPlayerHead(builder.toItemStack(), config.getString(configPath + "." + str)));
-                    // builder.setOwner(config.getString(configPath + "." + str));
                     break;
                 case "color":
                 case "colour":
@@ -167,10 +178,6 @@ public class ItemUtil {
     private static Color fromHex(String hex) {
         java.awt.Color jColor = java.awt.Color.decode(hex);
         return Color.fromRGB(jColor.getRed(), jColor.getGreen(), jColor.getBlue());
-    }
-
-    public static boolean isEnchantment(String str) {
-        return PwingRaces.getInstance().getCompatCodeHandler().getEnchantment(str.toUpperCase()) != null;
     }
 
     public static boolean isItemFlag(String str) {

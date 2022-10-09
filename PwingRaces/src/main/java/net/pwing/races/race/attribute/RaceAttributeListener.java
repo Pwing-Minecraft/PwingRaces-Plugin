@@ -7,7 +7,6 @@ import net.pwing.races.api.events.RaceLevelUpEvent;
 import net.pwing.races.api.events.RaceReclaimSkillpointsEvent;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.RacePlayer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -122,7 +121,7 @@ public class RaceAttributeListener implements Listener {
             return;
 
         double bonus = raceManager.getAttributeManager().getAttributeBonus(player, "arrow-damage");
-        plugin.getCompatCodeHandler().setDamage(arrow, plugin.getCompatCodeHandler().getDamage(arrow) + bonus);
+        arrow.setDamage(arrow.getDamage() + bonus);
     }
 
     @EventHandler

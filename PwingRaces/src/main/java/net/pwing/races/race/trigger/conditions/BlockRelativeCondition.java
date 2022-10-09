@@ -1,10 +1,9 @@
 package net.pwing.races.race.trigger.conditions;
 
 import net.pwing.races.api.race.trigger.condition.RaceCondition;
-import net.pwing.races.util.RaceMaterial;
-import net.pwing.races.util.item.SafeMaterialData;
-
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
 public class BlockRelativeCondition implements RaceCondition {
@@ -16,11 +15,14 @@ public class BlockRelativeCondition implements RaceCondition {
 
         try {
             BlockFace face = BlockFace.valueOf(args[1].toUpperCase());
-            SafeMaterialData material = RaceMaterial.fromString(args[2]);
-            if (material.getMaterial() == null)
+            BlockData blockData;
+            try {
+                blockData = Bukkit.createBlockData(args[2]);
+            } catch (IllegalArgumentException ex) {
                 return false;
+            }
 
-            return player.getLocation().getBlock().getRelative(face).getType() == material.getMaterial();
+            return player.getLocation().getBlock().getRelative(face).getBlockData().equals(blockData);
         } catch (IllegalArgumentException ex) {
             return false;
         }

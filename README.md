@@ -21,7 +21,7 @@ Here are a couple examples that come with the plugin: https://github.com/Pwing-M
 
 ![](https://i.imgur.com/IXC03JO.png)
 
-[![Ability Showcase](http://img.youtube.com/vi/EqEM0t7MGGI/0.jpg)](https://www.youtube.com/watch?v=EqEM0t7MGGI "Ability showcase")
+[![Ability Showcase](https://img.youtube.com/vi/EqEM0t7MGGI/0.jpg)](https://www.youtube.com/watch?v=EqEM0t7MGGI "Ability showcase")
 
 ## Installation
 PwingRaces as-is requires no external dependencies or plugins in order to install. It comes fresh out of the box with two default races that you can customize to your liking, or if you don’t want to use them, you are able to entirely remove them and make your own races. Though, keep in mind, you need 1.12+ in order to run this plugin.

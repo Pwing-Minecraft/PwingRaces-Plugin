@@ -1,17 +1,15 @@
 package net.pwing.races.race.leveling;
 
 import lombok.AllArgsConstructor;
-
 import net.pwing.races.PwingRaces;
-import net.pwing.races.api.race.Race;
-import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.events.RaceExpChangeEvent;
 import net.pwing.races.api.events.RaceLevelUpEvent;
+import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.level.RaceLevelManager;
 import net.pwing.races.util.MessageUtil;
-import net.pwing.races.util.RaceSound;
-
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor
@@ -51,7 +49,7 @@ public class PwingRaceLevelManager implements RaceLevelManager {
 
         data.setLevel(newAmount);
 
-        player.playSound(player.getLocation(), RaceSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1f, 1f);
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
         player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("levelup", "%prefix% Your %race% race has leveled up to level %level%!").replace("%level%", "" + newAmount)));
         return true;
     }

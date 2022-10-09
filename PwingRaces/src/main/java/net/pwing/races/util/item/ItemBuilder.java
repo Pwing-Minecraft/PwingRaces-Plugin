@@ -1,11 +1,5 @@
 package net.pwing.races.util.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import net.pwing.races.PwingRaces;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -13,11 +7,16 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemBuilder {
 
@@ -50,7 +49,12 @@ public class ItemBuilder {
 	}
 
 	public ItemBuilder setDurability(int durability) {
-		PwingRaces.getInstance().getCompatCodeHandler().setDamage(stack, durability);
+		ItemMeta meta = stack.getItemMeta();
+		if (meta instanceof Damageable damageable) {
+			damageable.setDamage(durability);
+		}
+
+		stack.setItemMeta(meta);
 		return this;
 	}
 
@@ -147,7 +151,10 @@ public class ItemBuilder {
 	}
 
 	public ItemBuilder setCustomModelData(int data) {
-		PwingRaces.getInstance().getCompatCodeHandler().setCustomModelData(stack, data);
+		ItemMeta im = stack.getItemMeta();
+		im.setCustomModelData(data);
+
+		stack.setItemMeta(im);
 		return this;
 	}
 
