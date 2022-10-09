@@ -25,3 +25,6 @@ settings:
     projectile-types: [arrow, egg, snowball, trident, fireball, small_fireball, splash_potion, thrown_exp_bottle]
     disabled-worlds: [disabledworld1, disabledworld2]
     disable-abilities-in-creative: true
+    click-sound: "minecraft:block.stone_button.click_on"
+    deny-sound: "minecraft:block.note_block.bass"
+    success-sound: "minecraft:entity.player.levelup"

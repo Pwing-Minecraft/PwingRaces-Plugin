@@ -49,9 +49,11 @@ public class PwingRaceSkilltreeMenu {
             ItemStack elementItem = getElementItem(player, element);
             builder.setItem(elementItem, element.getSlot());
 
+            boolean canPurchase = true;
             RaceData raceData = racePlayer.getRaceData(race);
-            if (raceData.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName()))
-                continue;
+            if (raceData.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName())) {
+                canPurchase = false;
+            }
 
             int parentsPurchased = 0;
             for (String parent : element.getParentElements()) {
@@ -59,13 +61,20 @@ public class PwingRaceSkilltreeMenu {
                     parentsPurchased += 1;
             }
 
-            if (parentsPurchased < element.getRequiredParentAmount() && !element.getParentElements().contains("none"))
-                continue;
+            if (parentsPurchased < element.getRequiredParentAmount() && !element.getParentElements().contains("none")) {
+                canPurchase = false;
+            }
 
-            if (!racePlayer.getRace().isPresent() || !racePlayer.getRace().get().equals(race))
-                continue;
+            if (!racePlayer.getRace().isPresent() || !racePlayer.getRace().get().equals(race)) {
+                canPurchase = false;
+            }
 
-            builder.addClickEvent(element.getSlot(), (player2, action, item) -> {
+            boolean finalCanPurchase = canPurchase;
+            builder.addClickEvent(element.getSlot(), canPurchase && raceData.getUnusedSkillpoints() >= element.getCost(), (player2, action, item) -> {
+                if (!finalCanPurchase) {
+                    return;
+                }
+
                 if (raceData.getUnusedSkillpoints() < element.getCost()) {
                     MessageUtil.sendMessage(player2, "invalid-skillpoints", "%prefix% &cYou do not have the required skillpoints to purchase this upgrade!");
                     player2.closeInventory();
@@ -81,30 +90,33 @@ public class PwingRaceSkilltreeMenu {
                     }
 
                     @Override
-                    public void onConfirm(Player player, ClickType action, ItemStack item) {
+                    public boolean onConfirm(Player player, ClickType action, ItemStack item) {
                         // In the unlikely scenario skillpoints are updated before confirmation
                         if (!raceData.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName())) {
                             if (raceData.getUnusedSkillpoints() < element.getCost()) {
                                 MessageUtil.sendMessage(player, "invalid-skillpoints", "%prefix% &cYou do not have the required skillpoints to purchase this upgrade!");
                                 player.closeInventory();
-                                return;
+                                return false;
                             }
 
                             RaceElementPurchaseEvent event = new RaceElementPurchaseEvent(player, race, element);
                             Bukkit.getPluginManager().callEvent(event);
-                            if (event.isCancelled())
-                                return;
+                            if (event.isCancelled()) {
+                                return false;
+                            }
 
                             raceData.setUsedSkillpoints(raceData.getUsedSkillpoints() + element.getCost());
                             raceData.setUnusedSkillpoints(raceData.getUnusedSkillpoints() - element.getCost());
                             raceData.addPurchasedElement(skilltree.getInternalName(), element.getInternalName());
 
                             player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("successful-purchase", "%prefix% You have successfully purchased the %element% upgrade for the %skilltree% skilltree!").replace("%element%", element.getTitle()).replace("%skilltree%", skilltree.getName())));
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                            player.playSound(player.getLocation(), plugin.getConfigManager().getSuccessSound(), 1f, 1f);
                             openMenu(player);
+                            return true;
                         } else {
                             MessageUtil.sendMessage(player, "already-purchased", "%prefix% &cYou have already purchased this upgrade.");
                             player.closeInventory();
+                            return false;
                         }
                     }
                 });

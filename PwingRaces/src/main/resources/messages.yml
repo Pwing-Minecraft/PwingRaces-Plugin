@@ -2,8 +2,8 @@ messages:
     header: "&5-------------------&7[ &d&lPwing Races &7]&5-------------------"
     prefix: "&7[Pwing Races]&a"
     race-gui: "%race% Race"
-    currency-name-sing: Ruble
-    currency-name-plural: Rubles
+    currency-name-sing: Ruby
+    currency-name-plural: Rubies
     invalid-skillpoints: "%prefix% &cYou do not have the required skillpoints to purchase this upgrade!"
     cancelled-purchase: "%prefix% &cCancelled purchase of %element%."
     successful-purchase: "%prefix% You have successfully purchased the %element% upgrade for the %skilltree% skilltree!"

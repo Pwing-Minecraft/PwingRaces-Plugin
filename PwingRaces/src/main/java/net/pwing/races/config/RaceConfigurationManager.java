@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import net.pwing.races.PwingRaces;
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -45,6 +48,9 @@ public class RaceConfigurationManager {
 	private List<String> projectileLaunchers;
 	private List<String> projectileTypes;
 	private List<String> disabledWorlds;
+	private Sound clickSound;
+	private Sound denySound;
+	private Sound successSound;
 
 	private RaceConfiguration messageConfig;
 
@@ -85,6 +91,9 @@ public class RaceConfigurationManager {
 		projectileTypes = fileConfiguration.getStringList(configPath + ".projectile-types");
 		disabledWorlds = fileConfiguration.getStringList(configPath + ".disabled-worlds");
 		disableAbilitiesInCreative = fileConfiguration.getBoolean(configPath + ".disable-abilities-in-creative", true);
+		clickSound = Registry.SOUNDS.get(NamespacedKey.fromString(fileConfiguration.getString(configPath + ".click-sound", "minecraft:block.stone_button.click_on")));
+		denySound = Registry.SOUNDS.get(NamespacedKey.fromString(fileConfiguration.getString(configPath + ".deny-sound", "minecraft:block.note_block.bass")));
+		successSound = Registry.SOUNDS.get(NamespacedKey.fromString(fileConfiguration.getString(configPath + ".success-sound", "minecraft:entity.player.levelup")));
 	}
 
 	public void initConfigs() {

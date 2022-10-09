@@ -3,9 +3,12 @@ package net.pwing.races.util.menu;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.pwing.races.PwingRaces;
 import net.pwing.races.util.item.ItemBuilder;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -23,7 +26,7 @@ public class MenuBuilder {
 
 	private Inventory inv;
 
-	private Map<Integer, IMenuClickHandler> handlerMap;
+	private Map<Integer, Pair<Sound, IMenuClickHandler>> handlerMap;
 
 	public MenuBuilder(Plugin plugin) {
 		this(plugin, "Races");
@@ -38,7 +41,7 @@ public class MenuBuilder {
 		this.slots = slots;
 
 		inv = Bukkit.createInventory(null, slots, name);
-		handlerMap = new HashMap<Integer, IMenuClickHandler>();
+		handlerMap = new HashMap<>();
 
 		registerListeners(plugin);
 	}
@@ -78,8 +81,17 @@ public class MenuBuilder {
 	}
 
 	public MenuBuilder addClickEvent(int slot, IMenuClickHandler handler) {
-		handlerMap.put(slot, handler);
+		return addClickEvent(slot, PwingRaces.getInstance().getConfigManager().getClickSound(), handler);
+	}
 
+	public MenuBuilder addClickEvent(int slot, boolean clickCondition, IMenuClickHandler handler) {
+		Sound sound = clickCondition ? PwingRaces.getInstance().getConfigManager().getClickSound() : PwingRaces.getInstance().getConfigManager().getDenySound();
+		handlerMap.put(slot, Pair.of(sound, handler));
+		return this;
+	}
+
+	public MenuBuilder addClickEvent(int slot, Sound clickSound, IMenuClickHandler handler) {
+		handlerMap.put(slot, Pair.of(clickSound, handler));
 		return this;
 	}
 
@@ -93,8 +105,17 @@ public class MenuBuilder {
 					return;
 
 				event.setCancelled(true);
-				if (handlerMap.containsKey(event.getSlot()))
-					handlerMap.get(event.getSlot()).onClick(player, event.getClick(), event.getCurrentItem());
+
+				if (handlerMap.containsKey(event.getSlot())) {
+					Pair<Sound, IMenuClickHandler> pair = handlerMap.get(event.getSlot());
+					if (pair.getValue() != null) {
+						pair.getValue().onClick(player, event.getClick(), event.getCurrentItem());
+					}
+
+					if (pair.getKey() != null) {
+						player.playSound(player.getLocation(), pair.getKey(), 1f, 1f);
+					}
+				}
 			}
 
 			@EventHandler

@@ -1,11 +1,13 @@
 package net.pwing.races.util.menu;
 
+import net.pwing.races.PwingRaces;
 import net.pwing.races.util.item.ItemBuilder;
 
 import net.pwing.races.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -20,15 +22,15 @@ public class ConfirmationMenu {
 	private Inventory inv;
 	private IConfirmationHandler handler;
 
-	public ConfirmationMenu(Plugin plugin, IConfirmationHandler handler) {
+	public ConfirmationMenu(PwingRaces plugin, IConfirmationHandler handler) {
 		this(plugin, MessageUtil.getMessage("menu-confirmation", "Confirmation"), handler);
 	}
 
-	public ConfirmationMenu(Plugin plugin, String name, IConfirmationHandler handler) {
+	public ConfirmationMenu(PwingRaces plugin, String name, IConfirmationHandler handler) {
 		this(plugin, name, MessageUtil.getMessage("menu-confirm-purchase", "&aConfirm Purchase"), MessageUtil.getMessage("menu-cancel-purchase", "&cCancel Purchase"), handler);
 	}
 
-	public ConfirmationMenu(Plugin plugin, String name, String yesMessage, String noMessage, IConfirmationHandler handler) {
+	public ConfirmationMenu(PwingRaces plugin, String name, String yesMessage, String noMessage, IConfirmationHandler handler) {
 		this.handler = handler;
 
 		inv = Bukkit.createInventory(null, 27, name);
@@ -46,7 +48,7 @@ public class ConfirmationMenu {
 		return inv;
 	}
 
-	private void registerListeners(Plugin plugin) {
+	private void registerListeners(PwingRaces plugin) {
 		Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
 
 			@EventHandler
@@ -61,11 +63,21 @@ public class ConfirmationMenu {
 				if (handler == null)
 					return;
 
-				if (event.getSlot() == 11)
-					handler.onConfirm(player, event.getClick(), event.getCurrentItem());
+				if (event.getSlot() == 11) {
+					boolean success = handler.onConfirm(player, event.getClick(), event.getCurrentItem());
+					Sound sound = success ? plugin.getConfigManager().getSuccessSound() : plugin.getConfigManager().getDenySound();
+					if (sound != null) {
+						player.playSound(player.getLocation(), sound, 1f, 1f);
+					}
+				}
 
-				if (event.getSlot() == 15)
+				if (event.getSlot() == 15) {
 					handler.onDeny(player, event.getClick(), event.getCurrentItem());
+					Sound sound = plugin.getConfigManager().getDenySound();
+					if (sound != null) {
+						player.playSound(player.getLocation(), sound, 1f, 1f);
+					}
+				}
 			}
 
 			@EventHandler

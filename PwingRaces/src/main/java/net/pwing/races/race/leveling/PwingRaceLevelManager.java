@@ -9,7 +9,6 @@ import net.pwing.races.api.race.RaceData;
 import net.pwing.races.api.race.level.RaceLevelManager;
 import net.pwing.races.util.MessageUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor
@@ -49,7 +48,7 @@ public class PwingRaceLevelManager implements RaceLevelManager {
 
         data.setLevel(newAmount);
 
-        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+        player.playSound(player.getLocation(), plugin.getConfigManager().getSuccessSound(), 1f, 1f);
         player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("levelup", "%prefix% Your %race% race has leveled up to level %level%!").replace("%level%", "" + newAmount)));
         return true;
     }

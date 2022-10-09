@@ -6,6 +6,6 @@ import org.bukkit.inventory.ItemStack;
 
 public interface IConfirmationHandler {
 
-	void onConfirm(Player player, ClickType action, ItemStack item);
+	boolean onConfirm(Player player, ClickType action, ItemStack item);
 	void onDeny(Player player, ClickType action, ItemStack item);
 }

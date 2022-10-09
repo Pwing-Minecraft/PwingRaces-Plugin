@@ -89,11 +89,12 @@ public class PwingRaceMenu implements RaceMenu {
                 raceItem = iconData.getSelectedIcon().orElse(iconData.getUnlockedIcon());
 
             if (iconData.getIconSlot() >= 0) {
-                builder.setItem(raceItem, iconData.getIconSlot()).addClickEvent(iconData.getIconSlot(), (player1, action, item) -> {
-                    if (data.isUnlocked())
+                builder.setItem(raceItem, iconData.getIconSlot()).addClickEvent(iconData.getIconSlot(), data.isUnlocked(), (player1, action, item) -> {
+                    if (data.isUnlocked()) {
                         openRaceMenu(player1, race);
-                    else
+                    } else {
                         MessageUtil.sendMessage(player1, "locked-race", "%prefix% &cYou have not unlocked this race yet!");
+                    }
                 });
             }
         }
@@ -159,13 +160,13 @@ public class PwingRaceMenu implements RaceMenu {
                         MessageUtil.getMessage("menu-confirm", "&aConfirm"), MessageUtil.getMessage("menu-cancel", "&cCancel Purchase"), new IConfirmationHandler() {
 
                     @Override
-                    public void onConfirm(Player player, ClickType action, ItemStack item) {
+                    public boolean onConfirm(Player player, ClickType action, ItemStack item) {
                         if (plugin.getConfigManager().isRaceUnlockUsesCost()) {
                             if (plugin.getConfigManager().getRaceChangeCostType().equalsIgnoreCase("money")) {
                                 if (!plugin.getVaultHook().hasBalance(player, plugin.getConfigManager().getRaceChangeCost())) {
                                     MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
                                     player.closeInventory();
-                                    return;
+                                    return false;
                                 } else {
                                     plugin.getVaultHook().withdrawPlayer(player, plugin.getConfigManager().getRaceChangeCost());
                                 }
@@ -175,7 +176,7 @@ public class PwingRaceMenu implements RaceMenu {
                                 if (player.getTotalExperience() < plugin.getConfigManager().getRaceChangeCost()) {
                                     MessageUtil.sendMessage(player, "not-enough-exp", "%prefix% &cYou do not have enough experience for this transaction!");
                                     player.closeInventory();
-                                    return;
+                                    return false;
                                 } else {
                                     float cost = player.getTotalExperience() - plugin.getConfigManager().getRaceChangeCost();
                                     player.giveExpLevels(-100000);
@@ -191,7 +192,7 @@ public class PwingRaceMenu implements RaceMenu {
                         if (event.isCancelled()) {
                             player.sendMessage(MessageUtil.getPlaceholderMessage(player, MessageUtil.getMessage("cannot-set-race", "%prefix% &cCannot set race.")));
                             player.closeInventory();
-                            return;
+                            return false;
                         }
 
                         racePlayer.setRace(event.getNewRace());
@@ -203,6 +204,7 @@ public class PwingRaceMenu implements RaceMenu {
 
                         openRaceMenu(player, race);
                         MessageUtil.sendMessage(player, "set-your-active-race", "%prefix% Successfully set your race to %race%!");
+                        return true;
                     }
 
                     @Override
@@ -229,7 +231,7 @@ public class PwingRaceMenu implements RaceMenu {
 
                     // TODO: Add a "reduction" system farther down the line
                     @Override
-                    public void onConfirm(Player player, ClickType action, ItemStack item) {
+                    public boolean onConfirm(Player player, ClickType action, ItemStack item) {
                         int cost1 = configManager.getReclaimSkillpointCost();
 
                         // double reduction = configManager.getReclaimSkillpointReduction();
@@ -237,13 +239,13 @@ public class PwingRaceMenu implements RaceMenu {
                         if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost1)) {
                             MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
                             player.closeInventory();
-                            return;
+                            return false;
                         }
 
                         if (data.getPurchasedElementsMap().isEmpty()) {
                             MessageUtil.sendMessage(player, "no-elements-purchased", "%prefix% &cYou haven't bought any skilltree elements!");
                             player.closeInventory();
-                            return;
+                            return false;
                         }
 
                         // double pointReduction = data.getUsedSkillpoints() * reduction;
@@ -252,8 +254,9 @@ public class PwingRaceMenu implements RaceMenu {
                         RaceReclaimSkillpointsEvent event = new RaceReclaimSkillpointsEvent(player, race, data.getUnusedSkillpoints(), data.getUnusedSkillpoints() + finalReduction);
                         Bukkit.getPluginManager().callEvent(event);
 
-                        if (event.isCancelled())
-                            return;
+                        if (event.isCancelled()) {
+                            return false;
+                        }
 
                         vaultHook.withdrawPlayer(player, cost1);
 
@@ -264,8 +267,9 @@ public class PwingRaceMenu implements RaceMenu {
                             data.getPurchasedElementsMap().put(tree, new ArrayList<>());
 
                         MessageUtil.sendMessage(player, "race-skillpoint-claim", "%prefix% Successfully reclaimed your used skillpoints!");
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                        player.playSound(player.getLocation(), plugin.getConfigManager().getSuccessSound(), 1f, 1f);
                         openRaceMenu(player, race);
+                        return true;
                     }
                 });
 
@@ -284,26 +288,28 @@ public class PwingRaceMenu implements RaceMenu {
                     }
 
                     @Override
-                    public void onConfirm(Player player, ClickType action, ItemStack item) {
+                    public boolean onConfirm(Player player, ClickType action, ItemStack item) {
                         int cost12 = configManager.getReclaimItemsCost();
 
                         VaultAPIHook vaultHook = plugin.getVaultHook();
                         if (vaultHook.hasEconomy() && !vaultHook.hasBalance(player, cost12)) {
                             MessageUtil.sendMessage(player, "not-enough-money", "%prefix% &cYou do not have enough %currency-name-plural% for this transaction!");
                             player.closeInventory();
-                            return;
+                            return false;
                         }
 
                         RaceReclaimItemsEvent event = new RaceReclaimItemsEvent(player, race, race.getRaceItems().values());
                         Bukkit.getPluginManager().callEvent(event);
-                        if (event.isCancelled())
-                            return;
+                        if (event.isCancelled()) {
+                            return false;
+                        }
 
                         vaultHook.withdrawPlayer(player, cost12);
                         race.getRaceItems().values().forEach(raceItem -> ItemUtil.addItem(player, raceItem));
                         MessageUtil.sendMessage(player, "race-item-claim", "%prefix% Successfully reclaimed your race items!");
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                        player.playSound(player.getLocation(), plugin.getConfigManager().getSuccessSound(), 1f, 1f);
                         openRaceMenu(player, race);
+                        return true;
                     }
                 });
 
