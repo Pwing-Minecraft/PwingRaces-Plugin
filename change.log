@@ -1,3 +1,12 @@
+v1.5.0
+- Updated plugin to 1.19
+- Removed all version-dependent server hooks in favor of new API
+- Dropped support for all older versions
+- Improved math equation support for attributes
+- Added support for click sounds in the race menus
+- Polished the quickshot ability and added a handful of new options to it
+- Changed plugin cost from $15 to $10
+
 v1.4.7
 - Optimized and improved ability, trigger, and condition processing
 - Refactored version support to better accommodate future changes without requiring updates to the plugin

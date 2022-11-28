@@ -5,13 +5,9 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import net.pwing.races.api.util.math.EquationOperator;
 import net.pwing.races.api.util.math.EquationResult;
 import net.pwing.races.util.MessageUtil;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +19,7 @@ public class EquationUtil {
         fullString = MessageUtil.getPlaceholderMessage(player, fullString);
         try {
             return getEquationResult(fullString);
-        } catch (ScriptException ex) {
+        } catch (Throwable ex) {
             Bukkit.getLogger().warning("Equation for string " + fullString + " was unable to be solved.");
             ex.printStackTrace();
 
@@ -31,7 +27,7 @@ public class EquationUtil {
         }
     }
 
-    public static EquationResult getEquationResult(String fullString) throws ScriptException{
+    public static EquationResult getEquationResult(String fullString) {
         // Check first char only since +(value) is a valid number (e.g. +1)
         Optional<EquationOperator> operator = EquationOperator.getOperator(fullString.charAt(0));
         return operator.map(equationOperator -> new EquationResult(equationOperator, parseEquation(fullString.substring(1)))).orElseGet(() -> new EquationResult(EquationOperator.EQUAL, NumberUtil.getDouble(fullString)));
