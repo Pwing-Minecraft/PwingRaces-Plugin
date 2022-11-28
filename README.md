@@ -24,7 +24,7 @@ Here are a couple examples that come with the plugin: https://github.com/Pwing-M
 [![Ability Showcase](https://img.youtube.com/vi/EqEM0t7MGGI/0.jpg)](https://www.youtube.com/watch?v=EqEM0t7MGGI "Ability showcase")
 
 ## Installation
-PwingRaces as-is requires no external dependencies or plugins in order to install. It comes fresh out of the box with two default races that you can customize to your liking, or if you don’t want to use them, you are able to entirely remove them and make your own races. Though, keep in mind, you need 1.12+ in order to run this plugin.
+PwingRaces as-is requires no external dependencies or plugins in order to install. It comes fresh out of the box with two default races that you can customize to your liking, or if you don’t want to use them, you are able to entirely remove them and make your own races. Though, keep in mind, you need 1.19+ in order to run this plugin.
 
 You can download the plugin off of Spigot [here](https://www.spigotmc.org/resources/pwing-races-skilltrees-triggers-attributes-conditions-and-abilities.67808/) or compile it yourself. **Please keep in mind that support is offered to PAID customers only. If you choose to compile the plugin yourself, you will receieve NO support from us, and nor will we help you compile it. You are on your own if you choose to try and compile it yourself**. Our Discord server can be joined [here](https://discord.gg/jn2GAjz).
 
