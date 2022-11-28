@@ -18,7 +18,7 @@ allprojects {
     apply(plugin = "java-library")
 
     group = "net.pwing.races"
-    version = "1.5.0-SNAPSHOT"
+    version = "1.5.0"
 
     java.sourceCompatibility = JavaVersion.VERSION_17
     java.targetCompatibility = JavaVersion.VERSION_17
