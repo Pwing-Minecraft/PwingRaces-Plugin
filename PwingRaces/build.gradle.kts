@@ -21,13 +21,13 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.9.2")
     compileOnly("LibsDisguises:LibsDisguises:10.0.31")
     compileOnly("com.github.TheComputerGeek2:MagicSpells:3.5-Release")
+    compileOnly("io.lumine:Mythic-Dist:5.2.1")
+    compileOnly("me.blackvein.quests:quests-core:4.8.3")
 
     compileOnly(":LoreAttributesRecoded")
-    compileOnly(":Quests")
-    compileOnly(":MythicMobs")
 
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
+    compileOnly("org.projectlombok:lombok:1.18.26")
+    annotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
 tasks.processResources {
