@@ -3,6 +3,7 @@ package net.pwing.races.race;
 import lombok.Getter;
 import lombok.Setter;
 import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceItemDefinition;
 import net.pwing.races.api.race.RaceManager;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.api.race.ability.RaceAbilityManager;
@@ -24,6 +25,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +49,7 @@ public class PwingRace implements Race {
 
     private RaceIconData iconData;
 
-    private Map<String, ItemStack> raceItems;
+    private Map<String, RaceItemDefinition> itemDefinitions;
     private Map<Integer, String> skilltreeMap;
     private Map<String, List<RacePermission>> racePermissionsMap;
     private Map<String, List<RaceAttribute>> raceAttributesMap;
@@ -77,14 +79,15 @@ public class PwingRace implements Race {
         this.requiresUnlock = raceConfig.getBoolean("race.require-unlock", false);
         this.skilltreeMap = new LinkedHashMap<>();
 
-        this.raceItems = new LinkedHashMap<>();
+        this.itemDefinitions = new LinkedHashMap<>();
         if (raceConfig.contains("race.items")) {
             for (String str : raceConfig.getConfigurationSection("race.items").getKeys(false)) {
-                ItemStack stack = ItemUtil.readItemFromConfig("race.items." + str, raceConfig);
-                if (stack == null)
+                RaceItemDefinition stack = ItemUtil.readRaceItemFromConfig("race.items." + str, raceConfig);
+                if (stack == null) {
                     continue;
+                }
 
-                raceItems.put(str, stack);
+                itemDefinitions.put(str, stack);
             }
         }
 
@@ -284,6 +287,28 @@ public class PwingRace implements Race {
 
         return 0;
     }
+
+    @Override
+    public Map<String, ItemStack> getRaceItems() {
+        Map<String, ItemStack> raceItems = new HashMap<>();
+        for (Map.Entry<String, RaceItemDefinition> entry : this.itemDefinitions.entrySet()) {
+            if (!entry.getValue().giveToPlayer()) {
+                continue;
+            }
+
+            raceItems.put(entry.getKey(), entry.getValue().itemStack());
+        }
+
+        return raceItems;
+    }
+
+    public void setRaceItems(Map<String, ItemStack> raceItems) {
+        this.itemDefinitions.clear();
+        for (Map.Entry<String, ItemStack> entry : raceItems.entrySet()) {
+            this.itemDefinitions.put(entry.getKey(), new RaceItemDefinition(entry.getValue(), true));
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {

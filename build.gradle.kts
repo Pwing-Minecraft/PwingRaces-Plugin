@@ -7,8 +7,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":PwingRaces"))
     implementation(project(":PwingRaces-API"))
+    implementation(project(":core"))
+    implementation(project(":paper"))
 }
 
 description = "PwingRaces-Parent"

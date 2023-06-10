@@ -28,6 +28,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.Consumer;
 
 @Getter
 public class PwingRaces extends JavaPlugin {
@@ -49,6 +50,17 @@ public class PwingRaces extends JavaPlugin {
 
     private boolean placeholderAPILoaded = false;
     private boolean pluginEnabled;
+
+    private Consumer<PwingRaces> onEnable;
+    private Consumer<PwingRaces> onDisable;
+
+    public PwingRaces() {
+    }
+
+    public PwingRaces(Consumer<PwingRaces> onEnable, Consumer<PwingRaces> onDisable) {
+        this.onEnable = onEnable;
+        this.onDisable = onDisable;
+    }
 
     @Override
     public void onEnable() {
@@ -94,6 +106,10 @@ public class PwingRaces extends JavaPlugin {
         if (autosave > 0)
             getServer().getScheduler().runTaskTimerAsynchronously(this, () -> this.getServer().getOnlinePlayers().forEach(raceManager::savePlayer), autosave, autosave);
 
+        if (onEnable != null) {
+            onEnable.accept(this);
+        }
+
         pluginEnabled = true;
 
         new Metrics(this);
@@ -107,6 +123,10 @@ public class PwingRaces extends JavaPlugin {
 
         getLogger().info("Disabling modules...");
         moduleManager.getModules().values().forEach(moduleManager::disableModule);
+
+        if (onDisable != null) {
+            onDisable.accept(this);
+        }
     }
 
     public boolean reloadPlugin() {

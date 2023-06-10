@@ -2,11 +2,10 @@ main: net.pwing.races.PwingRaces
 name: PwingRaces
 description: "A very highly-customizable race plugin for any server!"
 version: ${version}
-api-version: 1.13
+api-version: 1.19
 author: Redned
-website: https://pwing.net
 softdepend: [WorldEdit, WorldGuard, MagicSpells, PlaceholderAPI, Quests, LibsDisguises, LoreAttributesRecoded, Vault]
 commands:
-    race:
-        description: PwingRaces main command.
-        usage: /race <help>
+  race:
+    description: PwingRaces main command.
+    usage: /race <help>

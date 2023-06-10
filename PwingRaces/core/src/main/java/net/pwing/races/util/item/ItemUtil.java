@@ -2,6 +2,7 @@ package net.pwing.races.util.item;
 
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.race.Race;
+import net.pwing.races.api.race.RaceItemDefinition;
 import net.pwing.races.util.math.NumberUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -59,6 +60,16 @@ public class ItemUtil {
         }
 
         return builder.toItemStack();
+    }
+
+    public static RaceItemDefinition readRaceItemFromConfig(String configPath, FileConfiguration config) {
+        ItemStack item = readItemFromConfig(configPath, config);
+        if (item == null) {
+            return null;
+        }
+
+        boolean giveToPlayer = config.getBoolean(configPath + ".give-to-player", true);
+        return new RaceItemDefinition(item, giveToPlayer);
     }
 
     public static ItemStack readItemFromConfig(String configPath, FileConfiguration config) {

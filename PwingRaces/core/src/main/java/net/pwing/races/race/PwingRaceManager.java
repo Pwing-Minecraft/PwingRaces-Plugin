@@ -37,20 +37,19 @@ import java.util.UUID;
 
 @Getter
 public class PwingRaceManager implements RaceManager {
+    private final PwingRaces plugin;
 
-    private PwingRaces plugin;
-
-    private PwingRaceTriggerManager triggerManager;
-    private PwingRaceAttributeManager attributeManager;
-    private PwingRacePermissionManager permissionManager;
-    private PwingRaceLevelManager levelManager;
-    private PwingRaceAbilityManager abilityManager;
-    private PwingRaceSkilltreeManager skilltreeManager;
+    private final PwingRaceTriggerManager triggerManager;
+    private final PwingRaceAttributeManager attributeManager;
+    private final PwingRacePermissionManager permissionManager;
+    private final PwingRaceLevelManager levelManager;
+    private final PwingRaceAbilityManager abilityManager;
+    private final PwingRaceSkilltreeManager skilltreeManager;
 
     private RaceMenu raceMenu;
 
-    private Set<Race> races;
-    private Map<UUID, RacePlayer> racePlayers;
+    private final Set<Race> races;
+    private final Map<UUID, RacePlayer> racePlayers;
 
     public PwingRaceManager(PwingRaces plugin) {
         this.plugin = plugin;
@@ -154,7 +153,7 @@ public class PwingRaceManager implements RaceManager {
 
             if (hasDefaultRace) {
                 Optional<Race> defaultRace = getRaceFromName(plugin.getConfigManager().getDefaultRace());
-                if (!defaultRace.isPresent()) {
+                if (defaultRace.isEmpty()) {
                     plugin.getLogger().severe("Could not find default race " + plugin.getConfigManager().getDefaultRace() + "! Please make sure your config is correct!");
                     config.set("active-race", "");
                 } else {
