@@ -34,10 +34,6 @@ public class ItemBuilder {
 		this.stack = stack;
 	}
 
-	public ItemBuilder(SafeMaterialData data) {
-		this.stack = new ItemStack(data.getMaterial(), 1, (short) data.getData());
-	}
-
 	public ItemBuilder setType(Material material) {
 		stack.setType(material);
 		return this;
@@ -75,13 +71,14 @@ public class ItemBuilder {
 
 	public ItemBuilder setLore(String lore) {
 		String[] split = lore.split("\n");
-		List<String> lores = new ArrayList<String>() {
-			private static final long serialVersionUID = 4437712182410853273L; {
+		List<String> lores = new ArrayList<>() {
+			{
 
-			for (String s : split) {
-				add(ChatColor.translateAlternateColorCodes('&', s));
+				for (String s : split) {
+					add(ChatColor.translateAlternateColorCodes('&', s));
+				}
 			}
-		}};
+		};
 
 		return setLore(lores);
 	}

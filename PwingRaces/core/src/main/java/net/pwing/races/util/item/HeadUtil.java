@@ -11,11 +11,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class HeadUtil {
-
-    private static Map<String, PlayerProfile> cachedHeads = new HashMap<>();
+    private static final Map<String, PlayerProfile> CACHED_HEADS = new HashMap<>();
 
     public static ItemStack getPlayerHead(ItemStack item, String headOwner) {
-        PlayerProfile cachedProfile = cachedHeads.get(headOwner);
+        PlayerProfile cachedProfile = CACHED_HEADS.get(headOwner);
         if (cachedProfile != null) {
             SkullMeta itemMeta = (SkullMeta) item.getItemMeta();
             itemMeta.setOwnerProfile(cachedProfile);
@@ -30,7 +29,7 @@ public class HeadUtil {
             }
 
             Bukkit.getScheduler().runTask(PwingRaces.getInstance(), () -> {
-                cachedHeads.put(headOwner, profile);
+                CACHED_HEADS.put(headOwner, profile);
 
                 SkullMeta itemMeta = (SkullMeta) item.getItemMeta();
                 itemMeta.setOwnerProfile(profile);

@@ -283,7 +283,7 @@ public class RaceCommandExecutor implements TabExecutor {
                         return null;
                 }
             case "material":
-                return ItemUtil.fromString(arg);
+                return ItemUtil.readItem(arg);
             case "player":
                 Player player = Bukkit.getPlayer(arg);
                 if (player == null)

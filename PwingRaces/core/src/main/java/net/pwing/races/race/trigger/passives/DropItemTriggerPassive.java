@@ -24,14 +24,11 @@ public class DropItemTriggerPassive extends RaceTriggerPassive {
         String itemKey = String.join("", trigger).replace(name + " ", "");
 
         RacePlayer racePlayer = plugin.getRaceManager().getRacePlayer(player);
-        if (!racePlayer.getRace().isPresent())
+        if (racePlayer.getRace().isEmpty())
             return;
 
         Race race = racePlayer.getRace().get();
-        ItemStack item = race.getRaceItems().get(itemKey);
-        if (item == null) {
-            item = ItemUtil.fromString(itemKey);
-        }
+        ItemStack item = ItemUtil.readItem(race, itemKey);
 
         player.getWorld().dropItemNaturally(player.getLocation(), item);
     }

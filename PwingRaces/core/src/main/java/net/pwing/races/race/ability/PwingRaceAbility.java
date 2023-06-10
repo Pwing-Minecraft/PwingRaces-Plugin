@@ -1,12 +1,10 @@
 package net.pwing.races.race.ability;
 
 import com.google.common.collect.ArrayListMultimap;
-
 import net.pwing.races.PwingRaces;
 import net.pwing.races.api.PwingRacesAPI;
 import net.pwing.races.api.race.ability.RaceAbility;
 import net.pwing.races.util.item.ItemUtil;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,40 +25,19 @@ public abstract class PwingRaceAbility extends RaceAbility {
         this.cooldown = config.getDouble(configPath + ".cooldown", 0);
 
         if (config.contains(configPath + ".ability-item")) {
-            String[] abilityItemStr = config.getString(configPath + ".ability-item").split(",");
-            this.abilityItems = new ItemStack[abilityItemStr.length];
-
-            for (int i = 0; i < abilityItemStr.length; i++) {
-                ItemStack stack = ItemUtil.fromString(abilityItemStr[i]);
-                if (stack != null)
-                    this.abilityItems[i] = stack;
-            }
+            this.abilityItems = ItemUtil.readItems(config.getString(configPath + ".ability-item"));
         } else {
             this.abilityItems = new ItemStack[0];
         }
 
         if (config.contains(configPath + ".left-click-ability-item")) {
-            String[] leftClickAbilityItemStr = config.getString(configPath + ".left-click-ability-item").split(",");
-            this.leftClickAbilityItems = new ItemStack[leftClickAbilityItemStr.length];
-
-            for (int i = 0; i < leftClickAbilityItemStr.length; i++) {
-                ItemStack stack = ItemUtil.fromString(leftClickAbilityItemStr[i]);
-                if (stack != null)
-                    this.leftClickAbilityItems[i] = stack;
-            }
+            this.leftClickAbilityItems = ItemUtil.readItems(config.getString(configPath + ".left-click-ability-item"));
         } else {
             this.leftClickAbilityItems = new ItemStack[0];
         }
 
         if (config.contains(configPath + ".consume-ability-item")) {
-            String[] consumeAbilityItemStr = config.getString(configPath + ".consume-ability-item").split(",");
-            this.consumeAbilityItems = new ItemStack[consumeAbilityItemStr.length];
-
-            for (int i = 0; i < consumeAbilityItemStr.length; i++) {
-                ItemStack stack = ItemUtil.fromString(consumeAbilityItemStr[i]);
-                if (stack != null)
-                    this.consumeAbilityItems[i] = stack;
-            }
+            this.consumeAbilityItems = ItemUtil.readItems(config.getString(configPath + ".consume-ability-item"));
         } else {
             this.consumeAbilityItems = new ItemStack[0];
         }
