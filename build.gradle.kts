@@ -42,6 +42,7 @@ allprojects {
         maven("https://jitpack.io")
         maven("https://repo.dmulloy2.net/nexus/repository/public/")
         maven("https://repo.codemc.org/repository/maven-public")
+        maven("https://mvn.lumine.io/repository/maven-public/")
     }
 
     tasks.withType<JavaCompile> {

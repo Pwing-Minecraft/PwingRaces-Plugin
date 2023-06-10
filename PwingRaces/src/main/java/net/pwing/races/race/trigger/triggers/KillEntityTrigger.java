@@ -1,7 +1,7 @@
 package net.pwing.races.race.trigger.triggers;
 
-import io.lumine.xikage.mythicmobs.MythicMobs;
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.mobs.ActiveMob;
 
 import lombok.AllArgsConstructor;
 
@@ -30,8 +30,8 @@ public class KillEntityTrigger implements Listener {
         if (!plugin.getMythicMobsHook().isHooked())
             return;
 
-        if (MythicMobs.inst().getAPIHelper().isMythicMob(event.getEntity())) {
-            ActiveMob mythicMob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
+        if (MythicBukkit.inst().getAPIHelper().isMythicMob(event.getEntity())) {
+            ActiveMob mythicMob = MythicBukkit.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
 
             triggerManager.runTriggers(player, "kill-mythicmob");
             triggerManager.runTriggers(player, "kill-mythicmob " + mythicMob.getType().getInternalName());
