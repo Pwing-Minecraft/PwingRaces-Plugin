@@ -12,6 +12,7 @@ import net.pwing.races.api.race.menu.RaceMenu;
 import net.pwing.races.config.RaceConfiguration;
 import net.pwing.races.race.ability.PwingRaceAbilityManager;
 import net.pwing.races.race.attribute.PwingRaceAttributeManager;
+import net.pwing.races.race.editor.RaceEditorManager;
 import net.pwing.races.race.leveling.PwingRaceLevelManager;
 import net.pwing.races.race.menu.PwingRaceMenu;
 import net.pwing.races.race.permission.PwingRacePermissionManager;
@@ -45,6 +46,7 @@ public class PwingRaceManager implements RaceManager {
     private final PwingRaceLevelManager levelManager;
     private final PwingRaceAbilityManager abilityManager;
     private final PwingRaceSkilltreeManager skilltreeManager;
+    private final RaceEditorManager editorManager;
 
     private RaceMenu raceMenu;
 
@@ -67,12 +69,26 @@ public class PwingRaceManager implements RaceManager {
         levelManager = new PwingRaceLevelManager(plugin);
         abilityManager = new PwingRaceAbilityManager(plugin);
         skilltreeManager = new PwingRaceSkilltreeManager(Paths.get(plugin.getDataFolder().toString(), "skilltrees"));
+        editorManager = new RaceEditorManager(plugin);
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
             races.add(new PwingRace(this, config.getConfig()));
 
         FileConfiguration config = plugin.getConfig();
         raceMenu = new PwingRaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
+    }
+
+    public void addRace(Race race) {
+        this.races.add(race);
+        for (RacePlayer player : this.racePlayers.values()) {
+            RaceConfiguration playerConfig = plugin.getConfigManager().getPlayerDataConfig(player.getPlayer().getUniqueId());
+            if (playerConfig == null) {
+                plugin.getLogger().severe("Could not access player data file for " + player.getPlayer().getName() + "!");
+                continue;
+            }
+
+            player.getRaceDataMap().put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
+        }
     }
 
     public void reloadRaces() {
@@ -104,7 +120,7 @@ public class PwingRaceManager implements RaceManager {
         for (Race race : races)
             raceDataMap.put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
 
-        if (!getRaceFromName(raceName).isPresent() && plugin.getConfigManager().isRequireRace()) {
+        if (getRaceFromName(raceName).isEmpty() && plugin.getConfigManager().isRequireRace()) {
             plugin.getLogger().severe("Could not find race " + raceName + ", please check the data config for " + player.getName() + "!");
             return false;
         }

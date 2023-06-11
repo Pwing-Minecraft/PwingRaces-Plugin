@@ -27,6 +27,10 @@ public class LocationUtil {
     }
 
     public static String toString(Location loc) {
+        if (loc == null || loc.getWorld() == null) {
+            return null;
+        }
+
         return loc.getWorld().toString() + ";" + loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch();
     }
 }

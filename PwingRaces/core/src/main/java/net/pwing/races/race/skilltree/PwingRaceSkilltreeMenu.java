@@ -17,7 +17,6 @@ import net.pwing.races.util.menu.MenuBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -37,17 +36,17 @@ public class PwingRaceSkilltreeMenu {
     public void openMenu(Player player) {
         RaceManager raceManager = plugin.getRaceManager();
         RacePlayer racePlayer = raceManager.getRacePlayer(player);
-        MenuBuilder builder = new MenuBuilder(plugin, skilltree.getName() + " Skilltree", skilltree.getMenuSize());
+        MenuBuilder builder = MenuBuilder.builder(plugin, skilltree.getName() + " Skilltree", skilltree.getMenuSize());
 
         List<RaceSkilltreeElement> elements = skilltree.getElements();
         if (skilltree.getMenuSlot() >= 0)
-            builder.setItem(skilltree.getMenuIcon(), skilltree.getMenuSlot());
+            builder.item(skilltree.getMenuIcon(), skilltree.getMenuSlot());
 
-        builder.addClickEvent(skilltree.getMenuSlot(), (player1, action, item) -> raceManager.getRaceMenu().openRaceMenu(player1, race));
+        builder.clickEvent(skilltree.getMenuSlot(), (player1, action, item) -> raceManager.getRaceMenu().openRaceMenu(player1, race));
 
         for (RaceSkilltreeElement element : elements) {
             ItemStack elementItem = getElementItem(player, element);
-            builder.setItem(elementItem, element.getSlot());
+            builder.item(elementItem, element.getSlot());
 
             boolean canPurchase = true;
             RaceData raceData = racePlayer.getRaceData(race);
@@ -70,7 +69,7 @@ public class PwingRaceSkilltreeMenu {
             }
 
             boolean finalCanPurchase = canPurchase;
-            builder.addClickEvent(element.getSlot(), canPurchase && raceData.getUnusedSkillpoints() >= element.getCost(), (player2, action, item) -> {
+            builder.clickEvent(element.getSlot(), canPurchase && raceData.getUnusedSkillpoints() >= element.getCost(), (player2, action, item) -> {
                 if (!finalCanPurchase) {
                     return;
                 }
@@ -134,10 +133,10 @@ public class PwingRaceSkilltreeMenu {
 
         List<String> lore = new ArrayList<>(element.getDescription());
         if (data.hasPurchasedElement(skilltree.getInternalName(), element.getInternalName())) {
-            ItemStack purchasedIcon = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.GREEN + "Purchased")
-                    .setLore(element.getDescription())
-                    .toItemStack();
+            ItemStack purchasedIcon = ItemBuilder.builder(Material.LIME_STAINED_GLASS_PANE)
+                    .name(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.GREEN + "Purchased")
+                    .lore(element.getDescription())
+                    .build();
 
             if (element.getPurchasedIcon().isPresent())
                 return mergeIconWithElementItem(element.getPurchasedIcon().get(), purchasedIcon);
@@ -169,10 +168,10 @@ public class PwingRaceSkilltreeMenu {
                 lore.add(MessageUtil.getMessage("menu-skilltree-purchase", "&eClick to purchase."));
             }
 
-            ItemStack unlockedIcon = new ItemBuilder(Material.ORANGE_STAINED_GLASS_PANE)
-                    .setName(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked")
-                    .setLore(lore)
-                    .toItemStack();
+            ItemStack unlockedIcon = ItemBuilder.builder(Material.ORANGE_STAINED_GLASS_PANE)
+                    .name(ChatColor.WHITE + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Unlocked")
+                    .lore(lore)
+                    .build();
 
             if (element.getIcon() != null)
                 return mergeIconWithElementItem(element.getIcon(), unlockedIcon);
@@ -199,10 +198,10 @@ public class PwingRaceSkilltreeMenu {
             loreString.append(str).append("\n");
         }
 
-        ItemStack lockedItem = new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                .setName(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked")
-                .setLore(loreString.toString())
-                .toItemStack();
+        ItemStack lockedItem = ItemBuilder.builder(Material.RED_STAINED_GLASS_PANE)
+                .name(ChatColor.RED + element.getTitle() + ChatColor.GRAY + " | " + ChatColor.DARK_RED + "Locked")
+                .lore(loreString.toString())
+                .build();
 
         if (element.getLockedIcon().isPresent())
             return mergeIconWithElementItem(element.getLockedIcon().get(), lockedItem);

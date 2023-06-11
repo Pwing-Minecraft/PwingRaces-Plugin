@@ -38,8 +38,10 @@ public class RaceConfigurationManager {
 	private boolean giveItemsOnFirstSelect;
 	private boolean allowReclaimingItems;
 	private int reclaimItemsCost;
+	private String reclaimItemsCostType;
 	private boolean allowReclaimingSkillpoints;
 	private int reclaimSkillpointCost;
+	private String reclaimSkillpointCostType;
 	private boolean reclaimSkillpointReduces;
 	private double reclaimSkillpointReduction;
 	private boolean sendSkillpointMessageOnJoin;
@@ -81,8 +83,10 @@ public class RaceConfigurationManager {
 		giveItemsOnFirstSelect = fileConfiguration.getBoolean(configPath + ".give-items-on-first-select", true);
 		allowReclaimingItems = fileConfiguration.getBoolean(configPath + ".allow-reclaiming-items", true);
 		reclaimItemsCost = fileConfiguration.getInt(configPath + ".reclaim-items-cost", 5000);
+		reclaimItemsCostType = fileConfiguration.getString(configPath + ".reclaim-items-cost-type", "money");
 		allowReclaimingSkillpoints = fileConfiguration.getBoolean(configPath + ".allow-reclaiming-skillpoints", false);
 		reclaimSkillpointCost = fileConfiguration.getInt(configPath + ".reclaim-skillpoint-cost", 15000);
+		reclaimSkillpointCostType = fileConfiguration.getString(configPath + ".reclaim-skillpoint-cost-type", "money");
 		reclaimSkillpointReduces = fileConfiguration.getBoolean(configPath + ".reclaim-skillpoint-reduces", false);
 		reclaimSkillpointReduction = fileConfiguration.getDouble(configPath + ".reclaim-skillpoint-reduction", 0.2);
 		sendSkillpointMessageOnJoin = fileConfiguration.getBoolean(configPath + ".send-skillpoint-message-on-join", true);

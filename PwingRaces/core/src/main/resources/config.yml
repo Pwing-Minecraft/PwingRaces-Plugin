@@ -17,8 +17,10 @@ settings:
     give-items-on-first-select: true # If race items should be given on the first time a player chooses a race
     allow-reclaiming-items: true
     reclaim-items-cost: 5000
+    reclaim-items-cost-type: money # Can be money or exp
     allow-reclaiming-skillpoints: true
     reclaim-skillpoint-cost: 5000
+    reclaim-skillpoint-cost-type: money # Can be money or exp
     send-skillpoint-message-on-join: true
     use-projectile-event: false
     projectile-launchers: [bow, snowball, egg, trident, splash_potion, thrown_exp_bottle]

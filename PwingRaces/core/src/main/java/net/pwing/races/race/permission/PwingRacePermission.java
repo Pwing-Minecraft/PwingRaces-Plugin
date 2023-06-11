@@ -11,6 +11,7 @@ import net.pwing.races.api.race.permission.RacePermission;
 @AllArgsConstructor
 public class PwingRacePermission implements RacePermission {
 
+    private String configPath;
     private String node;
     private String requirement;
 }

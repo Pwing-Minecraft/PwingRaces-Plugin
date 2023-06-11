@@ -1,6 +1,5 @@
 package net.pwing.races.util.item;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -13,38 +12,34 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.profile.PlayerProfile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ItemBuilder {
+	private final ItemStack stack;
 
-	private ItemStack stack;
-
-	public ItemBuilder() {
-		stack = new ItemStack(Material.AIR);
-	}
-
-	public ItemBuilder(Material material) {
+	private ItemBuilder(Material material) {
 		stack = new ItemStack(material);
 	}
 
-	public ItemBuilder(ItemStack stack) {
+	private ItemBuilder(ItemStack stack) {
 		this.stack = stack;
 	}
 
-	public ItemBuilder setType(Material material) {
+	public ItemBuilder material(Material material) {
 		stack.setType(material);
 		return this;
 	}
 
-	public ItemBuilder setAmount(int amount) {
+	public ItemBuilder amount(int amount) {
 		stack.setAmount(amount);
 		return this;
 	}
 
-	public ItemBuilder setDurability(int durability) {
+	public ItemBuilder durability(int durability) {
 		ItemMeta meta = stack.getItemMeta();
 		if (meta instanceof Damageable damageable) {
 			damageable.setDamage(durability);
@@ -54,14 +49,14 @@ public class ItemBuilder {
 		return this;
 	}
 
-	public ItemBuilder setUnbreakable(boolean unbreakable) {
+	public ItemBuilder unbreakable(boolean unbreakable) {
 		ItemMeta meta = stack.getItemMeta();
 		meta.setUnbreakable(unbreakable);
 		stack.setItemMeta(meta);
 		return this;
 	}
 
-	public ItemBuilder setName(String name) {
+	public ItemBuilder name(String name) {
 		ItemMeta im = stack.getItemMeta();
 		im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 
@@ -69,7 +64,7 @@ public class ItemBuilder {
 		return this;
 	}
 
-	public ItemBuilder setLore(String lore) {
+	public ItemBuilder lore(String lore) {
 		String[] split = lore.split("\n");
 		List<String> lores = new ArrayList<>() {
 			{
@@ -80,14 +75,14 @@ public class ItemBuilder {
 			}
 		};
 
-		return setLore(lores);
+		return lore(lores);
 	}
 
-	public ItemBuilder setLore(String... lore) {
-		return setLore(Arrays.asList(lore));
+	public ItemBuilder lore(String... lore) {
+		return lore(Arrays.asList(lore));
 	}
 
-	public ItemBuilder setLore(List<String> lore) {
+	public ItemBuilder lore(List<String> lore) {
 		ItemMeta im = stack.getItemMeta();
 
 		List<String> newLore = new ArrayList<>();
@@ -98,7 +93,7 @@ public class ItemBuilder {
 		return this;
 	}
 
-	public ItemBuilder addItemFlag(ItemFlag... flag) {
+	public ItemBuilder itemFlags(ItemFlag... flag) {
 		ItemMeta im = stack.getItemMeta();
 		im.addItemFlags(flag);
 
@@ -106,60 +101,61 @@ public class ItemBuilder {
 		return this;
 	}
 
-	public ItemBuilder addPotionEffect(PotionEffect effect) {
-		if (stack.getItemMeta() instanceof PotionMeta) {
-			PotionMeta im = (PotionMeta) stack.getItemMeta();
+	public ItemBuilder potionEffect(PotionEffect effect) {
+		if (stack.getItemMeta() instanceof PotionMeta im) {
 			im.addCustomEffect(effect, true);
 			stack.setItemMeta(im);
 		}
 		return this;
 	}
 
-	public ItemBuilder setOwner(String owner) {
-		if (stack.getItemMeta() instanceof SkullMeta) {
-			SkullMeta meta = (SkullMeta) stack.getItemMeta();
-			meta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
+	public ItemBuilder owner(PlayerProfile owner) {
+		if (stack.getItemMeta() instanceof SkullMeta meta) {
+			meta.setOwnerProfile(owner);
 			stack.setItemMeta(meta);
 		}
 		return this;
 	}
 
-	public ItemBuilder setColor(Color color) {
-		if (stack.getItemMeta() instanceof LeatherArmorMeta) {
-			LeatherArmorMeta im = (LeatherArmorMeta) stack.getItemMeta();
+	public ItemBuilder color(Color color) {
+		if (stack.getItemMeta() instanceof LeatherArmorMeta im) {
 			im.setColor(color);
 			stack.setItemMeta(im);
 		}
-		if (stack.getItemMeta() instanceof PotionMeta) {
-			PotionMeta im = (PotionMeta) stack.getItemMeta();
+
+		if (stack.getItemMeta() instanceof PotionMeta im) {
 			im.setColor(color);
 			stack.setItemMeta(im);
 		}
 		return this;
 	}
 
-	public ItemBuilder addEnchantment(Enchantment ench, int level) {
+	public ItemBuilder enchantment(Enchantment ench, int level) {
 		stack.addUnsafeEnchantment(ench, level);
 		return this;
 	}
 
-	public String getDisplayName() {
-		return stack.getItemMeta().getDisplayName();
-	}
-
-	public ItemBuilder setCustomModelData(int data) {
+	public ItemBuilder customModelData(int data) {
 		ItemMeta im = stack.getItemMeta();
 		im.setCustomModelData(data);
 
 		stack.setItemMeta(im);
 		return this;
 	}
-
-	public ItemBuilder clone() {
-		return new ItemBuilder(toItemStack());
+	
+	public static ItemBuilder builder(Material material) {
+		return new ItemBuilder(material);
+	}
+	
+	public static ItemBuilder builder(ItemStack stack) {
+		return new ItemBuilder(stack.clone());
 	}
 
-	public ItemStack toItemStack() {
+	public ItemBuilder clone() {
+		return ItemBuilder.builder(build());
+	}
+
+	public ItemStack build() {
 		return stack;
 	}
 }

@@ -15,12 +15,14 @@ public class PwingRaceAttribute implements RaceAttribute {
 
     private static String PLACEHOLDER_PATTERN = "%.*?%";
 
+    private String configPath;
     private String attribute;
     private String attributeData;
     private String requirement;
     private EquationResult equationResult;
 
-    public PwingRaceAttribute(String attribute, String attributeData, String requirement) {
+    public PwingRaceAttribute(String configPath, String attribute, String attributeData, String requirement) {
+        this.configPath = configPath;
         this.attribute = attribute;
         this.attributeData = attributeData;
         this.requirement = requirement;

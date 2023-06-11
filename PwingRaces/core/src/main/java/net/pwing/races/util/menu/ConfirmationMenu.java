@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
 
 public class ConfirmationMenu {
 
@@ -34,8 +33,8 @@ public class ConfirmationMenu {
 		this.handler = handler;
 
 		inv = Bukkit.createInventory(null, 27, name);
-		inv.setItem(11, new ItemBuilder(Material.EMERALD_BLOCK).setName(ChatColor.GREEN + yesMessage).toItemStack());
-		inv.setItem(15, new ItemBuilder(Material.REDSTONE_BLOCK).setName(ChatColor.RED + noMessage).toItemStack());
+		inv.setItem(11, ItemBuilder.builder(Material.EMERALD_BLOCK).name(ChatColor.GREEN + yesMessage).build());
+		inv.setItem(15, ItemBuilder.builder(Material.REDSTONE_BLOCK).name(ChatColor.RED + noMessage).build());
 
 		registerListeners(plugin);
 	}

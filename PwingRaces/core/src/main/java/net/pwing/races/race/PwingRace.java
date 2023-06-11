@@ -13,6 +13,7 @@ import net.pwing.races.api.race.permission.RacePermission;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.trigger.RaceTrigger;
 import net.pwing.races.race.attribute.PwingRaceAttribute;
+import net.pwing.races.race.editor.wizard.race.RaceCreateContext;
 import net.pwing.races.race.menu.PwingRaceIconData;
 import net.pwing.races.race.permission.PwingRacePermission;
 import net.pwing.races.util.LocationUtil;
@@ -22,12 +23,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,12 +68,6 @@ public class PwingRace implements Race {
     // private RaceCommandExecutor executor;
 
     public PwingRace(RaceManager raceManager, FileConfiguration raceConfig) {
-        loadDataFromConfig(raceManager, raceConfig);
-
-        // this.executor = new IndividualRaceExecutor(raceManager.getPlugin(), this, name.toLowerCase());
-    }
-
-    public void loadDataFromConfig(RaceManager raceManager, FileConfiguration raceConfig) {
         this.raceConfig = raceConfig;
 
         this.name = raceConfig.getString("race.name");
@@ -94,7 +95,7 @@ public class PwingRace implements Race {
         for (String str : raceConfig.getStringList("race.skilltrees")) {
             Optional<RaceSkilltree> skilltree = raceManager.getSkilltreeManager().getSkilltreeFromName(str.split(" ")[0]);
 
-            if (!skilltree.isPresent()) {
+            if (skilltree.isEmpty()) {
                 Bukkit.getLogger().warning("[PwingRaces] " + "Could not find skilltree " + str + " for race " + name + "!");
                 continue;
             }
@@ -129,7 +130,7 @@ public class PwingRace implements Race {
         if (raceConfig.contains("race.attributes")) {
             for (String str : raceConfig.getConfigurationSection("race.attributes").getKeys(false)) {
                 List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(str, new ArrayList<>());
-                raceAttributes.add(new PwingRaceAttribute(str, raceConfig.getString("race.attributes." + str), "none"));
+                raceAttributes.add(new PwingRaceAttribute("race.attributes." + str, str, raceConfig.getString("race.attributes." + str), "none"));
                 raceAttributesMap.put(str, raceAttributes);
             }
         }
@@ -140,7 +141,7 @@ public class PwingRace implements Race {
         if (raceConfig.contains("race.permissions")) {
             for (String str : raceConfig.getStringList("race.permissions")) {
                 List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(str, new ArrayList<>());
-                racePermissions.add(new PwingRacePermission(str, "none"));
+                racePermissions.add(new PwingRacePermission("race.permissions." + str, str, "none"));
                 racePermissionsMap.put(str, racePermissions);
             }
         }
@@ -177,7 +178,7 @@ public class PwingRace implements Race {
                 if (elementSection.contains("permissions")) {
                     for (String permission : elementSection.getStringList("permissions")) {
                         List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<>());
-                        racePermissions.add(new PwingRacePermission(permission, elem));
+                        racePermissions.add(new PwingRacePermission("race.elements." + elem + ".permissions", permission, elem));
                         racePermissionsMap.put(permission, racePermissions);
                     }
                 }
@@ -185,7 +186,7 @@ public class PwingRace implements Race {
                 if (elementSection.contains("attributes")) {
                     for (String attribute : elementSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
-                        raceAttributes.add(new PwingRaceAttribute(attribute, elementSection.getString("attributes." + attribute), elem));
+                        raceAttributes.add(new PwingRaceAttribute("race.elements." + elem + ".attributes." + attribute, attribute, elementSection.getString("attributes." + attribute), elem));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }
@@ -218,7 +219,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("permissions")) {
                     for (String permission : levelSection.getStringList("permissions")) {
                         List<RacePermission> racePermissions = racePermissionsMap.getOrDefault(permission, new ArrayList<>());
-                        racePermissions.add(new PwingRacePermission(permission, "level" + level));
+                        racePermissions.add(new PwingRacePermission("race.levels." + level + ".permissions", permission, "level" + level));
                         racePermissionsMap.put(permission, racePermissions);
                     }
                 }
@@ -226,7 +227,7 @@ public class PwingRace implements Race {
                 if (levelSection.contains("attributes")) {
                     for (String attribute : levelSection.getConfigurationSection("attributes").getKeys(false)) {
                         List<RaceAttribute> raceAttributes = raceAttributesMap.getOrDefault(attribute, new ArrayList<>());
-                        raceAttributes.add(new PwingRaceAttribute(attribute, levelSection.getString("attributes." + attribute), "level" + level));
+                        raceAttributes.add(new PwingRaceAttribute("race.levels." + level + ".attributes." + attribute, attribute, levelSection.getString("attributes." + attribute), "level" + level));
                         raceAttributesMap.put(attribute, raceAttributes);
                     }
                 }
@@ -257,6 +258,69 @@ public class PwingRace implements Race {
 
         int iconSlot = raceConfig.getInt("race.gui.slot", 0);
         this.iconData = new PwingRaceIconData(iconUnlocked, iconLocked, iconSelected, iconSlot);
+    }
+
+    public void writeToConfig() {
+        this.raceConfig.set("race.name", this.name);
+        this.raceConfig.set("race.display-name", this.displayName);
+        this.raceConfig.set("race.max-level", this.maxLevel);
+        this.raceConfig.set("race.spawn-location", LocationUtil.toString(this.spawnLocation));
+        this.raceConfig.set("race.require-unlock", this.requiresUnlock);
+        if (!this.itemDefinitions.isEmpty()) {
+            for (Map.Entry<String, RaceItemDefinition> entry : this.itemDefinitions.entrySet()) {
+                ItemUtil.writeRaceItemToConfig("race.items." + entry.getKey(), entry.getValue(), this.raceConfig);
+            }
+        }
+
+        if (!this.skilltreeMap.isEmpty()) {
+            List<String> skilltrees = new ArrayList<>();
+            for (Map.Entry<Integer, String> entry : this.skilltreeMap.entrySet()) {
+                skilltrees.add(entry.getValue() + " " + entry.getKey());
+            }
+
+            this.raceConfig.set("race.skilltrees", skilltrees);
+        }
+
+        if (!this.raceLevelMap.isEmpty()) {
+            for (Map.Entry<Integer, Integer> entry : this.raceLevelMap.entrySet()) {
+                this.raceConfig.set("race.levels." + entry + ".xp", entry.getValue());
+            }
+        }
+
+        if (!this.raceSkillpointsMap.isEmpty()) {
+            for (Map.Entry<Integer, Integer> entry : this.raceSkillpointsMap.entrySet()) {
+                this.raceConfig.set("race.levels." + entry + ".skillpoints", entry.getValue());
+            }
+        }
+
+        if (!this.raceTriggersMap.isEmpty()) {
+            for (Map.Entry<String, List<RaceTrigger>> entry : this.raceTriggersMap.entrySet()) {
+                for (RaceTrigger trigger : entry.getValue()) {
+                    trigger.saveDataToConfig(trigger.getConfigPath(), this.raceConfig);
+                }
+            }
+        }
+
+        if (!this.raceAttributesMap.isEmpty()) {
+            for (Map.Entry<String, List<RaceAttribute>> entry : this.raceAttributesMap.entrySet()) {
+                for (RaceAttribute attribute : entry.getValue()) {
+                    this.raceConfig.set(attribute.getConfigPath(), attribute.getValue());
+                }
+            }
+        }
+
+        if (!this.racePermissionsMap.isEmpty()) {
+            Map<String, List<String>> serializedPermissions = new HashMap<>();
+            for (Map.Entry<String, List<RacePermission>> entry : this.racePermissionsMap.entrySet()) {
+                for (RacePermission permission : entry.getValue()) {
+                    serializedPermissions.computeIfAbsent(permission.getConfigPath(), e -> new ArrayList<>()).add(permission.getNode());
+                }
+            }
+
+            for (Map.Entry<String, List<String>> entry : serializedPermissions.entrySet()) {
+                this.raceConfig.set(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     public boolean doesRequireUnlock() {
@@ -309,6 +373,33 @@ public class PwingRace implements Race {
         }
     }
 
+    public static Optional<PwingRace> createFromContext(RaceCreateContext context) {
+        String configName = context.getName().toLowerCase(Locale.ROOT).replace(" ", "_");
+
+        Path path = Paths.get(context.getPlugin().getDataFolder().toString(), "races")
+                .resolve(configName + ".yml");
+
+        if (Files.exists(path)) {
+            context.getPlayer().sendMessage(ChatColor.RED + "Cannot create Race as one already exists under this name!");
+            return Optional.empty();
+        }
+
+        try {
+            Files.createFile(path);
+
+            FileConfiguration configuration = YamlConfiguration.loadConfiguration(path.toFile());
+            configuration.set("race.name", context.getName());
+            configuration.set("race.display-name", context.getDisplayName());
+            ItemUtil.writeItemToConfig("race.gui.icon", context.getIconData(), configuration);
+            configuration.set("race.gui.slot", context.getIconSlot());
+            configuration.save(path.toFile());
+            return Optional.of(new PwingRace(context.getPlugin().getRaceManager(), configuration));
+        } catch (IOException e) {
+            context.getPlayer().sendMessage(ChatColor.RED + "An error occurred when creating file for race " + configName + "! Please check console for more details.");
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

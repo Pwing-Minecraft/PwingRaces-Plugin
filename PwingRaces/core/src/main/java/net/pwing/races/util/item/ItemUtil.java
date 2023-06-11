@@ -14,12 +14,18 @@ import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ItemUtil {
 
@@ -67,20 +73,20 @@ public class ItemUtil {
             return null;
         }
 
-        ItemBuilder builder = new ItemBuilder(material);
+        ItemBuilder builder = ItemBuilder.builder(material);
         if (split.length == 1) {
-            return builder.toItemStack();
+            return builder.build();
         }
 
         String data = split[1].replace("\\}", "");
         for (String meta : data.split(";")) {
             String[] option = meta.split("=");
             switch (option[0]) {
-                case "durability", "data" -> builder.setDurability(NumberUtil.getInteger(option[1]));
+                case "durability", "data", "damage" -> builder.durability(NumberUtil.getInteger(option[1]));
                 case "custom-model-data", "model-data" ->
-                        builder.setCustomModelData(NumberUtil.getInteger(option[1]));
-                case "amount" -> builder.setAmount(NumberUtil.getInteger(option[1]));
-                case "name", "display-name" -> builder.setName(option[1]);
+                        builder.customModelData(NumberUtil.getInteger(option[1]));
+                case "amount" -> builder.amount(NumberUtil.getInteger(option[1]));
+                case "name", "display-name" -> builder.name(option[1]);
                 case "enchants", "enchantments" -> {
                     for (String enchant : getList(meta)) {
                         String[] del = enchant.split(":");
@@ -91,14 +97,14 @@ public class ItemUtil {
                         }
 
                         if (enchantment != null) {
-                            builder.addEnchantment(enchantment, NumberUtil.getInteger(del[1]));
+                            builder.enchantment(enchantment, NumberUtil.getInteger(del[1]));
                         }
                     }
                 }
-                case "lore" -> builder.setLore(getList(meta));
-                case "unbreakable" -> builder.setUnbreakable(Boolean.parseBoolean(option[1]));
+                case "lore" -> builder.lore(getList(meta));
+                case "unbreakable" -> builder.unbreakable(Boolean.parseBoolean(option[1]));
                 case "owner", "head-owner" ->
-                        builder = new ItemBuilder(HeadUtil.getPlayerHead(builder.toItemStack(), option[1]));
+                        builder = ItemBuilder.builder(HeadUtil.getPlayerHead(builder.build(), option[1]));
                 case "color", "colour" -> {
                     String[] colorSplit = option[1].split(",");
                     Color color = null;
@@ -106,14 +112,14 @@ public class ItemUtil {
                         color = Color.fromRGB(Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]), Integer.parseInt(colorSplit[2]));
                     else
                         color = fromHex(option[1]);
-                    builder.setColor(color);
+                    builder.color(color);
                 }
                 case "item-flags" -> {
                     for (String flag : getList(meta)) {
                         if (!isItemFlag(flag))
                             continue;
 
-                        builder.addItemFlag(ItemFlag.valueOf(flag.toUpperCase()));
+                        builder.itemFlags(ItemFlag.valueOf(flag.toUpperCase()));
                     }
                 }
                 case "effects", "potion-effects" -> {
@@ -132,7 +138,7 @@ public class ItemUtil {
                         if (NumberUtil.isInteger(effectSplit[2]))
                             amplifier = Integer.parseInt(effectSplit[2]) - 1;
 
-                        builder.addPotionEffect(new PotionEffect(effectType, duration, amplifier));
+                        builder.potionEffect(new PotionEffect(effectType, duration, amplifier));
                     }
                 }
                 default -> {
@@ -140,7 +146,7 @@ public class ItemUtil {
             }
         }
 
-        return builder.toItemStack();
+        return builder.build();
     }
 
     public static ItemStack fromStringLegacy(String str) {
@@ -151,10 +157,10 @@ public class ItemUtil {
         String name = ChatColor.translateAlternateColorCodes('&', temp[1]);
 
         Material type = Material.getMaterial(item.toUpperCase(Locale.ROOT));
-        ItemBuilder builder = new ItemBuilder(type);
-        builder.setName(name);
+        ItemBuilder builder = ItemBuilder.builder(type);
+        builder.name(name);
 
-        return builder.toItemStack();
+        return builder.build();
     }
 
     public static RaceItemDefinition readRaceItemFromConfig(String configPath, FileConfiguration config) {
@@ -168,7 +174,7 @@ public class ItemUtil {
     }
 
     public static ItemStack readItemFromConfig(String configPath, FileConfiguration config) {
-        ItemBuilder builder = new ItemBuilder(Material.STONE);
+        ItemBuilder builder = ItemBuilder.builder(Material.STONE);
 
         if (!config.contains(configPath))
             return null;
@@ -182,13 +188,13 @@ public class ItemUtil {
                         PwingRaces.getInstance().getLogger().warning("Invalid material " + matName + " at path " + configPath + "! Defaulting to stone...");
                         material = Material.STONE;
                     }
-                    builder = new ItemBuilder(material);
+                    builder = ItemBuilder.builder(material);
                 }
-                case "durability", "data" -> builder.setDurability(config.getInt(configPath + "." + str));
+                case "durability", "data", "damage" -> builder.durability(config.getInt(configPath + "." + str));
                 case "custom-model-data", "model-data" ->
-                        builder.setCustomModelData(config.getInt(configPath + "." + str));
-                case "amount" -> builder.setAmount(config.getInt(configPath + "." + str));
-                case "name", "display-name" -> builder.setName(config.getString(configPath + "." + str));
+                        builder.customModelData(config.getInt(configPath + "." + str));
+                case "amount" -> builder.amount(config.getInt(configPath + "." + str));
+                case "name", "display-name" -> builder.name(config.getString(configPath + "." + str));
                 case "enchants", "enchantments" -> {
                     for (String enchant : config.getStringList(configPath + "." + str)) {
                         int level = 1;
@@ -203,14 +209,14 @@ public class ItemUtil {
                         }
 
                         if (enchantment != null) {
-                            builder.addEnchantment(enchantment, level);
+                            builder.enchantment(enchantment, level);
                         }
                     }
                 }
-                case "lore" -> builder.setLore(config.getStringList(configPath + "." + str));
-                case "unbreakable" -> builder.setUnbreakable(config.getBoolean(configPath + "." + str));
+                case "lore" -> builder.lore(config.getStringList(configPath + "." + str));
+                case "unbreakable" -> builder.unbreakable(config.getBoolean(configPath + "." + str));
                 case "owner", "head-owner" ->
-                        builder = new ItemBuilder(HeadUtil.getPlayerHead(builder.toItemStack(), config.getString(configPath + "." + str)));
+                        builder = ItemBuilder.builder(HeadUtil.getPlayerHead(builder.build(), config.getString(configPath + "." + str)));
                 case "color", "colour" -> {
                     String[] colorSplit = config.getString(configPath + "." + str).split(",");
                     Color color = null;
@@ -218,14 +224,14 @@ public class ItemUtil {
                         color = Color.fromRGB(Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]), Integer.parseInt(colorSplit[2]));
                     else
                         color = fromHex(config.getString(configPath + "." + str));
-                    builder.setColor(color);
+                    builder.color(color);
                 }
                 case "item-flags" -> {
                     for (String flag : config.getStringList(configPath + "." + str)) {
                         if (!isItemFlag(flag))
                             continue;
 
-                        builder.addItemFlag(ItemFlag.valueOf(flag.toUpperCase()));
+                        builder.itemFlags(ItemFlag.valueOf(flag.toUpperCase()));
                     }
                 }
                 case "effects", "potion-effects" -> {
@@ -244,7 +250,7 @@ public class ItemUtil {
                         if (NumberUtil.isInteger(effectSplit[2]))
                             amplifier = Integer.parseInt(effectSplit[2]) - 1;
 
-                        builder.addPotionEffect(new PotionEffect(effectType, duration, amplifier));
+                        builder.potionEffect(new PotionEffect(effectType, duration, amplifier));
                     }
                 }
                 default -> {
@@ -254,7 +260,45 @@ public class ItemUtil {
             // TODO: Add item attribute API
         }
 
-        return builder.toItemStack();
+        return builder.build();
+    }
+
+    public static void writeRaceItemToConfig(String configPath, RaceItemDefinition item, FileConfiguration config) {
+        writeItemToConfig(configPath, item.itemStack(), config);
+        config.set(configPath + ".give-to-player", item.giveToPlayer());
+    }
+
+    public static void writeItemToConfig(String configPath, ItemStack item, FileConfiguration config) {
+        ItemMeta meta = item.getItemMeta();
+
+        config.set(configPath + ".type", item.getType().toString());
+        config.set(configPath + ".amount", item.getAmount());
+        if (meta instanceof Damageable damageable) {
+            config.set(configPath + ".damage", damageable.getDamage());
+        }
+
+        if (meta != null) {
+            config.set(configPath + ".name", meta.getDisplayName());
+            config.set(configPath + ".lore", meta.getLore());
+            config.set(configPath + ".unbreakable", meta.isUnbreakable());
+            config.set(configPath + ".item-flags", meta.getItemFlags().stream().map(ItemFlag::name).collect(Collectors.toList()));
+            config.set(configPath + ".enchantments", meta.getEnchants().entrySet().stream().map(entry -> entry.getKey().getKey() + " " + entry.getValue()).collect(Collectors.toList()));
+            if (meta instanceof PotionMeta potionMeta) {
+                config.set(configPath + ".potion-effects", potionMeta.getCustomEffects().stream().map(effect -> effect.getType().getName() + " " + effect.getDuration() / 20 + " " + effect.getAmplifier()).collect(Collectors.toList()));
+            }
+
+            if (meta instanceof LeatherArmorMeta leatherArmorMeta) {
+                config.set(configPath + ".color", leatherArmorMeta.getColor().getRed() + "," + leatherArmorMeta.getColor().getGreen() + "," + leatherArmorMeta.getColor().getBlue());
+            }
+
+            if (meta instanceof SkullMeta skullMeta && skullMeta.getOwnerProfile() != null) {
+                config.set(configPath + ".owner", skullMeta.getOwnerProfile().getName());
+            }
+
+            if (meta.hasCustomModelData()) {
+                config.set(configPath + ".custom-model-data", meta.getCustomModelData());
+            }
+        }
     }
 
     private static Color fromHex(String hex) {
