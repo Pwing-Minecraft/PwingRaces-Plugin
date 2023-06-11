@@ -23,6 +23,7 @@ dependencies {
     compileOnly("com.github.TheComputerGeek2:MagicSpells:3.5-Release")
     compileOnly("io.lumine:Mythic-Dist:5.2.1")
     compileOnly("me.blackvein.quests:quests-core:4.8.3")
+    compileOnly("com.github.Archy-X:AureliumSkills:Beta1.3.20")
 
     compileOnly(":LoreAttributesRecoded")
 

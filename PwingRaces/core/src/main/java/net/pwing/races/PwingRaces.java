@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.pwing.races.api.module.RaceModuleManager;
 import net.pwing.races.command.RaceExecutor;
 import net.pwing.races.config.RaceConfigurationManager;
+import net.pwing.races.hook.AureliumSkillsHook;
 import net.pwing.races.hook.LibsDisguisesHook;
 import net.pwing.races.hook.LoreAttributesHook;
 import net.pwing.races.hook.MagicSpellsHook;
@@ -40,6 +41,7 @@ public class PwingRaces extends JavaPlugin {
     private RaceModuleManager moduleManager;
 
     private VaultAPIHook vaultHook;
+    private AureliumSkillsHook aureliumSkillsHook;
     private MagicSpellsHook magicSpellsHook;
     private MythicMobsHook mythicMobsHook;
     private QuestsHook questsHook;
@@ -84,6 +86,7 @@ public class PwingRaces extends JavaPlugin {
         }
 
         vaultHook = new VaultAPIHook(MessageUtil.getMessage("currency-name-sing", ""), MessageUtil.getMessage("currency-name-plural", ""), this, "Vault");
+        aureliumSkillsHook = new AureliumSkillsHook(this, "AureliumSkills");
         magicSpellsHook = new MagicSpellsHook(this, "MagicSpells");
         mythicMobsHook = new MythicMobsHook(this, "MythicMobs");
         loreAttributesHook = new LoreAttributesHook(this, "LoreAttributesRecoded");

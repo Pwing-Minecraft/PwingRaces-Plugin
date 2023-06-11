@@ -12,6 +12,7 @@ import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.race.attribute.attributes.FlySpeedAttribute;
 import net.pwing.races.race.attribute.attributes.ManaAttribute;
 import net.pwing.races.race.attribute.attributes.WalkSpeedAttribute;
+import net.pwing.races.race.attribute.attributes.WisdomAttribute;
 import net.pwing.races.util.AttributeUtil;
 import net.pwing.races.util.math.EquationUtil;
 
@@ -41,6 +42,7 @@ public class PwingRaceAttributeManager implements RaceAttributeManager {
         attributeEffects.put("fly-speed", new FlySpeedAttribute("fly-speed"));
         attributeEffects.put("max-mana", new ManaAttribute(plugin, "max-mana"));
         attributeEffects.put("walk-speed", new WalkSpeedAttribute("walk-speed"));
+        attributeEffects.put("wisdom", new WisdomAttribute(plugin, "wisdom"));
     }
 
     @Override
