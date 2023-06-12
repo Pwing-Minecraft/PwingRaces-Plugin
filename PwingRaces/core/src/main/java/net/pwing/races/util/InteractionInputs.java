@@ -99,9 +99,19 @@ public class InteractionInputs {
                         return;
                     }
 
-                    onInventoryInteract(event.getCurrentItem());
+                    ItemStack currentItem = event.getCurrentItem().clone();
 
+                    // Need to run a tick later so Bukkit can handle the event cancellation
+                    Bukkit.getScheduler().runTaskLater(PwingRaces.getInstance(), () -> {
+                        onInventoryInteract(currentItem);
+                    }, 1);
+
+                    // This is needed to prevent the item from being picked up in
+                    // creative. Seems overkill but Bukkit(TM)
                     event.setCancelled(true);
+                    event.getView().setCursor(null);
+                    player.updateInventory();
+
                     HandlerList.unregisterAll(this);
                 }
             };

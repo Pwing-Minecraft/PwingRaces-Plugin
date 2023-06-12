@@ -16,12 +16,14 @@ public class RaceEditorWizards {
     public static final RaceEditorWizard<RaceCreateContext> RACE_CREATION = createWizard(RaceCreateContext::new)
             .addStage(new TextInputStage<>(ChatColor.AQUA + "Type the name of the race in chat or \"cancel\" to cancel.", context -> context::setName))
             .addStage(new TextInputStage<>(ChatColor.AQUA + "Type the display name of the race in chat \"cancel\" to cancel.", context -> context::setDisplayName))
-            .addStage(new ItemStackInputStage<>(ChatColor.AQUA + "Select the item in your inventory to use as the race icon", context -> context::setIconData))
+            .addStage(new ItemStackInputStage<>(ChatColor.AQUA + "Select the item in your inventory to use as the race icon.", context -> context::setIconData))
             .addStage(new TextInputStage<>(
                     ChatColor.AQUA + "Type the menu slot of the race in chat",
                     NumberUtil::isInteger,
                     context -> content -> context.setIconSlot(NumberUtil.getInteger(content)))
-            ).onComplete(context ->
+            )
+            .onCancel(context -> context.getPlayer().sendMessage(ChatColor.RED + "Cancelled race creation."))
+            .onComplete(context ->
                 PwingRace.createFromContext(context).ifPresent(race -> {
                     context.getPlugin().getRaceManager().addRace(race);
                     context.getPlayer().sendMessage(ChatColor.GREEN + "Created race " + race.getName() + " successfully! You can now edit it in the editor.");

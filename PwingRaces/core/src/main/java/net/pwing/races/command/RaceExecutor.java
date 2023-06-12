@@ -41,7 +41,7 @@ public class RaceExecutor extends RaceCommandExecutor {
 
     @RaceCommand(commands = "editor", description = "Open the race editor", permissionNode = "editor")
     public boolean editor(Player player) {
-        // plugin.getRaceManager().getEditorManager().getRaceEditorMenu().openMenu(player);
+        plugin.getRaceManager().getEditorManager().getRaceEditorMenu().openMenu(player);
         return true;
     }
 

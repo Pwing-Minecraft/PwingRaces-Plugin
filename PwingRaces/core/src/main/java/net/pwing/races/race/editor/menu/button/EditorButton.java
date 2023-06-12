@@ -3,6 +3,7 @@ package net.pwing.races.race.editor.menu.button;
 import net.pwing.races.api.race.Race;
 import net.pwing.races.race.editor.menu.RaceEditMenu;
 import net.pwing.races.util.menu.MenuBuilder;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,9 +18,9 @@ public abstract class EditorButton {
 
     public abstract ItemStack getItem();
 
-    public abstract void onClick(ClickType action);
+    public abstract void onClick(Player player, ClickType action);
 
     public final void apply(int slot, MenuBuilder builder) {
-        builder.item(this.getItem(), slot, (player, action, item) -> onClick(action));
+        builder.item(this.getItem(), slot, (player, action, item) -> onClick(player, action));
     }
 }

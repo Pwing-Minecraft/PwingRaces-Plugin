@@ -3,6 +3,7 @@ package net.pwing.races.race;
 import lombok.Getter;
 import lombok.Setter;
 
+import net.pwing.races.api.race.Race;
 import net.pwing.races.api.race.RaceData;
 import net.pwing.races.config.RaceConfiguration;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 @Setter
 public class PwingRaceData implements RaceData {
 
+	private Race race;
     private String raceName;
 
 	private boolean unlocked;
@@ -32,8 +34,9 @@ public class PwingRaceData implements RaceData {
 	private Map<String, List<String>> purchasedElementsMap;
 	private RaceConfiguration playerConfig;
 
-	public PwingRaceData(String raceName, String configPath, RaceConfiguration playerConfig) {
-		this.raceName = raceName;
+	public PwingRaceData(Race race, String configPath, RaceConfiguration playerConfig) {
+		this.race = race;
+		this.raceName = race.getName();
 		this.playerConfig = playerConfig;
 
 		loadDataFromConfig(configPath);
@@ -56,6 +59,10 @@ public class PwingRaceData implements RaceData {
 				purchasedElementsMap.put(str, elements);
 			}
 		}
+	}
+
+	public boolean isUnlocked() {
+		return this.unlocked || !this.race.doesRequireUnlock();
 	}
 
 	@Override

@@ -43,10 +43,6 @@ public class ConfirmationMenu {
 		player.openInventory(inv);
 	}
 
-	public Inventory toInventory() {
-		return inv;
-	}
-
 	private void registerListeners(PwingRaces plugin) {
 		Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
 

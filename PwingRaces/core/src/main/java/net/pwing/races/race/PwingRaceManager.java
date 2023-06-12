@@ -72,7 +72,7 @@ public class PwingRaceManager implements RaceManager {
         editorManager = new RaceEditorManager(plugin);
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
-            races.add(new PwingRace(this, config.getConfig()));
+            races.add(new PwingRace(this, config));
 
         FileConfiguration config = plugin.getConfig();
         raceMenu = new PwingRaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
@@ -87,7 +87,7 @@ public class PwingRaceManager implements RaceManager {
                 continue;
             }
 
-            player.getRaceDataMap().put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
+            player.getRaceDataMap().put(race.getName(), new PwingRaceData(race, "data", playerConfig));
         }
     }
 
@@ -99,7 +99,7 @@ public class PwingRaceManager implements RaceManager {
         skilltreeManager.initSkilltrees(Paths.get(plugin.getDataFolder().toString(), "skilltrees"));
 
         for (RaceConfiguration config : plugin.getConfigManager().getRaceConfigs())
-            races.add(new PwingRace(this, config.getConfig()));
+            races.add(new PwingRace(this, config));
 
         FileConfiguration config = plugin.getConfig();
         raceMenu = new PwingRaceMenu(plugin, config.getString("menu.name", "Race Selection"), config.getInt("menu.slots", 45), config.getBoolean("menu.glass-filled", false));
@@ -118,7 +118,7 @@ public class PwingRaceManager implements RaceManager {
 
         Map<String, RaceData> raceDataMap = new HashMap<>();
         for (Race race : races)
-            raceDataMap.put(race.getName(), new PwingRaceData(race.getName(), "data", playerConfig));
+            raceDataMap.put(race.getName(), new PwingRaceData(race, "data", playerConfig));
 
         if (getRaceFromName(raceName).isEmpty() && plugin.getConfigManager().isRequireRace()) {
             plugin.getLogger().severe("Could not find race " + raceName + ", please check the data config for " + player.getName() + "!");

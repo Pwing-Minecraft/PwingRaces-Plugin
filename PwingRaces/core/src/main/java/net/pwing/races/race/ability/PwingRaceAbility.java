@@ -65,6 +65,21 @@ public abstract class PwingRaceAbility extends RaceAbility {
         }
     }
 
+    @Override
+    public void saveDataToConfig(String configPath, FileConfiguration config) {
+        config.set(configPath + ".cooldown", cooldown);
+        config.set(configPath + ".ability-item", ItemUtil.writeItems(abilityItems));
+        config.set(configPath + ".left-click-ability-item", ItemUtil.writeItems(leftClickAbilityItems));
+        config.set(configPath + ".consume-ability-item", ItemUtil.writeItems(consumeAbilityItems));
+        config.set(configPath + ".required-permission", requiredPermission);
+        config.set(configPath + ".cooldown-message", cooldownMessage);
+        config.set(configPath + ".cancel-default-action", cancelDefaultAction);
+        config.set(configPath + ".override-default-action", overrideDefaultAction);
+        config.set(configPath + ".allowed-worlds", allowedWorlds);
+        config.set(configPath + ".run-passives", passives.keySet());
+        config.set(configPath + ".conditions", conditions.keySet());
+    }
+
     public abstract boolean runAbility(Player player);
 
     // Override the methods in RaceAbility as we have our own version code to check this already

@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class PwingRacesBootstrapper implements PluginBootstrap {
     private final PwingRacesPaper plugin = new PwingRacesPaper();
 
@@ -30,6 +32,11 @@ public class PwingRacesBootstrapper implements PluginBootstrap {
                     @Override
                     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                         return raceExecutor.onCommand(sender, this, commandLabel, args);
+                    }
+
+                    @Override
+                    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+                        return raceExecutor.onTabComplete(sender, this, alias, args);
                     }
                 };
 

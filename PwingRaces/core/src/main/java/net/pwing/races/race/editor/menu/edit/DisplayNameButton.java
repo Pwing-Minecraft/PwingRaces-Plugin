@@ -9,6 +9,7 @@ import net.pwing.races.race.editor.wizard.stage.TextInputStage;
 import net.pwing.races.util.item.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,23 +23,27 @@ public class DisplayNameButton extends EditorButton {
 
     @Override
     public ItemStack getItem() {
-        return ItemBuilder.builder(Material.PAPER)
+        return ItemBuilder.builder(Material.NAME_TAG)
                 .name("&aRace Display Name")
                 .lore(List.of(
                         "&7Click to change the race display name.",
                         "",
-                        "&fCurrent: " + this.race.getName()
+                        "&fCurrent: &b" + this.race.getDisplayName()
                 ))
                 .build();
     }
 
     @Override
-    public void onClick(ClickType action) {
+    public void onClick(Player player, ClickType action) {
         RaceEditorWizards.createWizard(BaseEditorContext::new)
-                .addStage(new TextInputStage<>(ChatColor.AQUA + "Type the name of the race in chat or \"cancel\" to cancel.", context -> this.race::setDisplayName))
+                .addStage(new TextInputStage<>(ChatColor.AQUA + "Type the display name of the race in chat or \"cancel\" to cancel.", context -> this.race::setDisplayName))
                 .onComplete(context -> {
-                    context.getPlayer().sendMessage(ChatColor.GREEN + "Renamed race successfully!");
+                    this.race.save();
+
+                    context.getPlayer().sendMessage(ChatColor.GREEN + "Changed race display name successfully!");
                     this.menu.openMenu(context.getPlayer());
-                });
+                })
+                .onCancel(context -> context.getPlayer().sendMessage(ChatColor.RED + "Cancelled setting race display name."))
+                .openWizard(player);
     }
 }

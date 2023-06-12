@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -374,6 +375,7 @@ public class RaceCommandExecutor implements TabExecutor {
         }
     }
 
+    @NotNull
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> completions = new ArrayList<>();
@@ -404,7 +406,7 @@ public class RaceCommandExecutor implements TabExecutor {
 
             if (args.length == 2) {
                 if (!commandMethods.containsKey(args[0]))
-                    return null;
+                    return List.of();
             }
 
             if (args.length > 1) {

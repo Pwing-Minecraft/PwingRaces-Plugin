@@ -12,6 +12,7 @@ import net.pwing.races.api.race.menu.RaceIconData;
 import net.pwing.races.api.race.permission.RacePermission;
 import net.pwing.races.api.race.skilltree.RaceSkilltree;
 import net.pwing.races.api.race.trigger.RaceTrigger;
+import net.pwing.races.config.RaceConfiguration;
 import net.pwing.races.race.attribute.PwingRaceAttribute;
 import net.pwing.races.race.editor.wizard.race.RaceCreateContext;
 import net.pwing.races.race.menu.PwingRaceIconData;
@@ -52,7 +53,7 @@ public class PwingRace implements Race {
 
     private boolean requiresUnlock = false;
 
-    private FileConfiguration raceConfig;
+    private RaceConfiguration raceConfig;
 
     private RaceIconData iconData;
 
@@ -67,8 +68,10 @@ public class PwingRace implements Race {
 
     // private RaceCommandExecutor executor;
 
-    public PwingRace(RaceManager raceManager, FileConfiguration raceConfig) {
-        this.raceConfig = raceConfig;
+    public PwingRace(RaceManager raceManager, RaceConfiguration config) {
+        this.raceConfig = config;
+        
+        FileConfiguration raceConfig = this.raceConfig.getConfig();
 
         this.name = raceConfig.getString("race.name");
         this.displayName = ChatColor.translateAlternateColorCodes('&', raceConfig.getString("race.display-name", name));
@@ -260,15 +263,17 @@ public class PwingRace implements Race {
         this.iconData = new PwingRaceIconData(iconUnlocked, iconLocked, iconSelected, iconSlot);
     }
 
-    public void writeToConfig() {
-        this.raceConfig.set("race.name", this.name);
-        this.raceConfig.set("race.display-name", this.displayName);
-        this.raceConfig.set("race.max-level", this.maxLevel);
-        this.raceConfig.set("race.spawn-location", LocationUtil.toString(this.spawnLocation));
-        this.raceConfig.set("race.require-unlock", this.requiresUnlock);
+    public void save() {
+        FileConfiguration config = this.raceConfig.getConfig();
+        
+        config.set("race.name", this.name);
+        config.set("race.display-name", this.displayName);
+        config.set("race.max-level", this.maxLevel);
+        config.set("race.spawn-location", LocationUtil.toString(this.spawnLocation));
+        config.set("race.require-unlock", this.requiresUnlock);
         if (!this.itemDefinitions.isEmpty()) {
             for (Map.Entry<String, RaceItemDefinition> entry : this.itemDefinitions.entrySet()) {
-                ItemUtil.writeRaceItemToConfig("race.items." + entry.getKey(), entry.getValue(), this.raceConfig);
+                ItemUtil.writeRaceItemToConfig("race.items." + entry.getKey(), entry.getValue(), config);
             }
         }
 
@@ -278,25 +283,25 @@ public class PwingRace implements Race {
                 skilltrees.add(entry.getValue() + " " + entry.getKey());
             }
 
-            this.raceConfig.set("race.skilltrees", skilltrees);
+            config.set("race.skilltrees", skilltrees);
         }
 
         if (!this.raceLevelMap.isEmpty()) {
             for (Map.Entry<Integer, Integer> entry : this.raceLevelMap.entrySet()) {
-                this.raceConfig.set("race.levels." + entry + ".xp", entry.getValue());
+                config.set("race.levels." + entry.getKey() + ".xp", entry.getValue());
             }
         }
 
         if (!this.raceSkillpointsMap.isEmpty()) {
             for (Map.Entry<Integer, Integer> entry : this.raceSkillpointsMap.entrySet()) {
-                this.raceConfig.set("race.levels." + entry + ".skillpoints", entry.getValue());
+                config.set("race.levels." + entry.getKey() + ".skillpoints", entry.getValue());
             }
         }
 
         if (!this.raceTriggersMap.isEmpty()) {
             for (Map.Entry<String, List<RaceTrigger>> entry : this.raceTriggersMap.entrySet()) {
                 for (RaceTrigger trigger : entry.getValue()) {
-                    trigger.saveDataToConfig(trigger.getConfigPath(), this.raceConfig);
+                    trigger.saveDataToConfig(trigger.getConfigPath(), config);
                 }
             }
         }
@@ -304,7 +309,7 @@ public class PwingRace implements Race {
         if (!this.raceAttributesMap.isEmpty()) {
             for (Map.Entry<String, List<RaceAttribute>> entry : this.raceAttributesMap.entrySet()) {
                 for (RaceAttribute attribute : entry.getValue()) {
-                    this.raceConfig.set(attribute.getConfigPath(), attribute.getValue());
+                    config.set(attribute.getConfigPath(), attribute.getValue());
                 }
             }
         }
@@ -318,9 +323,30 @@ public class PwingRace implements Race {
             }
 
             for (Map.Entry<String, List<String>> entry : serializedPermissions.entrySet()) {
-                this.raceConfig.set(entry.getKey(), entry.getValue());
+                config.set(entry.getKey(), entry.getValue());
             }
         }
+        
+        if (!this.raceAbilitiesMap.isEmpty()) {
+            for (Map.Entry<String, List<RaceAbility>> entry : this.raceAbilitiesMap.entrySet()) {
+                for (RaceAbility ability : entry.getValue()) {
+                    ability.saveDataToConfig(ability.getConfigPath(), config);
+                }
+            }
+        }
+        
+        ItemUtil.writeItemToConfig("race.gui.icon", this.iconData.getUnlockedIcon(), config);
+        if (this.iconData.getSelectedIcon().isPresent()) {
+            ItemUtil.writeItemToConfig("race.gui.icon-selected", this.iconData.getSelectedIcon().get(), config);
+        }
+        
+        if (this.iconData.getLockedIcon().isPresent()) {
+            ItemUtil.writeItemToConfig("race.gui.icon-locked", this.iconData.getLockedIcon().get(), config);
+        }
+        
+        config.set("race.gui.slot", this.iconData.getIconSlot());
+
+        this.raceConfig.saveConfig();
     }
 
     public boolean doesRequireUnlock() {
@@ -393,7 +419,7 @@ public class PwingRace implements Race {
             ItemUtil.writeItemToConfig("race.gui.icon", context.getIconData(), configuration);
             configuration.set("race.gui.slot", context.getIconSlot());
             configuration.save(path.toFile());
-            return Optional.of(new PwingRace(context.getPlugin().getRaceManager(), configuration));
+            return Optional.of(new PwingRace(context.getPlugin().getRaceManager(), new RaceConfiguration(path, configuration)));
         } catch (IOException e) {
             context.getPlayer().sendMessage(ChatColor.RED + "An error occurred when creating file for race " + configName + "! Please check console for more details.");
             e.printStackTrace();

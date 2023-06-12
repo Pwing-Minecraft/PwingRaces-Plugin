@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -67,7 +69,7 @@ public class ItemUtil {
         }
 
         String[] split = str.split("\\{");
-        Material material = Material.getMaterial(split[0].toUpperCase(Locale.ROOT));
+        Material material = Registry.MATERIAL.get(NamespacedKey.fromString(split[0].toLowerCase(Locale.ROOT)));
         if (material == null) {
             PwingRaces.getInstance().getLogger().warning("Invalid material " + split[0] + "!");
             return null;
@@ -147,6 +149,85 @@ public class ItemUtil {
         }
 
         return builder.build();
+    }
+
+    public static String writeItem(ItemStack item) {
+        if (item == null) {
+            return null;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+
+        StringBuilder str = new StringBuilder();
+        str.append(item.getType().getKey());
+        List<String> serializedProperties = new ArrayList<>();
+
+        if (item.getAmount() > 1) {
+            serializedProperties.add("amount=" + item.getAmount());
+        }
+
+        if (meta != null) {
+            serializedProperties.add("name=" + meta.getDisplayName());
+            if (meta instanceof Damageable damageable) {
+                serializedProperties.add("damage=" + damageable.getDamage());
+            }
+
+            if (meta.hasCustomModelData()) {
+                serializedProperties.add("custom-model-data=" + meta.getCustomModelData());
+            }
+
+            if (meta.hasDisplayName()) {
+                serializedProperties.add("name=" + meta.getDisplayName());
+            }
+
+            if (meta.hasEnchants()) {
+                serializedProperties.add("enchants=[" + meta.getEnchants().entrySet().stream().map(entry -> entry.getKey().getKey() + ":" + entry.getValue()).collect(Collectors.joining(",")) + "]");
+            }
+
+            if (meta.hasLore()) {
+                serializedProperties.add("lore=[" + meta.getLore().stream().collect(Collectors.joining(",")) + "]");
+            }
+
+            if (meta.isUnbreakable()) {
+                serializedProperties.add("unbreakable=true");
+            }
+
+            if (meta instanceof SkullMeta skullMeta) {
+                if (skullMeta.hasOwner()) {
+                    serializedProperties.add("owner=" + skullMeta.getOwnerProfile().getName());
+                }
+            }
+
+            if (meta instanceof LeatherArmorMeta leatherArmorMeta) {
+                serializedProperties.add("color=" + leatherArmorMeta.getColor().getRed() + "," + leatherArmorMeta.getColor().getGreen() + "," + leatherArmorMeta.getColor().getBlue());
+            }
+
+            if (meta instanceof PotionMeta potionMeta) {
+                serializedProperties.add("potion-effects=[" + potionMeta.getCustomEffects().stream().map(effect -> effect.getType().getName() + " " + effect.getDuration() / 20 + " " + effect.getAmplifier()).collect(Collectors.joining(",")) + "]");
+            }
+
+            if (meta.getItemFlags().size() > 0) {
+                serializedProperties.add("item-flags=[" + meta.getItemFlags().stream().map(ItemFlag::name).collect(Collectors.joining(",")) + "]");
+            }
+        }
+
+        if (serializedProperties.isEmpty()) {
+            return str.toString();
+        }
+
+        str.append("{");
+        str.append(String.join(";", serializedProperties));
+        str.append("}");
+        return str.toString();
+    }
+
+    public static String writeItems(ItemStack[] items) {
+        List<String> str = new ArrayList<>();
+        for (ItemStack item : items) {
+            str.add(writeItem(item));
+        }
+
+        return String.join(",", str);
     }
 
     public static ItemStack fromStringLegacy(String str) {
