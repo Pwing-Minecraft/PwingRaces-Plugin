@@ -19,6 +19,6 @@ public class InBiomeCondition implements RaceCondition {
             return false;
         }
 
-        return player.getWorld().getBiome(player.getLocation().getBlockX(), player.getLocation().getBlockZ()) == biome;
+        return player.getWorld().getBiome(player.getLocation()) == biome;
     }
 }
