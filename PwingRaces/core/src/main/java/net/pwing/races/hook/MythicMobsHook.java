@@ -12,7 +12,8 @@ public class MythicMobsHook extends PluginHook {
 
     @Override
     public void enableHook(PwingRaces owningPlugin, Plugin hook) {
-        if (!(hook instanceof MythicBukkit))
+        if (!(hook instanceof MythicBukkit)) {
             return;
+        }
     }
 }

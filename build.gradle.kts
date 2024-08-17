@@ -1,15 +1,6 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "7.1.0"
-}
-
-dependencies {
-    implementation(project(":PwingRaces-API"))
-    implementation(project(":core"))
-    implementation(project(":paper"))
 }
 
 description = "PwingRaces-Parent"
@@ -19,7 +10,7 @@ allprojects {
     apply(plugin = "java-library")
 
     group = "net.pwing.races"
-    version = "1.5.1-SNAPSHOT"
+    version = "1.5.1"
 
     java.sourceCompatibility = JavaVersion.VERSION_17
     java.targetCompatibility = JavaVersion.VERSION_17
@@ -49,13 +40,4 @@ allprojects {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
-}
-
-tasks.withType<ShadowJar> {
-    from("src/main/java/resources") {
-        include("*")
-    }
-
-    archiveFileName.set("PwingRaces.jar")
-    relocate("org.bstats.bukkit", "net.pwing.races.metrics")
 }
